@@ -1,0 +1,11 @@
+POST http://127.0.0.1:4000/graph
+Content-Type: application/json
+Authorization: Bearer xxx
+X-REQUEST-TYPE: GraphQL
+
+mutation {
+  createUser(email: "test3@test.test", password: "thisisatest") {
+    id
+    email
+  }
+}
