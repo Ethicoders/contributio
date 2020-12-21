@@ -4,6 +4,7 @@ services:
   web:
     image: docker-phoenix
     command: mix phx.server
+    env_file: .env
     environment:
       - MIX_ENV=dev
       - PORT=4000
