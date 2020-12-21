@@ -1,5 +1,5 @@
 {
-  "name": "whatever",
+  "name": "contributio-frontend",
   "reason": {
     "react-jsx": 3
   },
@@ -13,7 +13,11 @@
   },
   "suffix": ".bs.js",
   "bs-dependencies": [
-    "reason-react"
+    "reason-react",
+    "reason-apollo"
+  ],
+  "ppx-flags": [
+    "@baransu/graphql_ppx_re/ppx"
   ],
   "warnings": {
     "error": "+101"

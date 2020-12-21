@@ -1,5 +1,5 @@
 let str = React.string;
-Js.log("o");
+
 [@react.component]
 let make = () => {
   <div>

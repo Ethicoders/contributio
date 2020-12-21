@@ -4,3 +4,4 @@ node_modules
 dist
 lib
 .merlin
+/.graphql_ppx_cache/

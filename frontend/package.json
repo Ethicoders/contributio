@@ -6,13 +6,17 @@
   "author": "Laegel <valentin.chouaf@laposte.net>",
   "license": "MIT",
   "scripts": {
+    "_warningAboutScripts": "These are meant to be ran in the Docker container, not the host!",
     "build": "parcel build index.html",
-    "dev": "parcel index.html"
+    "dev": "parcel index.html",
+    "schema": "yarn get-graphql-schema http://web:4000/graphiql -j > graphql_schema.json"
   },
   "devDependencies": {
+    "@baransu/graphql_ppx_re": "^0.7.1",
     "autoprefixer": "^10.1.0",
     "bs-platform": "^8.4.2",
     "bsb-js": "^1.1.7",
+    "get-graphql-schema": "^2.1.2",
     "postcss": "^8.2.1",
     "postcss-modules": "^4.0.0",
     "sass": "^1.30.0",
@@ -21,6 +25,7 @@
   "dependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "reason-apollo": "^0.20.0",
     "reason-react": "^0.9.1"
   }
 }
