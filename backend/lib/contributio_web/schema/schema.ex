@@ -3,6 +3,7 @@ defmodule Contributio.Schema do
 
   import_types Contributio.Schema.DataTypes
 
+
   query do
     @desc "Get a list of users"
     field :users, list_of(:user) do
@@ -49,12 +50,12 @@ defmodule Contributio.Schema do
       resolve(&Resolvers.Users.create/2)
     end
 
-    @desc "Login"
-    field :login, :user do
+    @desc "auth"
+    field :auth, :auth_payload do
       arg :email, non_null(:string)
       arg :password, non_null(:string)
 
-      resolve(&Resolvers.Users.login/2)
+      resolve(&Resolvers.Users.authenticate/2)
     end
   end
 end

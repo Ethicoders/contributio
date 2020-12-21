@@ -15,4 +15,14 @@ defmodule Contributio.Schema.DataTypes do
     field :id, :id
     field :name, :string
   end
+
+  # object :jwt do
+  #   field
+  # end
+
+  @desc "Authentication payload"
+  object :auth_payload do
+    field :jwt, :string
+    field :user, :user
+  end
 end

@@ -18,6 +18,10 @@ config :contributio, ContributioWeb.Endpoint,
   pubsub_server: Contributio.PubSub,
   live_view: [signing_salt: "4B5t/j8t"]
 
+config :contributio, ContributioWeb.Guardian,
+  issuer: "contributio",
+  secret_key: "d5dJxEKYWQA+1oR59XUkKgTwlCVc6DdrwlFn7qZG20ekZ6P70nEMbKtjJ4bGGAKo"
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
