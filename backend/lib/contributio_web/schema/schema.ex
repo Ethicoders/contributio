@@ -54,7 +54,7 @@ defmodule Contributio.Schema do
       arg :email, non_null(:string)
       arg :password, non_null(:string)
 
-      resolve(&Resolvers.Users.create/2)
+      resolve(&Resolvers.Users.login/2)
     end
   end
 end

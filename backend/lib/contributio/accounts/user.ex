@@ -8,14 +8,11 @@ defmodule Contributio.Accounts.User do
     field :password, :string, virtual: true
     field :hash, :string
     field :token, :string, allow_nil: true
+    # field :access_tokens, :map
 
     timestamps()
   end
 
-  @spec changeset(
-          {map, map} | %{:__struct__ => atom | %{__changeset__: map}, optional(atom) => any},
-          :invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}
-        ) :: Ecto.Changeset.t()
   @doc false
   def changeset(user, attrs) do
     user
@@ -28,7 +25,6 @@ defmodule Contributio.Accounts.User do
   defp set_password_hash(
          %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
        ) do
-
     put_change(
       changeset,
       :hash,
