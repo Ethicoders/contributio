@@ -22,7 +22,7 @@ defmodule Contributio.Schema.DataTypes do
 
   @desc "Authentication payload"
   object :auth_payload do
-    field :jwt, :string
-    field :user, :user
+    field :jwt, non_null(:string)
+    field :user, non_null(:user)
   end
 end

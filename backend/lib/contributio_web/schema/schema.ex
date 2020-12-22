@@ -51,7 +51,7 @@ defmodule Contributio.Schema do
     end
 
     @desc "auth"
-    field :auth, :auth_payload do
+    field :auth, non_null(:auth_payload) do
       arg :email, non_null(:string)
       arg :password, non_null(:string)
 
