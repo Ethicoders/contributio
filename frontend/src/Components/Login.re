@@ -20,53 +20,34 @@ type authData = {
   password: string,
 };
 
-module Utils = {
-  module Promise = {
-    /**
-     Promises in reason-apollo-client never reject, so we're not using catch here.
-     Instead we'd add a global uncaught promise handler to report any situations where
-     what should be impossible is ocurring.
-     */
-    let then_ = (promise, f) => Js.Promise.then_(f, promise);
-    let ignore: Js.Promise.t(_) => unit = ignore;
-  };
-};
-
 [@react.component]
 let make = () => {
-  let handleSubmit = evt => {
+  /* let handleSubmit = evt => {
     ReactEvent.Form.preventDefault(evt);
+    let addNewUserQuery = AuthMutation.make(~email="test@test.test", ~password="test", ());
+    switch AuthMutationRequest.mutation {
+    | Loading => Js.log("loading")
+    | Error(error) => Js.log("error")
+    | Data(response) => Js.log2("data", response)
+    };
+    /* mutation(
+              ~variables=addNewUserQuery##variables,
+              (),
+            ) */
     // let authData = {"email": "test@test.test", "password": "test"};
     // switch (AuthMutation.use(~context=authData)) {
     // | {data: Some({user})} => Js.log(user)
     // };
-  };
+  }; */
 
   <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-  <ReasonApollo.Provider client=Client.instance>
-    <div></div>
-  
-    <AuthMutationRequest>
-      ...{(mutation /* Mutation to call */, _ /* Result of your mutation */) => {
-        let addNewUserQuery = AuthMutation.make(~email="test@test.test", ~password="test", ());
-        Js.log(addNewUserQuery);
-        <div>
-          <button onClick={_mouseEvent =>
-            mutation(
-              ~variables=addNewUserQuery##variables,
-              (),
-            )
-            |> ignore
-          }>
-            {ReasonReact.string("Add User")}
-          </button>
-        </div>;
-      }}
-    </AuthMutationRequest>
-    </ReasonApollo.Provider>
+  <ReasonApollo.Provider client=Client.instance>  
+    
+    
+
     <div className="max-w-md w-full space-y-8">
       <form
-        onSubmit=handleSubmit
+        /* onSubmit=handleSubmit */
         className="mt-8 space-y-6"
         action="#"
         method="POST">
@@ -118,7 +99,24 @@ let make = () => {
           </div>
         </div>
         <div>
-          <button
+        <AuthMutationRequest>
+        ...{(mutation /* Mutation to call */, _ /* Result of your mutation */) => {
+          let addNewUserQuery = AuthMutation.make(~email="test@test.test", ~password="test", ());
+          Js.log(addNewUserQuery);
+          <div>
+            <button onClick={_mouseEvent =>
+              mutation(
+                ~variables=addNewUserQuery##variables,
+                (),
+              )
+              |> ignore
+            }>
+              {ReasonReact.string("Add User")}
+            </button>
+          </div>;
+        }}
+      </AuthMutationRequest>
+          /* <button
             type_="submit"
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             <span
@@ -128,9 +126,10 @@ let make = () => {
               // </svg>
             />
             "Sign in"->str
-          </button>
+          </button> */
         </div>
       </form>
     </div>
+    </ReasonApollo.Provider>
   </div>;
 };
