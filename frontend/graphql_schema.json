@@ -738,9 +738,13 @@
             "isDeprecated": false,
             "name": "jwt",
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             }
           },
           {
@@ -750,9 +754,13 @@
             "isDeprecated": false,
             "name": "user",
             "type": {
-              "kind": "OBJECT",
-              "name": "User",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              }
             }
           }
         ],
@@ -822,9 +830,13 @@
             "isDeprecated": false,
             "name": "auth",
             "type": {
-              "kind": "OBJECT",
-              "name": "AuthPayload",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AuthPayload",
+                "ofType": null
+              }
             }
           },
           {
