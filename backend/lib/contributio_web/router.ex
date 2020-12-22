@@ -10,6 +10,7 @@ defmodule ContributioWeb.Router do
   end
 
   pipeline :api do
+    plug CORSPlug, origin: "*"
     plug :accepts, ["json"]
   end
 
@@ -22,6 +23,8 @@ defmodule ContributioWeb.Router do
   end
 
   scope "/" do
+    pipe_through :api
+
     forward "/graph", Absinthe.Plug, schema: Contributio.Schema
     forward "/graphiql", Absinthe.Plug.GraphiQL, schema: Contributio.Schema
   end
