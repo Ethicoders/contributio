@@ -16,7 +16,9 @@
     "@justgage/reason-cookie",
     "reason-react",
     "reason-apollo",
-    "re-formality"
+    "re-formality",
+    "bs-css",
+    "bs-css-emotion"
   ],
   "ppx-flags": [
     "@baransu/graphql_ppx_re/ppx",

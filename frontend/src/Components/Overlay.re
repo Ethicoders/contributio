@@ -1,10 +1,17 @@
+open Polyfills;
+
 let str = React.string;
 
 type elmt = ReasonReact.reactElement;
 
 [@react.component]
-let make = (~children: ReasonReact.reactElement, ~footer=None, ~title) => {
-  <div className="fixed z-10 inset-0 overflow-y-auto">
+let make = (~children: ReasonReact.reactElement, ~footer=None, ~title, ~isVisible=false, ~onClose) => {
+  let style = isVisible ? ReactDOM.Style.make(~display="block", ()) : ReactDOM.Style.make(~display="none", ());
+  <div className="fixed z-10 inset-0 overflow-y-auto" style onClick={(e: ReactEvent.Mouse.t) => {
+    if (e->ReactEvent.Mouse.target##classList->DOMTokenList.contains("absolute")) {
+      onClose();
+    }
+  }}>
     <div
       className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
       <div className="fixed inset-0 transition-opacity">

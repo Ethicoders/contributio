@@ -2,6 +2,9 @@ let str = React.string;
 
 [@react.component]
 let make = (~children) => {
+  let (isVisible, setVisible) = React.useState(() => false);
+
+  let handleToggleOverlay = _ => setVisible(_ => !isVisible);
   <div>
     <nav className="bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -45,8 +48,8 @@ let make = (~children) => {
                   </svg> */
               <div className="ml-3 relative">
                 <div>
-                  <button>"Login"->str</button>
-                  <Overlay title="Sign in!"->str>
+                  <button onClick=handleToggleOverlay>"Login"->str</button>
+                  <Overlay onClose=handleToggleOverlay isVisible title="Sign in!"->str>
                     <Login/>
                   </Overlay>
                   <button

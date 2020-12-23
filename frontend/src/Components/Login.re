@@ -21,12 +21,6 @@ module AuthMutationRequest = ReasonApollo.CreateMutation(AuthMutation);
 [@react.component]
 let make = () => {
 
-  let update = (~props, obj) => Js.Obj.(()->empty->assign(obj)->assign(props));
-
-  let getValue: ReactEventRe.Form.t => string = [%raw
-    "function(event) {return event.target.value}"
-  ];
-
   let (state, send) = React.useState(() => Js.Dict.fromList([("email", ""), ("password", "")]));
 
   let onChange = (e: ReactEvent.Form.t): unit => {

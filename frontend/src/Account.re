@@ -1,4 +1,11 @@
+open JustgageReasonCookie;
+
 let str = React.string;
+
+let token = switch (Cookie.getAsString("ctiojwt")) {
+| Some(data) => data
+| None => "never"
+};
 
 let url =
   Url.buildFrom(
@@ -6,7 +13,7 @@ let url =
     ["login", "oauth", "authorize"],
     {
       "client_id": Env.githubClientID,
-      "redirect_uri": Js.Global.encodeURI(Env.allowEndpoint),
+      "redirect_uri": Js.Global.encodeURI(Env.allowEndpoint ++ "?token=" ++ token),
     },
   );
 let handleClick = _ => Window.open_(url, "GitHub");
