@@ -22,10 +22,6 @@ config :contributio, ContributioWeb.Guardian,
   issuer: "contributio",
   secret_key: "d5dJxEKYWQA+1oR59XUkKgTwlCVc6DdrwlFn7qZG20ekZ6P70nEMbKtjJ4bGGAKo"
 
-config :cors_plug,
-  origin: "*",
-  max_age: 86400,
-  methods: ["GET", "POST", "OPTIONS"]
 
 # Configures Elixir's Logger
 config :logger, :console,

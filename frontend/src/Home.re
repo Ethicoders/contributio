@@ -3,7 +3,6 @@ let str = React.string;
 [@react.component]
 let make = () => {
   <div>
-    <a href="/account"> "Account"->str </a>
     "Homepage"->str
     <table className="min-w-full divide-y divide-gray-200">
       <thead className="bg-gray-50">

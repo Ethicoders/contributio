@@ -13,3 +13,11 @@ let buildFrom = (uri, parts: list(string), args: Js.t('a)) => {
 
     uri ++ List.join("/", parts) ++ queryArgs
 }
+
+let parseQueryArgs = (queryArgs: string) => {
+    let out = Js.String.split("&", queryArgs) |> Array.map((arg) => {
+        let split = Js.String.split("=", arg);
+        (Array.unsafe_get(split, 0), Array.unsafe_get(split, 1))
+    });
+    Js.Dict.fromArray(out)
+}

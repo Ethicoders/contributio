@@ -41,6 +41,11 @@ defmodule Contributio.Accounts do
 
   def get_user_by_email(email), do: Repo.get_by(User, email: email)
 
+
+  def get_user_by_token!(token), do: Repo.get_by!(User, token: token)
+
+  def get_user_by_token(token), do: Repo.get_by(User, token: token)
+
   @doc """
   Creates a user.
 

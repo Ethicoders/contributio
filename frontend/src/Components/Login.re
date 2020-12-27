@@ -1,5 +1,4 @@
 open! ReasonApolloTypes;
-open JustgageReasonCookie;
 
 let str = React.string;
 
@@ -7,7 +6,7 @@ module AuthMutation = [%graphql
   {|
   mutation Auth ($email: String!, $password: String!) {
     auth(email: $email, password: $password) {
-      jwt
+      token
       user {
         id
       }
@@ -45,11 +44,7 @@ let make = () => {
           |> Js.Promise.then_(value => {
               
             {switch (value) {
-              | Data(stuff) =>
-                  Cookie.setString(
-                    "ctiojwt",
-                    stuff##auth##jwt
-                  );
+              | Data(stuff) => Js.log("Done")
               | Errors(_) => Js.log("ERROR")
               | EmptyResponse => Js.log("Empty")
               }}

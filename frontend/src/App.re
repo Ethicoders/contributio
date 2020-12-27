@@ -4,9 +4,12 @@ let str = React.string;
 let make = () => {
   let url = ReasonReactRouter.useUrl();
 
+  let parsedQueryArgs = Url.parseQueryArgs(url.search);
+
   let view =
     switch (url.path) {
-    | ["account"] => <Account />
+    | ["account"] => <Layout><Account /></Layout>
+    | ["allow"] => <Allow code=Js.Dict.unsafeGet(parsedQueryArgs, "code") />
     | _ => <Layout><Home /></Layout>
     };
 

@@ -1,11 +1,4 @@
-open JustgageReasonCookie;
-
 let str = React.string;
-
-let token = switch (Cookie.getAsString("ctiojwt")) {
-| Some(data) => data
-| None => "never"
-};
 
 let url =
   Url.buildFrom(
@@ -13,10 +6,25 @@ let url =
     ["login", "oauth", "authorize"],
     {
       "client_id": Env.githubClientID,
-      "redirect_uri": Js.Global.encodeURI(Env.allowEndpoint ++ "?token=" ++ token),
+      "redirect_uri": Js.Global.encodeURI(Env.allowEndpoint),
     },
   );
 let handleClick = _ => Window.open_(url, "GitHub");
+
+module GetUserProjects = [%graphql
+  {|
+    query getUserProjects {
+      my {
+        email
+        projects {
+          name
+        }
+      }
+    }
+|}
+];
+
+module GetUserProjectsQuery = ReasonApollo.CreateQuery(GetUserProjects);
 
 [@react.component]
 let make = () => {
@@ -27,5 +35,19 @@ let make = () => {
       onClick=handleClick>
       "Authorize GitHub App"->str
     </button>
+    <GetUserProjectsQuery>
+      ...{({result, fetchMore}) =>
+        <div>
+          <h1> {"My Projects: "->str} </h1>
+          {switch (result) {
+           | Error(e) =>
+             Js.log(e);
+             "Something Went Wrong"->str;
+           | Loading => "Loading"->str
+           | Data(response) => <div></div>
+           }}
+        </div>
+      }
+    </GetUserProjectsQuery>
   </div>;
 };

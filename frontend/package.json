@@ -6,7 +6,7 @@
   "author": "Laegel <valentin.chouaf@laposte.net>",
   "license": "MIT",
   "scripts": {
-    "_warningAboutScripts": "These are meant to be ran in the Docker container, not the host!",
+    "_warningAboutScripts": "These are meant to be ran from the Docker container, not the host!",
     "build": "parcel build index.html",
     "dev": "parcel index.html",
     "schema": "yarn get-graphql-schema http://web:4000/graphiql -j > graphql_schema.json"
@@ -23,9 +23,7 @@
     "tailwindcss": "^2.0.2"
   },
   "dependencies": {
-    "@justgage/reason-cookie": "^0.1.2",
     "bs-css-emotion": "^2.2.0",
-    "re-formality": "^4.0.0-beta.7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "reason-apollo": "^0.20.0",

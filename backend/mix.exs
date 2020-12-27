@@ -50,7 +50,8 @@ defmodule Contributio.MixProject do
       {:bcrypt_elixir, "~> 2.0.3"},
       {:guardian, "~> 2.0"},
       {:httpoison, "~> 1.7"},
-      {:cors_plug, "~> 1.5"},
+      {:corsica, "~> 1.0"},
+      {:plug, "~> 1.0"},
     ]
   end
 

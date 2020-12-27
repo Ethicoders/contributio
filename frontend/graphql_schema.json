@@ -728,6 +728,33 @@
         "possibleTypes": null
       },
       {
+        "description": "Access token from Versioning Control services payload",
+        "enumValues": null,
+        "fields": [
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "accessToken",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "kind": "OBJECT",
+        "name": "AccessTokenPayload",
+        "possibleTypes": null
+      },
+      {
         "description": "Authentication payload",
         "enumValues": null,
         "fields": [
@@ -736,7 +763,7 @@
             "deprecationReason": null,
             "description": null,
             "isDeprecated": false,
-            "name": "jwt",
+            "name": "token",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -778,6 +805,65 @@
         "interfaces": null,
         "kind": "SCALAR",
         "name": "Boolean",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": null,
+        "fields": [
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "email",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "projects",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Project",
+                "ofType": null
+              }
+            }
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "kind": "OBJECT",
+        "name": "CurrentUser",
         "possibleTypes": null
       },
       {
@@ -933,6 +1019,43 @@
               "name": "User",
               "ofType": null
             }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "accessTokens",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "email",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Partially update a user",
+            "isDeprecated": false,
+            "name": "updateUser",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              }
+            }
           }
         ],
         "inputFields": null,
@@ -952,9 +1075,13 @@
             "isDeprecated": false,
             "name": "id",
             "type": {
-              "kind": "SCALAR",
-              "name": "ID",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
             }
           },
           {
@@ -964,9 +1091,13 @@
             "isDeprecated": false,
             "name": "name",
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             }
           }
         ],
@@ -983,6 +1114,22 @@
           {
             "args": [],
             "deprecationReason": null,
+            "description": "Retrieve current user data",
+            "isDeprecated": false,
+            "name": "my",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CurrentUser",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
             "description": "Get a list of projects",
             "isDeprecated": false,
             "name": "projects",
@@ -992,6 +1139,37 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "Project",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "code",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Request access token from Version Control platform",
+            "isDeprecated": false,
+            "name": "requestAccessToken",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AccessTokenPayload",
                 "ofType": null
               }
             }
@@ -1056,9 +1234,13 @@
             "isDeprecated": false,
             "name": "id",
             "type": {
-              "kind": "SCALAR",
-              "name": "ID",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
             }
           },
           {
@@ -1068,9 +1250,13 @@
             "isDeprecated": false,
             "name": "name",
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             }
           }
         ],
@@ -1091,9 +1277,13 @@
             "isDeprecated": false,
             "name": "email",
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             }
           },
           {
@@ -1103,9 +1293,29 @@
             "isDeprecated": false,
             "name": "id",
             "type": {
-              "kind": "SCALAR",
-              "name": "ID",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "projects",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Project",
+                "ofType": null
+              }
             }
           }
         ],

@@ -8,7 +8,7 @@ defmodule Contributio.Accounts.User do
     field :password, :string, virtual: true
     field :hash, :string
     field :token, :string, allow_nil: true
-    # field :access_tokens, :map
+    field :access_tokens, :map
 
     timestamps()
   end
@@ -16,10 +16,10 @@ defmodule Contributio.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password, :hash, :token])
-    |> validate_required([:email, :password])
+    |> cast(attrs, [:email, :password, :hash, :token, :access_tokens])
+    |> validate_required([:email]) #, :password
     |> unique_constraint(:email)
-    |> set_password_hash()
+    # |> set_password_hash()
   end
 
   defp set_password_hash(

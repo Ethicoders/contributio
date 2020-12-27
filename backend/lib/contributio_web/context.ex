@@ -4,35 +4,28 @@ defmodule ContributioWeb.Context do
   import Plug.Conn
   import Ecto.Query, only: [where: 2]
 
-  alias Contributio.{Repo, User}
+  alias Contributio.Accounts
+
+  require Logger
 
   def init(opts), do: opts
 
   def call(conn, _) do
-    context = build_context(conn)
-    Absinthe.Plug.put_options(conn, context: context)
-  end
-
-  @doc """
-  Return the current user context based on the authorization header
-  """
-  def build_context(conn) do
-    with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
-    {:ok, current_user} <- authorize(token) do
-      %{current_user: current_user}
-    else
-      _ -> %{}
+    case build_context(conn) do
+      {:ok, context} ->
+        put_private(conn, :absinthe, %{context: context})
+      _ ->
+        conn
     end
   end
 
-  defp authorize(token) do
-    User
-    |> where(token: ^token)
-    |> Repo.one
-    |> case do
-      nil -> {:error, "invalid authorization token"}
-      user -> {:ok, user}
+
+  defp build_context(%{req_cookies: req_cookies}) do
+    with true <- Map.has_key?(req_cookies, "ctiotoken"),
+         user <- Accounts.get_user_by_token(req_cookies["ctiotoken"]) do
+      {:ok, %{current_user: user}}
+      #  else
+      #   {:error, "Error"}
     end
   end
-
 end

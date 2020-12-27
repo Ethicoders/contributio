@@ -3,6 +3,7 @@ defmodule Contributio.Schema do
 
   import_types Contributio.Schema.DataTypes
 
+  require Logger
 
   query do
     @desc "Get a list of users"
@@ -25,6 +26,20 @@ defmodule Contributio.Schema do
         {:ok, Contributio.Market.list_tasks()}
       end
     end
+
+
+    @desc "Request access token from Version Control platform"
+    field :request_access_token, non_null(:access_token_payload) do
+      arg :code, non_null(:string)
+
+      resolve(&Resolvers.Users.request_access_token/2)
+    end
+
+    @desc "Retrieve current user data"
+    field :my, non_null(:current_user) do
+
+      resolve(&Resolvers.Users.get_current_user/2)
+    end
   end
 
   mutation do
@@ -34,6 +49,22 @@ defmodule Contributio.Schema do
       arg :password, non_null(:string)
 
       resolve(&Resolvers.Users.create/2)
+    end
+
+    @desc "Partially update a user"
+    field :update_user, non_null(:user) do
+      arg :email, :string
+      arg :access_tokens, :string
+
+      resolve(&Resolvers.Users.update_current_user/2)
+    end
+
+    @desc "Set a VC service user access token"
+    field :set_user_access_token, non_null(:user) do
+      arg :vendor, :string
+      arg :content, :string
+
+      resolve(&Resolvers.Users.set_access_token/2)
     end
 
     @desc "Create a new project"
@@ -56,6 +87,20 @@ defmodule Contributio.Schema do
       arg :password, non_null(:string)
 
       resolve(&Resolvers.Users.authenticate/2)
+
+      middleware(fn resolution, _ ->
+        case resolution.value do
+          %{user: _, token: token} ->
+            Map.update!(
+              resolution,
+              :context,
+              &Map.merge(&1, %{token: token})
+            )
+
+          _ ->
+            resolution
+        end
+      end)
     end
   end
 end
