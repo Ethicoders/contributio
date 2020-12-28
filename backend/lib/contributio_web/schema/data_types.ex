@@ -35,4 +35,12 @@ defmodule Contributio.Schema.DataTypes do
   object :access_token_payload do
     field :access_token, non_null(:string)
   end
+
+  @desc ""
+  object :repository do
+    field :statuses_url, non_null(:string)
+    field :name, non_null(:string)
+    field :full_name, non_null(:string)
+    field :url, non_null(:string)
+  end
 end

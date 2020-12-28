@@ -40,6 +40,13 @@ defmodule Contributio.Schema do
 
       resolve(&Resolvers.Users.get_current_user/2)
     end
+
+    @desc "Fetch user repositories"
+    field :fetch_repositories, list_of :repository do
+      arg :vendor, :string
+
+      resolve(&Resolvers.Users.fetch_repositories/2)
+    end
   end
 
   mutation do
@@ -57,14 +64,6 @@ defmodule Contributio.Schema do
       arg :access_tokens, :string
 
       resolve(&Resolvers.Users.update_current_user/2)
-    end
-
-    @desc "Set a VC service user access token"
-    field :set_user_access_token, non_null(:user) do
-      arg :vendor, :string
-      arg :content, :string
-
-      resolve(&Resolvers.Users.set_access_token/2)
     end
 
     @desc "Create a new project"
@@ -101,6 +100,14 @@ defmodule Contributio.Schema do
             resolution
         end
       end)
+    end
+
+    @desc "Set a VC service user access token"
+    field :set_user_access_token, non_null(:user) do
+      arg :vendor, :string
+      arg :content, :string
+
+      resolve(&Resolvers.Users.set_access_token/2)
     end
   end
 end

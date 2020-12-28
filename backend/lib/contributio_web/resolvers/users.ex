@@ -16,23 +16,6 @@ defmodule Resolvers.Users do
 
   def update_current_user(_args, _info), do: {:error, "Not Authorized"}
 
-  def set_access_token(%{vendor: vendor, content: content}, %{
-        context: %{current_user: current_user}
-      }) do
-
-    access_tokens =
-      case current_user.access_tokens do
-        nil -> Map.put(%{}, vendor, content)
-        _ -> current_user.access_tokens |> Map.put(vendor, %{content: content})
-      end
-
-    current_user
-    |> Accounts.User.changeset(%{access_tokens: access_tokens})
-    |> Repo.update!()
-
-    {:ok, current_user}
-  end
-
   # Authorized context, can fetch sensitive data
   def get_current_user(_args, %{context: %{current_user: current_user}}) do
     {:ok, Map.merge(current_user, %{projects: []})}
@@ -59,6 +42,7 @@ defmodule Resolvers.Users do
     end
   end
 
+  # VCS part
   def request_access_token(%{code: code}, _info) do
     case HTTPoison.post(
            "https://github.com/login/oauth/access_token",
@@ -71,6 +55,59 @@ defmodule Resolvers.Users do
          ) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, %{access_token: body}}
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        IO.inspect(reason)
+    end
+  end
+
+  def set_access_token(%{vendor: vendor, content: content}, %{
+        context: %{current_user: current_user}
+      }) do
+    access_tokens =
+      case current_user.access_tokens do
+        nil -> Map.put(%{}, vendor, content)
+        _ -> current_user.access_tokens |> Map.put(vendor, %{content: content})
+      end
+
+    # Check other platforms but should be stored as:
+    # {
+    #   access_token: 4a7c72cc2eaa8e3fa6c988b94543d31f28396a96,
+    #   expires_in: 28800,
+    #   refresh_token: r1.a4f05c7626645166071140fcd4bd0f0ea70173ae20959d3efd2bda2c3c25f73880fafc4b164d57a1,
+    #   refresh_token_expires_in: 15724800,
+    #   scope: , ???
+    #   token_type: bearer
+    # }
+
+    current_user
+    |> Accounts.User.changeset(%{access_tokens: access_tokens})
+    |> Repo.update!()
+
+    {:ok, current_user}
+  end
+
+  def fetch_repositories(%{vendor: vendor}, %{
+        context: %{current_user: current_user}
+      }) do
+
+    # with repos <- Contributio.Platforms.GitHub.get(
+    #   "/user/repos",
+    #   current_user.access_tokens[vendor],
+    #   %{type: "public"}
+    # ) do
+    #   Logger.debug(inspect repos)
+    # end
+
+    access_token = current_user.access_tokens[vendor]
+    case HTTPoison.get(
+           "https://api.github.com/user/repos",
+           ["Content-Type": "application/json", Authorization: "token #{access_token}"],
+           params: %{type: "public"}
+         ) do
+
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        Jason.decode!(body, keys: :atoms)
 
       {:error, %HTTPoison.Error{reason: reason}} ->
         IO.inspect(reason)
