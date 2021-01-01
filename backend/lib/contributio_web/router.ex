@@ -22,7 +22,7 @@ defmodule ContributioWeb.Router do
 
     get "/", PageController, :index
 
-    get "/allow", APIAllowController, :index
+    post "/webhooks", WebhooksController, :dispatch
   end
 
   scope "/" do
@@ -35,7 +35,6 @@ defmodule ContributioWeb.Router do
     forward "/graphiql", Absinthe.Plug.GraphiQL, schema: Contributio.Schema
   end
 
-  # def before_send(conn, %{token: token}), do: conn |> put_resp_cookie("ctiotoken", token, sign: true, http_only: true)
   def before_send(conn, %{execution: %{context: %{token: token}}}) do
     conn |> put_resp_cookie("ctiotoken", token, http_only: true)
   end

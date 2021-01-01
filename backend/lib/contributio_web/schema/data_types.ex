@@ -4,7 +4,7 @@ defmodule Contributio.Schema.DataTypes do
   object :user do
     field :id, non_null(:id)
     field :email, non_null(:string)
-    field :projects, list_of(:project)
+    field :projects, list_of(non_null :project)
   end
 
   object :current_user do
@@ -14,6 +14,9 @@ defmodule Contributio.Schema.DataTypes do
   object :project do
     field :id, non_null(:id)
     field :name, non_null(:string)
+    field :url, non_null(:string)
+    field :languages, :json
+    field :description, :string
   end
 
   object :task do
@@ -22,7 +25,7 @@ defmodule Contributio.Schema.DataTypes do
   end
 
   scalar :json do
-    description "Tokens"
+    description "Any"
   end
 
   @desc "Authentication payload"
@@ -38,6 +41,7 @@ defmodule Contributio.Schema.DataTypes do
 
   @desc ""
   object :repository do
+    field :id, non_null(:integer)
     field :statuses_url, non_null(:string)
     field :name, non_null(:string)
     field :full_name, non_null(:string)

@@ -14,10 +14,16 @@ defmodule Contributio.Schema do
     end
 
     @desc "Get a list of projects"
-    field :projects, list_of(:project) do
-      resolve fn _parent, _args, _resolution ->
-        {:ok, Contributio.Market.list_projects()}
-      end
+    field :projects, list_of(non_null :project) do
+      arg :name, :string
+      arg :languages, :string
+
+      resolve(&Resolvers.Projects.get_projects/2)
+    end
+
+    @desc "Get a list of projects languages"
+    field :languages, non_null(list_of(non_null :string)) do
+      resolve(&Resolvers.Projects.get_projects_languages/2)
     end
 
     @desc "Get a list of tasks"
@@ -42,8 +48,8 @@ defmodule Contributio.Schema do
     end
 
     @desc "Fetch user repositories"
-    field :fetch_repositories, list_of :repository do
-      arg :vendor, :string
+    field :fetch_repositories, non_null(list_of non_null(:repository)) do
+      arg :vendor, non_null(:string)
 
       resolve(&Resolvers.Users.fetch_repositories/2)
     end
@@ -104,10 +110,18 @@ defmodule Contributio.Schema do
 
     @desc "Set a VC service user access token"
     field :set_user_access_token, non_null(:user) do
-      arg :vendor, :string
-      arg :content, :string
+      arg :vendor, non_null(:string)
+      arg :content, non_null(:string)
 
       resolve(&Resolvers.Users.set_access_token/2)
+    end
+
+    @desc "Import VC service repositories as projects"
+    field :import_repositories, :boolean do
+      arg :vendor, non_null(:string)
+      arg :ids, non_null(list_of(:integer))
+
+      resolve(&Resolvers.Users.import_repositories/2)
     end
   end
 end

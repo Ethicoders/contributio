@@ -48,6 +48,7 @@ let make = (~code) => {
                 |> ignore;
                 <div>
                   {switch (out.result) {
+                   | NotCalled => "Not called"->str
                    | Error(e) =>
                      Js.log(e);
                      "Something Went Wrong"->str;

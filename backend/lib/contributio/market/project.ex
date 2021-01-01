@@ -4,12 +4,13 @@ defmodule Contributio.Market.Project do
 
   schema "projects" do
     field :name, :string
-    field :uuid, :string
-    field :secret, :string
+    field :repo_id, :integer
+    field :description, :string
     field :url, :string
-    field :readme, :string
-    # field :languages, :array
-    field :owner, :string
+    # field :readme, :string
+    field :languages, :map
+    # field :owner, :string
+    belongs_to :user, Contributio.Accounts.User
 
 
 
@@ -28,7 +29,7 @@ defmodule Contributio.Market.Project do
   @doc false
   def changeset(project, attrs) do
     project
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:name, :repo_id, :description, :url, :languages])
     |> validate_required([:name])
   end
 end

@@ -9,6 +9,7 @@ defmodule Contributio.Accounts.User do
     field :hash, :string
     field :token, :string, allow_nil: true
     field :access_tokens, :map
+    has_many :projects, Contributio.Market.Project
 
     timestamps()
   end

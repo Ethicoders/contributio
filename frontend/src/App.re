@@ -8,7 +8,9 @@ let make = () => {
 
   let view =
     switch (url.path) {
-    | ["account"] => <Layout><Account /></Layout>
+    // | ["account"] => <Layout><Account /></Layout>
+    | ["account", ..._] => <Layout><Account /></Layout>
+    | ["projects"] => <Layout><Projects /></Layout>
     | ["allow"] => <Allow code=Js.Dict.unsafeGet(parsedQueryArgs, "code") />
     | _ => <Layout><Home /></Layout>
     };

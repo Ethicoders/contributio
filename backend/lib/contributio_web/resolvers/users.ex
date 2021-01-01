@@ -18,7 +18,8 @@ defmodule Resolvers.Users do
 
   # Authorized context, can fetch sensitive data
   def get_current_user(_args, %{context: %{current_user: current_user}}) do
-    {:ok, Map.merge(current_user, %{projects: []})}
+    Logger.debug(inspect current_user |> Repo.preload(:projects))
+    {:ok, current_user |> Repo.preload(:projects)}
   end
 
   def get_current_user(_args, _info), do: {:error, "Not Authorized"}
@@ -90,7 +91,6 @@ defmodule Resolvers.Users do
   def fetch_repositories(%{vendor: vendor}, %{
         context: %{current_user: current_user}
       }) do
-
     # with repos <- Contributio.Platforms.GitHub.get(
     #   "/user/repos",
     #   current_user.access_tokens[vendor],
@@ -100,17 +100,64 @@ defmodule Resolvers.Users do
     # end
 
     access_token = current_user.access_tokens[vendor]
+
     case HTTPoison.get(
            "https://api.github.com/user/repos",
            ["Content-Type": "application/json", Authorization: "token #{access_token}"],
            params: %{type: "public"}
          ) do
-
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        Jason.decode!(body, keys: :atoms)
+        case Jason.decode!(body, keys: :atoms) do
+          repos ->
+            {:ok, repos}
+        end
 
       {:error, %HTTPoison.Error{reason: reason}} ->
         IO.inspect(reason)
     end
+  end
+
+  def import_repositories(%{vendor: vendor, ids: ids}, %{
+        context: %{current_user: current_user}
+      }) do
+    access_token = current_user.access_tokens[vendor]
+
+    ids
+    |> Enum.map(
+      &case HTTPoison.get(
+              "https://api.github.com/repositories/#{&1}",
+              ["Content-Type": "application/json", Authorization: "token #{access_token}"],
+              params: %{type: "public"},
+              hackney: [pool: :default]
+            ) do
+        {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+          case Jason.decode!(body, keys: :atoms) do
+            repo ->
+              case HTTPoison.get(
+                     repo.languages_url,
+                     ["Content-Type": "application/json"],
+                     hackney: [pool: :default]
+                   ) do
+                {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+                  case Jason.decode!(body, keys: :atoms) do
+                    languages ->
+                      Contributio.Market.create_project(%{
+                        name: repo.name,
+                        repo_id: repo.id,
+                        description: repo.description,
+                        url: repo.html_url,
+                        languages: languages,
+                        user_id: current_user.id
+                      })
+                  end
+              end
+          end
+
+        {:error, %HTTPoison.Error{reason: reason}} ->
+          IO.inspect(reason)
+      end
+    )
+
+    {:ok, true}
   end
 end

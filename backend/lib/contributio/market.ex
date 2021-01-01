@@ -1,4 +1,6 @@
 defmodule Contributio.Market do
+  require Logger
+
   @moduledoc """
   The Market context.
   """
@@ -19,6 +21,27 @@ defmodule Contributio.Market do
   """
   def list_projects do
     Repo.all(Project)
+  end
+
+  def list_filtered_projects(args) do
+    Logger.debug(args)
+
+    args
+    |> Enum.reduce(Project, fn
+      # {:name, name}, query when is_list(name) ->
+      #   from q in query, where: q.name in ^name
+
+      {:name, name}, query ->
+        from q in query, where: like(q.name, ^"%#{name}%")
+
+      {:languages, language}, query ->
+        from q in query, where: fragment("? \\? ?", q.languages, ^language)
+    end)
+    |> Repo.all()
+  end
+
+  def list_projects_languages do
+    (from q in Project, select: fragment("jsonb_object_keys(?)", q.languages)) |> Repo.all()
   end
 
   @doc """

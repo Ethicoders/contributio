@@ -2,7 +2,7 @@ open! ReasonApolloTypes;
 
 let str = React.string;
 
-module AuthMutation = [%graphql
+module Auth = [%graphql
   {|
   mutation Auth ($email: String!, $password: String!) {
     auth(email: $email, password: $password) {
@@ -15,7 +15,7 @@ module AuthMutation = [%graphql
 |}
 ];
 
-module AuthMutationRequest = ReasonApollo.CreateMutation(AuthMutation);
+module AuthMutation = ReasonApollo.CreateMutation(Auth);
 
 [@react.component]
 let make = () => {
@@ -31,20 +31,20 @@ let make = () => {
 
   <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
   
-    <AuthMutationRequest>
+    <AuthMutation>
       {(mutation, _) => {
         let handleSubmit = evt => {
           ReactEvent.Form.preventDefault(evt);
 
-          let authQuery = AuthMutation.make(~email=Js.Dict.unsafeGet(state, "email"), ~password=Js.Dict.unsafeGet(state, "password"), ());
+          let authMutation = Auth.make(~email=Js.Dict.unsafeGet(state, "email"), ~password=Js.Dict.unsafeGet(state, "password"), ());
 
-          let result = mutation(~variables=authQuery##variables, (), );
+          let result = mutation(~variables=authMutation##variables, (), );
 
           result
           |> Js.Promise.then_(value => {
               
             {switch (value) {
-              | Data(stuff) => Js.log("Done")
+              | Data(stuff) => Js.log(stuff)
               | Errors(_) => Js.log("ERROR")
               | EmptyResponse => Js.log("Empty")
               }}
@@ -124,6 +124,6 @@ let make = () => {
           </form>
         </div>
       }}
-    </AuthMutationRequest>
+    </AuthMutation>
   </div>;
 };
