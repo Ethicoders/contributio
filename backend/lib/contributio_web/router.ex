@@ -21,7 +21,9 @@ defmodule ContributioWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+  end
 
+  scope "/", ContributioWeb do
     post "/webhooks", WebhooksController, :dispatch
   end
 

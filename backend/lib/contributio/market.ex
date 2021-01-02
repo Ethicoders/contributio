@@ -60,6 +60,10 @@ defmodule Contributio.Market do
   """
   def get_project!(id), do: Repo.get!(Project, id)
 
+  def get_project_by_repo_id!(repo_id), do: Repo.get_by!(Project, repo_id: repo_id)
+
+  def get_project_by_repo_id(repo_id), do: Repo.get_by(Project, repo_id: repo_id)
+
   @doc """
   Creates a project.
 
@@ -171,7 +175,7 @@ defmodule Contributio.Market do
   def create_task(attrs \\ %{}) do
     %Task{}
     |> Task.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert!()
   end
 
   @doc """

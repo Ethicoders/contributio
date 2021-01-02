@@ -11,6 +11,7 @@ defmodule Contributio.Market.Project do
     field :languages, :map
     # field :owner, :string
     belongs_to :user, Contributio.Accounts.User
+    has_many :tasks, Contributio.Market.Task
 
 
 
