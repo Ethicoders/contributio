@@ -17,7 +17,6 @@
     "bs-platform": "^8.4.2",
     "bsb-js": "^1.1.7",
     "get-graphql-schema": "^2.1.2",
-    "parcel-plugin-structurize": "^2.3.1",
     "postcss": "^8.2.1",
     "postcss-modules": "^4.0.0",
     "sass": "^1.30.0",
@@ -30,17 +29,5 @@
     "react-dom": "^17.0.1",
     "reason-apollo": "^0.20.0",
     "reason-react": "^0.9.1"
-  },
-  "parcel-plugin-structurize": {
-    "rules": [
-      {
-        "match": "*.js",
-        "folder": "js"
-      },
-      {
-        "match": "*.css",
-        "folder": "css"
-      }
-    ]
   }
 }
