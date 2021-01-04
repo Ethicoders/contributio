@@ -27,7 +27,6 @@ module GetProjectsLanguagesQuery =
 
 [@react.component]
 let make = () => {
-  let languages = [|"Elixir"|];
   <div>
     "Projects"->str
     <div className="grid grid-cols-3 gap-4">

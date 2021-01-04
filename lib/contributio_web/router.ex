@@ -17,13 +17,6 @@ defmodule ContributioWeb.Router do
   end
 
   scope "/", ContributioWeb do
-    # Use the default browser stack
-    pipe_through :browser
-
-    get "/", PageController, :index
-  end
-
-  scope "/", ContributioWeb do
     post "/webhooks", WebhooksController, :dispatch
   end
 
@@ -35,6 +28,13 @@ defmodule ContributioWeb.Router do
       before_send: {__MODULE__, :before_send}
 
     forward "/graphiql", Absinthe.Plug.GraphiQL, schema: Contributio.Schema
+  end
+
+  scope "/", ContributioWeb do
+    # Use the default browser stack
+    pipe_through :browser
+
+    get "/*path", PageController, :index
   end
 
   def before_send(conn, %{execution: %{context: %{token: token}}}) do

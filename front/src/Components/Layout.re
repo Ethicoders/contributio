@@ -22,16 +22,8 @@ let make = (~children) => {
               </div>
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline space-x-4">
-                  <a
-                    href="/projects"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                    "Projects"->str
-                  </a>
-                  <a
-                    href="/account"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                    "Account"->str
-                  </a>
+                  <Anchor target="/projects" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">"Projects"->str</Anchor>
+                  <Anchor target="/account" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">"Account"->str</Anchor>
                 </div>
               </div>
             </div>

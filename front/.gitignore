@@ -1,0 +1,7 @@
+src/**/*.bs.js
+node_modules
+.cache
+dist
+lib
+.merlin
+/.graphql_ppx_cache/
