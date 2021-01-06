@@ -9,7 +9,7 @@ let url =
       "redirect_uri": Js.Global.encodeURI(Env.allowEndpoint),
     },
   );
-
+Js.log(url);
 let handleClick = _ => Window.open_(url, "GitHub");
 
 [@react.component]

@@ -44,7 +44,7 @@ defmodule Resolvers.Users do
   end
 
   # VCS part
-  def request_access_token(%{code: code}, _info) do
+  def request_access_token(%{code: code}, %{context: %{current_user: _current_user}}) do
     case HTTPoison.post(
            "https://github.com/login/oauth/access_token",
            Jason.encode!(%{
@@ -61,6 +61,8 @@ defmodule Resolvers.Users do
         IO.inspect(reason)
     end
   end
+
+  def request_access_token(_args, _info), do: {:error, "Not Authorized"}
 
   def set_access_token(%{vendor: vendor, content: content}, %{
         context: %{current_user: current_user}

@@ -15,11 +15,21 @@
   "bs-dependencies": [
     "bs-css",
     "bs-css-emotion",
-    "reason-apollo",
-    "reason-react"
+    "reason-react",
+    "reason-apollo-client",
+    "@reasonml-community/graphql-ppx"
   ],
+  "graphql": {
+    "apolloMode": true,
+    "extendMutation": "ApolloClient.GraphQL_PPX.ExtendMutation",
+    "extendQuery": "ApolloClient.GraphQL_PPX.ExtendQuery",
+    "extendSubscription": "ApolloClient.GraphQL_PPX.ExtendSubscription",
+    "templateTagReturnType": "ApolloClient.GraphQL_PPX.templateTagReturnType",
+    "templateTagImport": "gql",
+    "templateTagLocation": "@apollo/client"
+  },
   "ppx-flags": [
-    "@baransu/graphql_ppx_re/ppx"
+    "@reasonml-community/graphql-ppx/ppx"
   ],
   "warnings": {
     "error": "+101"

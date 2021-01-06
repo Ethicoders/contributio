@@ -1,9 +1,72 @@
-/* Create an InMemoryCache */
-let inMemoryCache = ApolloInMemoryCache.createInMemoryCache();
+let graphqlEndpoint = 
+  Js.String.replace("https://", "", Js.String.replace("http://", "", Env.rootURI) );
 
-/* Create an HTTP Link */
 let httpLink =
-  ApolloLinks.createHttpLink(~uri="http://localhost:4000/graph", ~credentials="include", ());
+  ApolloClient.Link.HttpLink.make(
+    ~uri=_ => "https://" ++ graphqlEndpoint ++ "/graph",
+    ~credentials="include",
+    (),
+  );
+
+// let wsLink =
+//   ApolloClient.Link.WebSocketLink.(
+//     make(
+//       ~uri="ws://" ++ graphqlEndpoint,
+//       ~options=
+//         ClientOptions.make(
+//           ~connectionParams=
+//             ConnectionParams(Obj.magic({"headers": headers})),
+//           ~reconnect=true,
+//           (),
+//         ),
+//       (),
+//     )
+//   );
+
+let terminatingLink =
+  ApolloClient.Link.split(
+    ~test=
+      ({query}) => {
+        let definition = ApolloClient.Utilities.getOperationDefinition(query);
+        switch (definition) {
+        | Some({kind, operation}) =>
+          kind === "OperationDefinition" && operation === "subscription"
+        | None => false
+        };
+      },
+    ~whenTrue=httpLink,
+    // ~whenTrue=wsLink,
+    ~whenFalse=httpLink,
+  );
 
 let instance =
-  ReasonApollo.createApolloClient(~link=httpLink, ~cache=inMemoryCache, ());
+  ApolloClient.(
+    make(
+      ~cache=Cache.InMemoryCache.make(),
+      ~connectToDevTools=true,
+      ~defaultOptions=
+        DefaultOptions.make(
+          ~mutate=
+            DefaultMutateOptions.make(
+              ~awaitRefetchQueries=true,
+              ~errorPolicy=All,
+              (),
+            ),
+          ~query=
+            DefaultQueryOptions.make(
+              ~fetchPolicy=NetworkOnly,
+              ~errorPolicy=All,
+              (),
+            ),
+          ~watchQuery=
+            DefaultWatchQueryOptions.make(
+              ~fetchPolicy=NetworkOnly,
+              ~errorPolicy=All,
+              (),
+            ),
+          (),
+        ),
+      ~link=terminatingLink,
+      (),
+    )
+  );

@@ -1,4 +1,4 @@
-open! ReasonApolloTypes;
+// open! ReasonApolloTypes;
 
 let str = React.string;
 
@@ -15,24 +15,24 @@ module FetchRepositories = [%graphql
 |}
 ];
 
-module FetchRepositoriesQuery = ReasonApollo.CreateQuery(FetchRepositories);
+// module FetchRepositoriesQuery = ReasonApollo.CreateQuery(FetchRepositories);
 
 module ImportRepositories = [%graphql
   {|
-  mutation importRepositories ($vendor: String!, $ids: [Int!]) {
+  mutation importRepositories ($vendor: String!, $ids: [Int!]!) {
     importRepositories(vendor: $vendor, ids: $ids)
   }
 |}
 ];
 
-module ImportRepositoriesMutation =
-  ReasonApollo.CreateMutation(ImportRepositories);
+// module ImportRepositoriesMutation =
+//   ReasonApollo.CreateMutation(ImportRepositories);
 
 [@react.component]
 let make = () => {
-  let (ids, setIDs) = React.useState(_ => [||]);
+  // let (ids, setIDs) = React.useState(_ => [||]);
 
-  let fetchRepositoriesQuery = FetchRepositories.make(~vendor="github", ());
+  // let fetchRepositoriesQuery = FetchRepositories.make(~vendor="github", ());
   <div>
     <h1> "My Repositories"->str </h1>
     <div className="px-2">
@@ -55,93 +55,93 @@ let make = () => {
         placeholder="Search..."
       />
     </div>
-    <FetchRepositoriesQuery variables=fetchRepositoriesQuery##variables>
-      ...{({result, _}) =>
-        <div>
-          {switch (result) {
-           | Error(e) =>
-             Js.log(e);
-             "Something Went Wrong"->str;
-           | Loading => "Loading"->str
-           | Data(repos) =>
-             <ImportRepositoriesMutation>
-               ...{(mutation, _) => {
-                 let handleClick = _ =>
-                   {let importRepositoriesMutation =
-                      ImportRepositories.make(
-                        ~vendor="github",
-                        ~ids,
-                        (),
-                      );
+    // <FetchRepositoriesQuery variables=fetchRepositoriesQuery##variables>
+    //   ...{({result, _}) =>
+    //     <div>
+    //       {switch (result) {
+    //        | Error(e) =>
+    //          Js.log(e);
+    //          "Something Went Wrong"->str;
+    //        | Loading => "Loading"->str
+    //        | Data(repos) =>
+    //          <ImportRepositoriesMutation>
+    //            ...{(mutation, _) => {
+    //              let handleClick = _ =>
+    //                {let importRepositoriesMutation =
+    //                   ImportRepositories.make(
+    //                     ~vendor="github",
+    //                     ~ids,
+    //                     (),
+    //                   );
 
-                    let result =
-                      mutation(
-                        ~variables=importRepositoriesMutation##variables,
-                        (),
-                      );
+    //                 let result =
+    //                   mutation(
+    //                     ~variables=importRepositoriesMutation##variables,
+    //                     (),
+    //                   );
 
-                    result
-                    |> Js.Promise.then_(value => {
-                         //  {
-                         //    switch (value) {
-                         //    | Data(_) => "Importing"
-                         //    | Errors(_) => "Something went wrong!"
-                         //   //  | EmptyResponse => Js.log("Empty")
-                         //    };
-                         //  };
-                         Js.Promise.resolve(
-                           value,
-                         )
-                       })
-                    |> ignore};
-                 let removeFromArray = (item, values) =>
-                   {let _ =
-                      Js.Array.removeCountInPlace(
-                        ~pos=Js.Array.indexOf(item, values),
-                        ~count=1,
-                        values,
-                      );
-                    values};
+    //                 result
+    //                 |> Js.Promise.then_(value => {
+    //                      //  {
+    //                      //    switch (value) {
+    //                      //    | Data(_) => "Importing"
+    //                      //    | Errors(_) => "Something went wrong!"
+    //                      //   //  | EmptyResponse => Js.log("Empty")
+    //                      //    };
+    //                      //  };
+    //                      Js.Promise.resolve(
+    //                        value,
+    //                      )
+    //                    })
+    //                 |> ignore};
+    //              let removeFromArray = (item, values) =>
+    //                {let _ =
+    //                   Js.Array.removeCountInPlace(
+    //                     ~pos=Js.Array.indexOf(item, values),
+    //                     ~count=1,
+    //                     values,
+    //                   );
+    //                 values};
 
-                 let handleCheckboxClick = id =>
-                   {setIDs(previousIDs => {
-                      Js.Array.includes(id, previousIDs)
-                        ? removeFromArray(id, previousIDs)
-                        : Js.Array.concat([|id|], previousIDs)
-                    })};
+    //              let handleCheckboxClick = id =>
+    //                {setIDs(previousIDs => {
+    //                   Js.Array.includes(id, previousIDs)
+    //                     ? removeFromArray(id, previousIDs)
+    //                     : Js.Array.concat([|id|], previousIDs)
+    //                 })};
 
-                 <>
-                   <ul>
-                     {repos##fetchRepositories
-                      ->Belt.Array.map(repo =>
-                          <li>
-                            <input
-                              onClick={_ => handleCheckboxClick(repo##id)}
-                              type_="checkbox"
-                              value={repo##id->Belt.Int.toString}
-                            />
-                            {repo##fullName->str}
-                            " - "->str
-                            <a href={repo##url} target="_blank">
-                              "See"->str
-                            </a>
-                          </li>
-                        )
-                      ->React.array}
-                   </ul>
-                   <div className="max-w-md w-full space-y-8">
-                     <button
-                       onClick=handleClick
-                       className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                       "Import"->str
-                     </button>
-                   </div>
-                 </>;
-               }}
-             </ImportRepositoriesMutation>
-           }}
-        </div>
-      }
-    </FetchRepositoriesQuery>
+    //              <>
+    //                <ul>
+    //                  {repos##fetchRepositories
+    //                   ->Belt.Array.map(repo =>
+    //                       <li>
+    //                         <input
+    //                           onClick={_ => handleCheckboxClick(repo##id)}
+    //                           type_="checkbox"
+    //                           value={repo##id->Belt.Int.toString}
+    //                         />
+    //                         {repo##fullName->str}
+    //                         " - "->str
+    //                         <a href={repo##url} target="_blank">
+    //                           "See"->str
+    //                         </a>
+    //                       </li>
+    //                     )
+    //                   ->React.array}
+    //                </ul>
+    //                <div className="max-w-md w-full space-y-8">
+    //                  <button
+    //                    onClick=handleClick
+    //                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+    //                    "Import"->str
+    //                  </button>
+    //                </div>
+    //              </>;
+    //            }}
+    //          </ImportRepositoriesMutation>
+    //        }}
+    //     </div>
+    //   }
+    // </FetchRepositoriesQuery>
   </div>;
 };

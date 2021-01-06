@@ -17,8 +17,10 @@ let make = () => {
     };
 
   <div>
-    <ReasonApollo.Provider client=Client.instance>  
+    // <ReasonApollo.Provider client=Client.instance>  
+    <ApolloClient.React.ApolloProvider client=Client.instance>
       view
-    </ReasonApollo.Provider>
+      </ApolloClient.React.ApolloProvider>
+    // </ReasonApollo.Provider>
   </div>;
 };

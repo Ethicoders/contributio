@@ -5,3 +5,11 @@ let open_: (string, string) => unit = [%bs.raw
     }
   |}
 ];
+
+let close: (unit) => unit = [%bs.raw
+  {|
+    function() {
+      window.close();
+    }
+  |}
+];

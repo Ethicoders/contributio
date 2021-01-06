@@ -1,4 +1,4 @@
 let goTo = (event, path) => {
-  ReactEventRe.Mouse.preventDefault(event);
+  event->ReactEvent.Mouse.preventDefault;
   ReasonReact.Router.push(path);
 };

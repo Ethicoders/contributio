@@ -32,7 +32,7 @@ config :contributio, ContributioWeb.Endpoint,
     npm: [
       "run",
       "watch",
-      cd: Path.expand("../front", __DIR__)
+      cd: Path.expand("../assets", __DIR__)
     ]
     # node: [
     #   "node_modules/webpack/bin/webpack.js",
