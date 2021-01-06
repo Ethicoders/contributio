@@ -9,7 +9,7 @@
     "build": "parcel build index.html --out-dir ../priv/static",
     "dev": "parcel index.html --out-dir ../priv/static",
     "watch": "parcel watch index.html --out-dir ../priv/static",
-    "schema": "yarn get-graphql-schema http://localhost:4000/graphiql -j > graphql_schema.json"
+    "schema": "node node_modules/.bin/get-graphql-schema http://localhost:4000/graphiql -j > graphql_schema.json"
   },
   "devDependencies": {
     "@baransu/graphql_ppx_re": "^0.7.1",

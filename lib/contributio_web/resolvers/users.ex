@@ -18,7 +18,6 @@ defmodule Resolvers.Users do
 
   # Authorized context, can fetch sensitive data
   def get_current_user(_args, %{context: %{current_user: current_user}}) do
-    Logger.debug(inspect current_user |> Repo.preload(:projects))
     {:ok, current_user |> Repo.preload(:projects)}
   end
 
@@ -89,6 +88,44 @@ defmodule Resolvers.Users do
 
     {:ok, current_user}
   end
+
+  def link_account(%{vendor: vendor, content: content}, %{
+    context: %{current_user: current_user}
+  }) do
+    access_tokens =
+      case current_user.access_tokens do
+        nil -> Map.put(%{}, vendor, content)
+        _ -> current_user.access_tokens |> Map.put(vendor, content)
+      end
+
+    access_token = current_user.access_tokens[vendor]
+    origin_id = case HTTPoison.get(
+           "https://api.github.com/user",
+           ["Content-Type": "application/json", Authorization: "token #{access_token}"]
+         ) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        case Jason.decode!(body, keys: :atoms) do
+          user -> user.id
+        end
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        IO.inspect(inspect reason)
+    end
+
+    origin_ids =
+      case current_user.origin_ids do
+        nil -> Map.put(%{}, vendor, origin_id)
+        _ -> current_user.origin_ids |> Map.put(vendor, origin_id)
+      end
+
+    current_user
+    |> Accounts.User.changeset(%{access_tokens: access_tokens, origin_ids: origin_ids})
+    |> Repo.update!()
+
+    {:ok, current_user}
+  end
+
+  def link_account(_args, _info), do: {:error, "Not Authorized"}
 
   def fetch_repositories(%{vendor: vendor}, %{
         context: %{current_user: current_user}

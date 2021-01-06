@@ -9,7 +9,7 @@ defmodule Contributio.Accounts.User do
     field :hash, :string
     field :token, :string, allow_nil: true
     field :access_tokens, :map
-    # field :origin_ids, :map
+    field :origin_ids, :map
     has_many :projects, Contributio.Market.Project
 
     timestamps()
@@ -18,7 +18,7 @@ defmodule Contributio.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password, :hash, :token, :access_tokens])
+    |> cast(attrs, [:email, :password, :hash, :token, :access_tokens, :origin_ids])
     |> validate_required([:email]) #, :password
     |> unique_constraint(:email)
     # |> set_password_hash()

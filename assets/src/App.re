@@ -9,7 +9,6 @@ let make = () => {
 
   let view =
     switch (url.path) {
-    // | ["account"] => <Layout><Account /></Layout>
     | ["account", ..._] => <Layout><Account /></Layout>
     | ["projects"] => <Layout><Projects /></Layout>
     | ["allow"] => <Allow code=Js.Dict.unsafeGet(parsedQueryArgs, "code") />
@@ -17,10 +16,8 @@ let make = () => {
     };
 
   <div>
-    // <ReasonApollo.Provider client=Client.instance>  
     <ApolloClient.React.ApolloProvider client=Client.instance>
       view
-      </ApolloClient.React.ApolloProvider>
-    // </ReasonApollo.Provider>
+    </ApolloClient.React.ApolloProvider>
   </div>;
 };

@@ -28,69 +28,30 @@ let make = () => {
       <div className="grid grid-cols-3 gap-4">
         <div className="">
           {switch (GetProjects.use()) {
-           | {data: {projects}} =>
+           | {loading: true} => "Loading..."->React.string
+           | {data: Some({projects}), loading: false} =>
              <div className="grid grid-cols-3 gap-4">
-               {projects
-                ->Belt.Array.map(project =>
-                    <Project
-                      key={project.name}
-                      name={project.name}
-                      url={project.url}
-                    />
-                  )
-                ->React.array}
+               {switch projects {
+                | None => "No projects yet!"->str
+               | Some(items) => items
+               ->Belt.Array.map(project =>
+                   <Project
+                     key={project.name}
+                     name={project.name}
+                     url={project.url}
+                   />
+                 )
+               ->React.array
+               };}
              </div>
            | {data: None} => <div />
            }}
         </div>
         {switch (GetProjectsLanguages.use()) {
-         | {data: Some(languages)} => <div />
-         // <Select label="Language" options=languages />
+         | {data: Some({languages})} => <Select label="Language" options=languages />
          | {data: None} => <div />
          }}
-        // <GetProjectsLanguagesQuery>
-        //   ...{({result, _}) =>
-        //     <>
-        //       {switch (result) {
-        //        | Error(e) =>
-        //          Js.log(e);
-        //          "Something Went Wrong"->str;
-        //        | Loading => "Loading"->str
-        //        | Data(data) =>
-        //          <Select label="Language" options=data##languages />
-        //        }}
-        //     </>
-        //   }
-        // </GetProjectsLanguagesQuery>
         <div className=""> <InputGroup label="Search" /> </div>
       </div>
     </div>;
-    // <GetProjectsQuery>
-    //   ...{({result, _}) =>
-    //     <div>
-    //       {switch (result) {
-    //        | Error(e) =>
-    //          Js.log(e);
-    //          "Something Went Wrong"->str;
-    //        | Loading => "Loading"->str
-    //        | Data(data) =>
-    //          switch (data##projects) {
-    //          | Some(projects) =>
-    //            <div className="grid grid-cols-3 gap-4">
-    //              {projects
-    //               ->Belt.Array.map(project =>
-    //                   <Project
-    //                     key={project##name}
-    //                     name=project##name
-    //                     url=project##url
-    //                   />
-    //                 )
-    //               ->React.array}
-    //            </div>
-    //          | None => <div> "No projects yet!"->str </div>
-    //          }
-    //        }}
-    //     </div>
-    //   }
-    // </GetProjectsQuery>
 };

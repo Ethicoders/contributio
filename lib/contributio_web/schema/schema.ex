@@ -116,6 +116,14 @@ defmodule Contributio.Schema do
       resolve(&Resolvers.Users.set_access_token/2)
     end
 
+    @desc "Link VC service account"
+    field :link_account, non_null(:user) do
+      arg :vendor, non_null(:string)
+      arg :content, non_null(:string)
+
+      resolve(&Resolvers.Users.link_account/2)
+    end
+
     @desc "Import VC service repositories as projects"
     field :import_repositories, :boolean do
       arg :vendor, non_null(:string)

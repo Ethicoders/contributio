@@ -19,7 +19,7 @@ let make = (~code) => {
         Url.parseQueryArgs(response.requestAccessToken.accessToken),
         "access_token",
       );
-    <SetUserAccessToken accessToken />;
+    <LinkAccount accessToken onDone={() => Window.close()} />;
 
   | {data: None} => <div> "Loading..."->str </div>
   };
