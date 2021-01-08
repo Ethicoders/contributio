@@ -1,9 +1,10 @@
 defmodule ContributioWeb.WebhooksController do
   use ContributioWeb, :controller
 
+  alias Contributio.Game
   alias Contributio.Market
-  alias ContributioWeb.Webhooks.{Github}
   alias ContributioWeb.Utils
+  alias ContributioWeb.Webhooks.{Github}
 
   def dispatch(%{req_headers: req_headers, body_params: body_params} = conn, _info) do
     {subject_id, subject_type, action, data} =
@@ -13,8 +14,12 @@ defmodule ContributioWeb.WebhooksController do
       end
 
     case action do
-      :exit -> {:ok}
-      :create -> execute(subject_type, action, data)
+      :exit ->
+        {:ok}
+
+      :create ->
+        execute(subject_type, action, data)
+
       _ ->
         case get_tracked_subject(subject_id, subject_type) do
           nil -> {:ok}
@@ -48,8 +53,27 @@ defmodule ContributioWeb.WebhooksController do
     Market.update_task(task, data)
   end
 
-  defp execute(%Contributio.Market.Task{} = task, action, data) when action == :validate do
-    # Give rewards here
+  defp execute(%Contributio.Market.Task{} = task, action, %{
+         user_ids: user_ids,
+         submission: submission
+       })
+       when action == :validate do
+
+    experience = Game.get_experience_from_effort(task.time, task.difficulty)
+
+    task |> Repo.preload(:submissions)
+
+    # Send max XP to users who contributed to merged PR
+    task[:submissions]
+    |> Enum.filter(&(&1 in user_ids))
+    |> Enum.map(&(User.send_reward(&1, experience)))
+
+    # Send little XP to users who created a PR
+    # Waiting for a better way to share XP, more adapted to the result
+    task[:submissions]
+    |> Enum.filter(&(&1 not in user_ids))
+    |> Enum.map(&(User.send_reward(&1, experience / 10)))
+
     Market.close_task(task)
   end
 
@@ -61,7 +85,8 @@ defmodule ContributioWeb.WebhooksController do
     Market.create_submission(data)
   end
 
-  defp execute(%Contributio.Market.Submission{} = submission, action, data) when action == :update do
+  defp execute(%Contributio.Market.Submission{} = submission, action, data)
+       when action == :update do
     Market.update_submission(submission, data)
   end
 

@@ -6,9 +6,11 @@ defmodule Contributio.Market.Task do
     field :name, :string
     field :content, :string
     field :difficulty, :integer
+    field :time, :integer
     field :issue_id, :integer
     field :url, :string
     belongs_to :project, Contributio.Market.Project
+    has_many :submissions, Contributio.Market.Submission
 
     timestamps()
   end

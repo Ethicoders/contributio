@@ -269,6 +269,11 @@ defmodule Contributio.Market do
   """
   def get_submission!(id), do: Repo.get!(Submission, id)
 
+  def get_submission_by_pull_request_id(id), do: Repo.get_by(Submission, repo_id: id)
+
+  def get_submission_by_pull_request_id!(id), do: Repo.get_by!(Submission, repo_id: id)
+
+  def get_submissions_by_task_id(id), do: Submission |> where(task_id: ^id) |> Repo.all()
   @doc """
   Creates a submission.
 
