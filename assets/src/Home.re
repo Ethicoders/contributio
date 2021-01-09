@@ -2,74 +2,40 @@ let str = React.string;
 
 [@react.component]
 let make = () => {
-  <div>
-    "Homepage"->str
-    <table className="min-w-full divide-y divide-gray-200">
-      <thead className="bg-gray-50">
-        <tr>
-          <th
-            scope="col"
-            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            "Name"->str
-          </th>
-          <th
-            scope="col"
-            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            "Title"->str
-          </th>
-          <th
-            scope="col"
-            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            "Status"->str
-          </th>
-          <th
-            scope="col"
-            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            "Role"->str
-          </th>
-          <th scope="col" className="relative px-6 py-3">
-            <span className="sr-only"> "Edit"->str </span>
-          </th>
-        </tr>
-      </thead>
-      <tbody className="bg-white divide-y divide-gray-200">
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap">
-            <div className="flex items-center">
-              <div className="flex-shrink-0 h-10 w-10" />
-              <div className="ml-4">
-                <div className="text-sm font-medium text-gray-900">
-                  "Jane Cooper"->str
-                </div>
-                <div className="text-sm text-gray-500">
-                  "jane.cooper@example.com"->str
-                </div>
-              </div>
-            </div>
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap">
-            <div className="text-sm text-gray-900">
-              "Regional Paradigm Technician"->str
-            </div>
-            <div className="text-sm text-gray-500"> "Optimization"->str </div>
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap">
-            <span
-              className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-              "Active"->str
-            </span>
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            "Admin"->str
-          </td>
-          <td
-            className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-            <a href="#" className="text-indigo-600 hover:text-indigo-900">
-              "Edit"->str
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>;
+  <>
+    <section>
+      <p>
+        "Contributio is a tool made to help Open Source projects to improve their visibility and increase their amount of contributions.
+      Devs willing to spare some time to contribute to Open Source projects will be able to find projects depending on some criteria, such as
+      the used programming languages, the kind of tasks, effort to put into them, and many more!"
+        ->str
+      </p>
+    </section>
+    <section>
+      <Heading> "What projects are eligible to Contributio?"->str </Heading>
+      <p>
+        "Any project that complies with the "->str
+        <a href="https://opensource.org/osd" target="_blank">
+          "Open Source Definition"->str
+        </a>
+        " can be added to Contributio projects list!"->str
+      </p>
+    </section>
+    <section>
+      <Heading> "For maintainers"->str </Heading>
+      "Put focus on your projects"->str
+      <br />
+      "Get help from anyone"->str
+      <br />
+      "Get traction thanks to the reward system"->str
+      <br />
+      <Heading> "For contributors"->str </Heading>
+      "Find projects from multiple platforms easily"->str
+      <br />
+      "Showcase your skills"->str
+      <br />
+      "Get rewarded for your completions"->str
+      <br />
+    </section>
+  </>;
 };

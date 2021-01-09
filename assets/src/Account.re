@@ -13,8 +13,9 @@ let make = () => {
   <div>
     "Account"->str
     <ul>
-    <li> <a href="/account/"> "Details"->str </a> </li>
-    <li> <a href="/account/projects"> "My Projects"->str </a> </li>
+      <li> <Anchor target="/account/"> "Details"->str </Anchor> </li>
+      <li> <Anchor target="/account/projects"> "My Projects"->str </Anchor> </li>
+      <li> <Anchor target="/account/import"> "Import"->str </Anchor> </li>
     </ul>
     
     <hr/>

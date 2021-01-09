@@ -27,7 +27,7 @@ defmodule ContributioWeb.Endpoint do
     from: :contributio,
     gzip: false,
     only: ~w(index.html *.css *.js css fonts images js favicon.ico robots.txt),
-    only_matching: ["src."]
+    only_matching: ["src.", "contributio."]
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
