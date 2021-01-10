@@ -1,5 +1,6 @@
 defmodule Contributio.Schema do
   use Absinthe.Schema
+  import Contributio.Absinthe.Macros
 
   import_types Contributio.Schema.DataTypes
 
@@ -7,14 +8,14 @@ defmodule Contributio.Schema do
 
   query do
     @desc "Get a list of users"
-    field :users, list_of(:user) do
+    field :users, list_of!(:user) do
       resolve fn _parent, _args, _resolution ->
         {:ok, Contributio.Accounts.list_users()}
       end
     end
 
     @desc "Get a list of projects"
-    field :projects, list_of(non_null :project) do
+    field :projects, list_of!(:project) do
       arg :name, :string
       arg :languages, :string
 
@@ -22,34 +23,32 @@ defmodule Contributio.Schema do
     end
 
     @desc "Get a list of projects languages"
-    field :languages, non_null(list_of(non_null :string)) do
+    field :languages, list_of!(:string) do
       resolve(&Resolvers.Projects.get_projects_languages/2)
     end
 
     @desc "Get a list of tasks"
-    field :tasks, list_of(:task) do
-      resolve fn _parent, _args, _resolution ->
-        {:ok, Contributio.Market.list_tasks()}
-      end
+    field :tasks, list_of!(:task) do
+      resolve(&Resolvers.Projects.list_tasks/2)
     end
 
 
     @desc "Request access token from Version Control platform"
-    field :request_access_token, non_null(:access_token_payload) do
-      arg :code, non_null(:string)
+    field :request_access_token, f!(:access_token_payload) do
+      arg :code, f!(:string)
 
       resolve(&Resolvers.Users.request_access_token/2)
     end
 
     @desc "Retrieve current user data"
-    field :my, non_null(:current_user) do
+    field :my, f!(:current_user) do
 
       resolve(&Resolvers.Users.get_current_user/2)
     end
 
     @desc "Fetch user repositories"
-    field :fetch_repositories, non_null(list_of non_null(:repository)) do
-      arg :vendor, non_null(:string)
+    field :fetch_repositories, list_of!(:repository) do
+      arg :vendor, f!(:string)
 
       resolve(&Resolvers.Users.fetch_repositories/2)
     end
@@ -58,14 +57,14 @@ defmodule Contributio.Schema do
   mutation do
     @desc "Create a new user"
     field :create_user, :user do
-      arg :email, non_null(:string)
-      arg :password, non_null(:string)
+      arg :email, f!(:string)
+      arg :password, f!(:string)
 
       resolve(&Resolvers.Users.create/2)
     end
 
     @desc "Partially update a user"
-    field :update_user, non_null(:user) do
+    field :update_user, f!(:user) do
       arg :email, :string
       arg :access_tokens, :string
 
@@ -74,22 +73,22 @@ defmodule Contributio.Schema do
 
     @desc "Create a new project"
     field :create_project, :project do
-      arg :name, non_null(:string)
+      arg :name, f!(:string)
 
       resolve(&Resolvers.Users.create/2)
     end
 
     @desc "Create a new task"
     field :create_task, :task do
-      arg :name, non_null(:string)
+      arg :name, f!(:string)
 
       resolve(&Resolvers.Users.create/2)
     end
 
     @desc "auth"
-    field :auth, non_null(:auth_payload) do
-      arg :email, non_null(:string)
-      arg :password, non_null(:string)
+    field :auth, f!(:auth_payload) do
+      arg :email, f!(:string)
+      arg :password, f!(:string)
 
       resolve(&Resolvers.Users.authenticate/2)
 
@@ -109,25 +108,25 @@ defmodule Contributio.Schema do
     end
 
     @desc "Set a VC service user access token"
-    field :set_user_access_token, non_null(:user) do
-      arg :vendor, non_null(:string)
-      arg :content, non_null(:string)
+    field :set_user_access_token, f!(:user) do
+      arg :vendor, f!(:string)
+      arg :content, f!(:string)
 
       resolve(&Resolvers.Users.set_access_token/2)
     end
 
     @desc "Link VC service account"
-    field :link_account, non_null(:user) do
-      arg :vendor, non_null(:string)
-      arg :content, non_null(:string)
+    field :link_account, f!(:user) do
+      arg :vendor, f!(:string)
+      arg :content, f!(:string)
 
       resolve(&Resolvers.Users.link_account/2)
     end
 
     @desc "Import VC service repositories as projects"
     field :import_repositories, :boolean do
-      arg :vendor, non_null(:string)
-      arg :ids, non_null(list_of(:integer))
+      arg :vendor, f!(:string)
+      arg :ids, list_of!(:integer)
 
       resolve(&Resolvers.Users.import_repositories/2)
     end

@@ -11,4 +11,8 @@ defmodule Resolvers.Projects do
     languages = Market.list_projects_languages()
     {:ok, languages}
   end
+
+  def list_tasks(_params, _info) do
+    {:ok, Market.list_tasks()}
+  end
 end

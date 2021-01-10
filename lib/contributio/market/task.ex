@@ -7,6 +7,7 @@ defmodule Contributio.Market.Task do
     field :content, :string
     field :difficulty, :integer
     field :time, :integer
+    field :experience, :integer, virtual: true
     field :issue_id, :integer
     field :url, :string
     belongs_to :project, Contributio.Market.Project

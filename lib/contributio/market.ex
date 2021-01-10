@@ -147,7 +147,7 @@ defmodule Contributio.Market do
 
   """
   def list_tasks do
-    Repo.all(Task)
+    Repo.all from t in Contributio.Market.Task, select_merge: %{experience: fragment("? * ? AS experience", t.time, t.difficulty)}, preload: [:project]
   end
 
   @doc """
