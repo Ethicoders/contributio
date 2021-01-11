@@ -26,10 +26,22 @@ defmodule Contributio.Schema.DataTypes do
     import_fields :user
   end
 
+  enum :origin_family do
+    value :github
+    # value :gitlab
+    # value :bitbucket
+  end
+
+  object :origin do
+    field :uri, f!(:string)
+    field :family, f!(:origin_family)
+  end
+
   object :project do
     field :id, f!(:id)
     field :name, f!(:string)
     field :url, f!(:string)
+    field :origin, f!(:origin)
     field :languages, :json
     field :description, :string
   end

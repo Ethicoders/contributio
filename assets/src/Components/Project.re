@@ -6,5 +6,6 @@ let make = (~name, ~url) => {
     <Heading>name->str</Heading>
     " - "->str
     <a href=url target="_blank"> "See"->str </a>
+    <Icon name=Github/>
   </div>;
 };

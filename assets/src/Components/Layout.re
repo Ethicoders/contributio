@@ -1,7 +1,5 @@
 let str = React.string;
 
-[@bs.module "/images/contributio.svg"] external logo: string = "default";
-
 [@react.component]
 let make = (~children) => {
   let (isVisible, setVisible) = React.useState(() => false);

@@ -35,13 +35,14 @@ let addLanguageOption = languages => {
 let make = () => {
   let (language, setLanguage) = React.useState(() => "Language");
   <div>
-    <Heading size=Big>"Projects"->str</Heading>
+    <Heading size=Big> "Projects"->str </Heading>
     <div className="grid grid-cols-3 gap-4">
       {switch (GetProjectsLanguages.use()) {
        | {loading: true} => <span> "Loading languages..."->str </span>
        | {data: None} => <span> "No languages yet"->str </span>
        | {error: Some(_error)} => "Error"->str
-       | {called: false, data: Some(_), error: None, loading: false} => "Do"->str
+       | {called: false, data: Some(_), error: None, loading: false} =>
+         "Do"->str
        | {called: true, data: Some({languages}), loading: false} =>
          addLanguageOption(languages);
          <Select
@@ -57,10 +58,11 @@ let make = () => {
      | {loading: true} => "Loading..."->React.string
      | {data: Some({projects}), loading: false} =>
        <div className="grid grid-cols-3 gap-4">
-         {switch (projects) {
-          | None => "No projects yet!"->str
-          | Some(items) =>
-            items
+         /* {switch (projects) {
+            | None => "No projects yet!"->str
+            | Some(items) => */
+
+           {projects
             ->Belt.Array.map(project =>
                 <Project
                   key={project.name}
@@ -68,9 +70,9 @@ let make = () => {
                   url={project.url}
                 />
               )
-            ->React.array
-          }}
-       </div>
+            ->React.array}
+         </div>
+     /* }} */
      | {data: None} => <div />
      }}
   </div>;
