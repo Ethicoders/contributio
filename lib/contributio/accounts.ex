@@ -6,7 +6,7 @@ defmodule Contributio.Accounts do
   import Ecto.Query, warn: false
   alias Contributio.Repo
 
-  alias Contributio.Accounts.User
+  alias Contributio.Accounts.{User, UserOrigin}
 
   @doc """
   Returns the list of users.
@@ -46,9 +46,17 @@ defmodule Contributio.Accounts do
 
   def get_user_by_token(token), do: Repo.get_by(User, token: token)
 
-  def get_user_by_origin_and_id(origin, id) do
-    (from u in User, join: :users_origins, select: u, where: u.origin_id == ^origin and u.user_origin_id == ^id) |> Repo.get()
+  def get_user_by_user_origin(origin_id, user_origin_id) do
+    (from u in User, join: :users_origins, select: u, where: u.origin_id == ^origin_id and u.user_origin_id == ^user_origin_id) |> Repo.one
   end
+
+  def create_user_origin(attrs \\ %{}) do
+    %UserOrigin{}
+    |> UserOrigin.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def user_origin_exists(origin_id, user_id), do: Repo.get_by!(UserOrigin, origin_id: origin_id, user_id: user_id)
 
   @doc """
   Creates a user.
@@ -84,6 +92,11 @@ defmodule Contributio.Accounts do
     user
     |> User.changeset(attrs)
     |> Repo.update()
+  end
+
+  def reward_user(%User{} = user, experience) do
+    calculated_level_experience = Contributio.Game.add_experience_to_current_level(user.level, user.experience, experience)
+    user |> update_user(calculated_level_experience)
   end
 
   @doc """

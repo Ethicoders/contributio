@@ -30,13 +30,6 @@ defmodule ContributioWeb.Router do
     forward "/graphiql", Absinthe.Plug.GraphiQL, schema: Contributio.Schema
   end
 
-  scope "/", ContributioWeb do
-    # Use the default browser stack
-    pipe_through :browser
-
-    get "/*path", PageController, :index
-  end
-
   def before_send(conn, %{execution: %{context: %{token: token}}}) do
     conn |> put_resp_cookie("ctiotoken", token, http_only: true)
   end
@@ -57,5 +50,12 @@ defmodule ContributioWeb.Router do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: ContributioWeb.Telemetry
     end
+  end
+
+  scope "/", ContributioWeb do
+    # Use the default browser stack
+    pipe_through :browser
+
+    get "/*path", PageController, :index
   end
 end

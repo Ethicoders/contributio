@@ -60,9 +60,9 @@ defmodule Contributio.Market do
   """
   def get_project!(id), do: Repo.get!(Project, id)
 
-  def get_project_by_repo_id!(repo_id), do: Repo.get_by!(Project, repo_id: repo_id)
+  def get_project_by_origin_repo_id!(_origin_id, repo_id), do: Repo.get_by!(Project, repo_id: repo_id)
 
-  def get_project_by_repo_id(repo_id), do: Repo.get_by(Project, repo_id: repo_id)
+  def get_project_by_origin_repo_id(_origin_id, repo_id), do: Repo.get_by(Project, repo_id: repo_id)
 
   @doc """
   Creates a project.
@@ -166,6 +166,9 @@ defmodule Contributio.Market do
   """
   def get_task!(id), do: Repo.get!(Task, id)
 
+  def get_task_by_origin_issue_id(_origin_id, task_id), do: Repo.get(Task, task_id: task_id)
+
+  def get_task_by_origin_issue_id!(_origin_id, task_id), do: Repo.get!(Task, task_id: task_id)
   @doc """
   Creates a task.
 
@@ -269,9 +272,9 @@ defmodule Contributio.Market do
   """
   def get_submission!(id), do: Repo.get!(Submission, id)
 
-  def get_submission_by_pull_request_id(id), do: Repo.get_by(Submission, repo_id: id)
+  def get_submission_by_origin_pull_request_id(_origin_id, pull_request_id), do: Repo.get_by(Submission, pull_request_id: pull_request_id)
 
-  def get_submission_by_pull_request_id!(id), do: Repo.get_by!(Submission, repo_id: id)
+  def get_submission_by_origin_pull_request_id!(_origin_id, pull_request_id), do: Repo.get_by!(Submission, pull_request_id: pull_request_id)
 
   def get_submissions_by_task_id(id), do: Submission |> where(task_id: ^id) |> Repo.all()
   @doc """

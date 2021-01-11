@@ -1,7 +1,7 @@
 defmodule ContributioWeb.WebhooksController do
   use ContributioWeb, :controller
 
-  alias Contributio.{Accounts, Game, Market}
+  alias Contributio.{Accounts, Game, Market, Repo}
   alias ContributioWeb.Utils
   alias ContributioWeb.Webhooks.{Github}
 
@@ -18,8 +18,6 @@ defmodule ContributioWeb.WebhooksController do
         nil -> {nil, nil, :exit, nil}
       end
 
-    origin_id = 1 # github.com only, for now
-
     case action do
       :exit ->
         {:ok}
@@ -28,7 +26,7 @@ defmodule ContributioWeb.WebhooksController do
         execute(subject_type, action, data)
 
       _ ->
-        case get_tracked_subject(origin_id, subject_id, subject_type) do
+        case get_tracked_subject(subject_id, subject_type) do
           nil -> {:ok}
           subject -> execute(subject, action, data)
         end
@@ -44,8 +42,13 @@ defmodule ContributioWeb.WebhooksController do
     end
   end
 
+  defp get_origin_id() do
+    # github.com only, for now
+    1
+  end
+
   defp execute(%Contributio.Market.Project{} = project, action, data) when action == :revoke do
-    Account.update_user(project, data)
+    Accounts.update_user(project, data)
   end
 
   defp execute(%Contributio.Market.Project{} = project, action, data) when action == :update do
@@ -74,16 +77,17 @@ defmodule ContributioWeb.WebhooksController do
 
     task |> Repo.preload(:submissions)
 
+    origin_id = get_origin_id()
     # Send max XP to users who contributed to merged PR
     task[:submissions]
     |> Enum.filter(&(&1 in user_ids))
-    |> Enum.map(&(User.send_reward(&1, experience)))
+    |> Enum.map(&(Accounts.get_user_by_user_origin(origin_id, &1) |> Accounts.reward_user(experience)))
 
     # Send little XP to users who created a PR
     # Waiting for a better way to share XP, more adapted to the result
     task[:submissions]
     |> Enum.filter(&(&1 not in user_ids))
-    |> Enum.map(&(User.send_reward(&1, experience / 10)))
+    |> Enum.map(&(Accounts.get_user_by_user_origin(origin_id, &1) |> Accounts.reward_user(experience / 10)))
 
     Market.close_task(task)
   end
@@ -105,12 +109,14 @@ defmodule ContributioWeb.WebhooksController do
     Market.close_submission(submission)
   end
 
-  defp get_tracked_subject(origin_id subject_type, subject_id) do
+  defp get_tracked_subject(subject_type, subject_id) do
+    origin_id = get_origin_id()
+
     case subject_type do
-      :user -> Accounts.get_user_by_origin_user_id(origin_id subject_id)
-      :project -> Market.get_project_by_origin_repo_id(origin_id subject_id)
-      :task -> Market.get_task_by_origin_issue_id(origin_id subject_id)
-      :submission -> Market.get_submission_by_origin_pull_request_id(origin_id subject_id)
+      :user -> Accounts.get_user_by_user_origin(origin_id, subject_id)
+      :project -> Market.get_project_by_origin_repo_id(origin_id, subject_id)
+      :task -> Market.get_task_by_origin_issue_id(origin_id, subject_id)
+      :submission -> Market.get_submission_by_origin_pull_request_id(origin_id, subject_id)
     end
   end
 end
