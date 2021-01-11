@@ -42,7 +42,7 @@ View the full documentation at https://tailwindcss.com.
 | "secondary", or even a numeric scale like "100" and "200", go for it.
 |
 */
-
+console.log("IIIIIIIIIIIIIN");
 let colors = {
   'transparent': 'transparent',
 
@@ -930,6 +930,7 @@ module.exports = {
       // center: true,
       // padding: '1rem',
     }),
+    require('tailwindcss-textshadow'),
   ],
 
 
