@@ -1,17 +1,24 @@
 defmodule ContributioWeb.WebhooksController do
   use ContributioWeb, :controller
 
-  alias Contributio.Game
-  alias Contributio.Market
+  alias Contributio.{Accounts, Game, Market}
   alias ContributioWeb.Utils
   alias ContributioWeb.Webhooks.{Github}
 
+  require Logger
+
   def dispatch(%{req_headers: req_headers, body_params: body_params} = conn, _info) do
+    Logger.debug("-------------")
+    Logger.debug(inspect req_headers)
+    Logger.debug(inspect body_params)
+    Logger.debug("-------------")
     {subject_id, subject_type, action, data} =
-      case resolve_origin(req_headers) do
+      case resolve_vcs_family(req_headers) do
         :github -> Github.handle_webhook(req_headers, Utils.map_keys_to_atom(body_params))
         nil -> {nil, nil, :exit, nil}
       end
+
+    origin_id = 1 # github.com only, for now
 
     case action do
       :exit ->
@@ -21,7 +28,7 @@ defmodule ContributioWeb.WebhooksController do
         execute(subject_type, action, data)
 
       _ ->
-        case get_tracked_subject(subject_id, subject_type) do
+        case get_tracked_subject(origin_id, subject_id, subject_type) do
           nil -> {:ok}
           subject -> execute(subject, action, data)
         end
@@ -30,11 +37,15 @@ defmodule ContributioWeb.WebhooksController do
     text(conn, "")
   end
 
-  defp resolve_origin(headers) do
+  defp resolve_vcs_family(headers) do
     case headers do
-      %{"X-GitHub-Event": _} -> :github
+      %{"x-github-event": _} -> :github
       _ -> nil
     end
+  end
+
+  defp execute(%Contributio.Market.Project{} = project, action, data) when action == :revoke do
+    Account.update_user(project, data)
   end
 
   defp execute(%Contributio.Market.Project{} = project, action, data) when action == :update do
@@ -94,11 +105,12 @@ defmodule ContributioWeb.WebhooksController do
     Market.close_submission(submission)
   end
 
-  defp get_tracked_subject(subject_type, subject_id) do
+  defp get_tracked_subject(origin_id subject_type, subject_id) do
     case subject_type do
-      :project -> Contributio.Market.get_project_by_repo_id(subject_id)
-      :task -> Contributio.Market.get_task_by_issue_id(subject_id)
-      :submission -> Contributio.Market.get_submission_by_pull_request_id(subject_id)
+      :user -> Accounts.get_user_by_origin_user_id(origin_id subject_id)
+      :project -> Market.get_project_by_origin_repo_id(origin_id subject_id)
+      :task -> Market.get_task_by_origin_issue_id(origin_id subject_id)
+      :submission -> Market.get_submission_by_origin_pull_request_id(origin_id subject_id)
     end
   end
 end

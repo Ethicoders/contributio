@@ -3,7 +3,11 @@ defmodule ContributioWeb.Webhooks.Github do
   alias ContributioWeb.Utils
 
   def handle_webhook(headers, params) do
-    resolve(headers["X-GitHub-Event"], params)
+    resolve(headers["x-github-event"], params)
+  end
+
+  defp resolve("github_app_authorization", %{sender: sender, action: "revoked"}) do
+    {sender["id"], :user, :revoke, nil}
   end
 
   defp resolve("pull_request", %{

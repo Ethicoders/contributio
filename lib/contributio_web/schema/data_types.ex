@@ -24,6 +24,7 @@ defmodule Contributio.Schema.DataTypes do
 
   object :current_user do
     import_fields :user
+    field :linked_origins, f!(:origin_family)
   end
 
   enum :origin_family do

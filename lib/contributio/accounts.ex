@@ -46,6 +46,10 @@ defmodule Contributio.Accounts do
 
   def get_user_by_token(token), do: Repo.get_by(User, token: token)
 
+  def get_user_by_origin_and_id(origin, id) do
+    (from u in User, join: :users_origins, select: u, where: u.origin_id == ^origin and u.user_origin_id == ^id) |> Repo.get()
+  end
+
   @doc """
   Creates a user.
 

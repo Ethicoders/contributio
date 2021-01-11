@@ -8,8 +8,6 @@ defmodule Contributio.Accounts.User do
     field :password, :string, virtual: true
     field :hash, :string
     field :token, :string, allow_nil: true
-    field :access_tokens, :map
-    field :origin_ids, :map
     has_many :projects, Contributio.Market.Project
 
     timestamps()

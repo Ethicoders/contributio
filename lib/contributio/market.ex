@@ -310,6 +310,8 @@ defmodule Contributio.Market do
     |> Repo.update()
   end
 
+  def close_submission(%Submission{} = submission), do: submission |> update_submission(%{status: :closed})
+
   @doc """
   Deletes a submission.
 
