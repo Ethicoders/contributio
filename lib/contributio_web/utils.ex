@@ -9,11 +9,12 @@ defmodule ContributioWeb.Utils do
   end
 
   def extract_contributio_code_data(string) do
-    code_fields = %{"dif" => %{cast: &(&1 |> String.to_integer()), key: :difficulty}}
+    code_fields = %{"dif" => %{cast: &(&1 |> String.to_integer()), key: :difficulty, default: "1"}, "time" => %{cast: &(&1 |> String.to_integer()), key: :time, default: "1"}}
     aliases = Map.keys(code_fields)
+    values = code_fields |> Map.new(fn {key, value} -> {key, value.default} end)
 
-    parse_contributio_code(string)
-    |> Map.take(aliases)
+    values
+    |> Map.merge(parse_contributio_code(string) |> Map.take(aliases))
     |> Map.new(fn {key, value} ->
       {code_fields[key].key, apply(code_fields[key][:cast], [value])}
     end)

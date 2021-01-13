@@ -19,7 +19,7 @@ defmodule Contributio.Market.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:name, :content, :url, :issue_id, :difficulty])
+    |> cast(attrs, [:name, :content, :url, :issue_id, :difficulty, :time, :project_id])
     |> validate_required([:name])
   end
 end

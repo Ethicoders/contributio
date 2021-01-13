@@ -8,13 +8,10 @@ defmodule ContributioWeb.WebhooksController do
   require Logger
 
   def dispatch(%{req_headers: req_headers, body_params: body_params} = conn, _info) do
-    Logger.debug("-------------")
-    Logger.debug(inspect req_headers)
-    Logger.debug(inspect body_params)
-    Logger.debug("-------------")
+    headers_map = Enum.into(req_headers, %{})
     {subject_id, subject_type, action, data} =
-      case resolve_vcs_family(req_headers) do
-        :github -> Github.handle_webhook(req_headers, Utils.map_keys_to_atom(body_params))
+      case resolve_vcs_family(headers_map) do
+        :github -> Github.handle_webhook(headers_map, Utils.map_keys_to_atom(body_params))
         nil -> {nil, nil, :exit, nil}
       end
 
@@ -26,7 +23,7 @@ defmodule ContributioWeb.WebhooksController do
         execute(subject_type, action, data)
 
       _ ->
-        case get_tracked_subject(subject_id, subject_type) do
+        case get_tracked_subject(subject_type, subject_id) do
           nil -> {:ok}
           subject -> execute(subject, action, data)
         end
@@ -37,7 +34,7 @@ defmodule ContributioWeb.WebhooksController do
 
   defp resolve_vcs_family(headers) do
     case headers do
-      %{"x-github-event": _} -> :github
+      %{"x-github-event" => _} -> :github
       _ -> nil
     end
   end
@@ -60,7 +57,8 @@ defmodule ContributioWeb.WebhooksController do
   end
 
   defp execute(type, action, data) when type == :task and action == :create do
-    Market.create_task(data)
+    origin_id = get_origin_id()
+    Market.create_task(%{data | project_id: Market.get_project_by_origin_repo_id(origin_id, data[:project_id]).id})
   end
 
   defp execute(%Contributio.Market.Task{} = task, action, data) when action == :update do

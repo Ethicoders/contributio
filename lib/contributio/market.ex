@@ -166,9 +166,9 @@ defmodule Contributio.Market do
   """
   def get_task!(id), do: Repo.get!(Task, id)
 
-  def get_task_by_origin_issue_id(_origin_id, task_id), do: Repo.get(Task, task_id: task_id)
+  def get_task_by_origin_issue_id(_origin_id, issue_id), do: Repo.get_by(Task, issue_id: issue_id)
 
-  def get_task_by_origin_issue_id!(_origin_id, task_id), do: Repo.get!(Task, task_id: task_id)
+  def get_task_by_origin_issue_id!(_origin_id, issue_id), do: Repo.get_by!(Task, issue_id: issue_id)
   @doc """
   Creates a task.
 

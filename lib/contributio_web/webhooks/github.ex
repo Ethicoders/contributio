@@ -49,14 +49,15 @@ defmodule ContributioWeb.Webhooks.Github do
     {linked_issue, :task, :validate, %{submission: pull_request["id"], user_ids: user_ids}}
   end
 
-  defp resolve("issues", %{issue: issue, action: "opened"}) do
+  defp resolve("issues", %{issue: issue, action: "opened", repository: repository}) do
     data =
       Utils.extract_contributio_code_data(issue["body"])
       |> Map.merge(%{
         name: issue["title"],
         content: issue["body"],
         url: issue["html_url"],
-        issue_id: issue["id"]
+        issue_id: issue["id"],
+        project_id: repository["id"]
       })
 
     {nil, :task, :create, data}
@@ -73,12 +74,27 @@ defmodule ContributioWeb.Webhooks.Github do
     {issue["id"], :task, :update, data}
   end
 
-  defp resolve("issues", %{issue: issue, action: "closed"}) do
-    {issue["id"], :task, :update,
-     %{
-       status: :closed
-     }}
-  end
+  # defp resolve("issues", %{issue: issue, action: "assigned"}) do
+  #   data =
+  #     Utils.extract_contributio_code_data(issue["body"])
+  #     |> Map.merge(%{
+  #       name: issue["title"],
+  #       content: issue["body"]
+  #     })
+
+  #   {issue["id"], :task, :update, data}
+  # end
+
+  # defp resolve("issues", %{issue: issue, action: "labeled"}) do
+  #   data =
+  #     Utils.extract_contributio_code_data(issue["body"])
+  #     |> Map.merge(%{
+  #       name: issue["title"],
+  #       content: issue["body"]
+  #     })
+
+  #   {issue["id"], :task, :update, data}
+  # end
 
   defp resolve("???", %{repository: repository, action: "deleted"}) do
     {repository["id"], :project, :closed, %{}}
@@ -86,6 +102,6 @@ defmodule ContributioWeb.Webhooks.Github do
 
   defp resolve(_, _) do
     Logger.info("No matching event pushed.")
-    {:ok}
+    {nil, nil, :exit, nil}
   end
 end
