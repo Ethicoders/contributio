@@ -21,6 +21,7 @@ defmodule Contributio.Schema.DataTypes do
     field :name, f!(:string)
     field :level, f!(:string)
     field :current_experience, f!(:integer)
+    field :next_level_experience, f!(:integer)
     field :projects, list_of!(:project)
   end
 

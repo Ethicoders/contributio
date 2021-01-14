@@ -7,6 +7,7 @@ module GetUsers = [%graphql
         name
         level
         currentExperience
+        nextLevelExperience
       }
     }
 |}
@@ -22,7 +23,13 @@ let make = () => {
        <div className="grid grid-cols-3 gap-4">
          {users
           ->Js.Array2.map(user =>
-              <User key={user.name} name={user.name} level={user.level} />
+              <User
+                key={user.name}
+                name={user.name}
+                level={user.level}
+                currentExperience={user.currentExperience}
+                nextLevelExperience={user.nextLevelExperience}
+              />
             )
           ->React.array}
        </div>

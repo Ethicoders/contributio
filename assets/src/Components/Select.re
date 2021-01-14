@@ -44,15 +44,14 @@ let make = (~label, ~options, ~onChange, ~selected="") => {
           {Js.Array.map(
              value =>
                <li
+                 onClick={_ => {
+                   setVisible(_ => false);
+                   onChange(value);
+                 }}
                  key=value
                  role="option"
                  className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-gray-50 cursor-pointer">
-                 <div
-                   className="flex items-center"
-                   onClick={_ => {
-                     setVisible(_ => false);
-                     onChange(value);
-                   }}>
+                 <div className="flex items-center">
                    <span className="ml-3 block font-normal truncate">
                      value->str
                    </span>

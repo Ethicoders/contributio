@@ -11,6 +11,7 @@ defmodule Contributio.Accounts.User do
     field :token, :string, allow_nil: true
     field :level, :integer
     field :current_experience, :integer
+    field :next_level_experience, :integer, virtual: true
     has_many :projects, Contributio.Market.Project
 
     timestamps()
@@ -20,8 +21,10 @@ defmodule Contributio.Accounts.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:name, :email, :password, :hash, :token, :level, :current_experience])
-    |> validate_required([:email]) #, :password
+    # , :password
+    |> validate_required([:email])
     |> unique_constraint(:email)
+
     # |> set_password_hash()
   end
 
@@ -36,5 +39,12 @@ defmodule Contributio.Accounts.User do
         # Bcrypt.gen_salt(12, true)
       )
     )
+  end
+
+  def set_next_level_experience(%Contributio.Accounts.User{} = user) do
+    %{
+      user
+      | next_level_experience: Contributio.Game.get_level_experience(user.level)
+    }
   end
 end

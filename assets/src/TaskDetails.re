@@ -18,6 +18,8 @@ let make = (~id) => {
     {switch (GetTask.use({id: id})) {
      | {loading: true} => <span> "Loading task..."->str </span>
      | {error: Some(_error)} => "Error"->str
+     | {called: true, data: None, error: None, loading: false} => "Do"->str
+     | {called: false, data: None, error: None, loading: false} => "Do"->str
      | {called: false, data: Some(_), error: None, loading: false} =>
        "Do"->str
      | {called: true, data: Some({task}), loading: false} =>

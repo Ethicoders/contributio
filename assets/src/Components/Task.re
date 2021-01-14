@@ -9,7 +9,7 @@ let make = (~id, ~name, ~content, ~experience) => {
     // " - "->str
     // <a href=url target="_blank"> "See"->str </a>
     <Anchor target={"/tasks/" ++ id}>
-      <Button onClick={e => ()}> "See more"->str </Button>
+      <Button onClick={_ => ()}> "See more"->str </Button>
     </Anchor>
     <div>
       <Heading size=Small> "Experience: "->str </Heading>

@@ -2,6 +2,7 @@ let str = React.string;
 
 [@react.component]
 let make = (~id, ~name, ~content, ~experience) => {
+  Js.log(id);
   <div className="p-4 border-2 rounded-sm">
     <Heading> name->str </Heading>
     content->str

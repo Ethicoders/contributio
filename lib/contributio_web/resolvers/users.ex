@@ -3,7 +3,8 @@ defmodule Resolvers.Users do
   alias Contributio.{Accounts, Repo}
 
   def get_user(%{id: id}, _info) do
-    {:ok, Accounts.get_user(id) |> Repo.preload(:projects)}
+    {:ok,
+     Accounts.get_user(id) |> Repo.preload(:projects) |> Accounts.User.set_next_level_experience()}
   end
 
   def create(params, _info) do
@@ -94,8 +95,8 @@ defmodule Resolvers.Users do
   end
 
   def link_account(%{vendor: vendor, content: content}, %{
-    context: %{current_user: current_user}
-  }) do
+        context: %{current_user: current_user}
+      }) do
     access_tokens =
       case current_user.access_tokens do
         nil -> Map.put(%{}, vendor, content)
@@ -103,18 +104,21 @@ defmodule Resolvers.Users do
       end
 
     access_token = current_user.access_tokens[vendor]
-    origin_id = case HTTPoison.get(
-           "https://api.github.com/user",
-           ["Content-Type": "application/json", Authorization: "token #{access_token}"]
-         ) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        case Jason.decode!(body, keys: :atoms) do
-          user -> user.id
-        end
 
-      {:error, %HTTPoison.Error{reason: reason}} ->
-        IO.inspect(inspect reason)
-    end
+    origin_id =
+      case HTTPoison.get(
+             "https://api.github.com/user",
+             "Content-Type": "application/json",
+             Authorization: "token #{access_token}"
+           ) do
+        {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+          case Jason.decode!(body, keys: :atoms) do
+            user -> user.id
+          end
+
+        {:error, %HTTPoison.Error{reason: reason}} ->
+          IO.inspect(inspect(reason))
+      end
 
     origin_ids =
       case current_user.origin_ids do
