@@ -35,6 +35,11 @@ let make = (~children) => {
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                   "Tasks"->str
                 </Anchor>
+                <Anchor
+                  target="/users"
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  "Users"->str
+                </Anchor>
               </div>
             </div>
           </div>
@@ -48,48 +53,85 @@ let make = (~children) => {
                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                  </svg> */
               <div className="ml-3 relative">
-                <div>
+                <div className="">
                   {Session.isConnected()
                      ? <>
-                         <Anchor
-                           target="/account"
-                           className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                           "Account"->str
-                         </Anchor>
-                         <button
-                           className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                           id="user-menu">
-                           <span className="sr-only">
-                             "Open user menu"->str
-                           </span>
-                           <img
-                             className="h-8 w-8 rounded-full"
-                             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                             alt=""
-                           />
-                         </button>
-                         <div
-                           className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5"
-                           role="menu">
-                           <a
-                             href="#"
+                         <Dropdown
+                           button={
+                             Some(
+                               <button
+                                 className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                                 id="user-menu">
+                                 <span className="sr-only">
+                                   "Open user menu"->str
+                                 </span>
+                                 <span
+                                   className="h-8 w-8 max-w-xs bg-gray-200 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                                   /* className="h-8 w-8 rounded-full" */
+                                    <Icon name=User /> </span>
+                               </button>,
+                             )
+                           }>
+                           <Anchor
                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                             role="menuitem">
-                             "Your Profile"->str
-                           </a>
-                           <a
-                             href="#"
-                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                             role="menuitem">
+                             target="/account">
                              "Settings"->str
-                           </a>
+                           </Anchor>
+                           <Anchor
+                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                             target="/account/projects">
+                             "My Projects"->str
+                           </Anchor>
+                           <Anchor
+                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                             target="/account/tasks">
+                             "My Tasks"->str
+                           </Anchor>
                            <a
                              href="#"
+                             /* onClick={e => TBD} */
                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                              role="menuitem">
                              "Sign out"->str
                            </a>
-                         </div>
+                         </Dropdown>
+                         /* <button
+                              className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                              id="user-menu">
+                              <span className="sr-only">
+                                "Open user menu"->str
+                              </span>
+                              <span
+                                className="h-8 w-8 max-w-xs bg-gray-200 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                                /* className="h-8 w-8 rounded-full" */
+                                 <Icon name=User /> </span>
+                            </button>
+                            <div
+                              className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5"
+                              role="menu">
+                              <Anchor
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                target="/account">
+                                "Settings"->str
+                              </Anchor>
+                              <Anchor
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                target="/account/projects">
+                                "My Projects"->str
+                              </Anchor>
+                              <Anchor
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                target="/account/tasks">
+                                "My Tasks"->str
+                              </Anchor>
+                              <a
+                                href="#"
+                                /* onClick={e => TBD} */
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                role="menuitem">
+                                "Sign out"->str
+                              </a>
+                            </div> */
                        </>
                      : <>
                          <Button type_=Primary onClick=handleToggleOverlay>
@@ -202,53 +244,58 @@ let make = (~children) => {
     </main>
     <footer className="w-full">
       <div className="bg-gray-700">
-        <div
-          className="max-w-6xl m-auto text-gray-800 flex flex-wrap justify-center">
 
+          <div
+            className="max-w-6xl m-auto text-gray-800 flex flex-wrap justify-center">
             <div className="p-5 w-48 ">
-
-                <Anchor
-                  target="/operation"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  "Operation"->str
-                </Anchor>
-              </div>
-              /* <div class="text-xs uppercase text-gray-500 font-medium">Home</div>
-                 <a class="my-3 block" href="/#">Services <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Products <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">About Us <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Pricing <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Partners <span class="text-teal-600 text-xs p-1">New</span></a>  */
+              <Anchor
+                target="/operation"
+                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                "Operation"->str
+              </Anchor>
+            </div>
+            /* <div class="text-xs uppercase text-gray-500 font-medium">Home</div>
+               <a class="my-3 block" href="/#">Services <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Products <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">About Us <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Pricing <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Partners <span class="text-teal-600 text-xs p-1">New</span></a>  */
             <div className="p-5 w-48 ">
-
-                <Anchor
-                  target="/projects"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  "Projects"->str
-                </Anchor>
-              </div>
-              /* <div class="text-xs uppercase text-gray-500 font-medium">User</div>
-                 <a class="my-3 block" href="/#">Sign in <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">New Account <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Demo <span class="text-teal-600 text-xs p-1">New</span></a><a class="my-3 block" href="/#">Career <span class="text-teal-600 text-xs p-1">We're hiring</span></a><a class="my-3 block" href="/#">Surveys <span class="text-teal-600 text-xs p-1">New</span></a>  */
+              <Anchor
+                target="/projects"
+                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                "Projects"->str
+              </Anchor>
+            </div>
+            /* <div class="text-xs uppercase text-gray-500 font-medium">User</div>
+               <a class="my-3 block" href="/#">Sign in <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">New Account <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Demo <span class="text-teal-600 text-xs p-1">New</span></a><a class="my-3 block" href="/#">Career <span class="text-teal-600 text-xs p-1">We're hiring</span></a><a class="my-3 block" href="/#">Surveys <span class="text-teal-600 text-xs p-1">New</span></a>  */
             <div className="p-5 w-48 ">
+              <Anchor
+                target="/tasks"
+                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                "Tasks"->str
+              </Anchor>
+            </div>
 
-                <Anchor
-                  target="/tasks"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  "Tasks"->str
-                </Anchor>
-              </div>
-              /* <div class="text-xs uppercase text-gray-500 font-medium">Resources</div>
-                 <a class="my-3 block" href="/#">Documentation <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Tutorials <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Support <span class="text-teal-600 text-xs p-1">New</span></a>  */
+            <div className="p-5 w-48">
+              <Anchor
+                target="/users"
+                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                "Users"->str
+              </Anchor>
+            </div>
           </div>
-          /* <div class="p-5 w-48 ">
-                <div class="text-xs uppercase text-gray-500 font-medium">Product</div>
-                <a class="my-3 block" href="/#">Our Products <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Great Deals <span class="text-teal-600 text-xs p-1">New</span></a><a class="my-3 block" href="/#">Analytics <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Mobile <span class="text-teal-600 text-xs p-1"></span></a>
-             </div>
-             <div class="p-5 w-48 ">
-                <div class="text-xs uppercase text-gray-500 font-medium">Support</div>
-                <a class="my-3 block" href="/#">Help Center <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Privacy Policy <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Conditions <span class="text-teal-600 text-xs p-1"></span></a>
-             </div>
-             <div class="p-5 w-48 ">
-                <div class="text-xs uppercase text-gray-500 font-medium">Contact us</div>
-                <a class="my-3 block" href="/#">XXX XXXX, Floor 4 San Francisco, CA <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">contact@company.com <span class="text-teal-600 text-xs p-1"></span></a>
-             </div> */
-      </div>
+        </div>
+        /* <div class="text-xs uppercase text-gray-500 font-medium">Resources</div>
+           <a class="my-3 block" href="/#">Documentation <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Tutorials <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Support <span class="text-teal-600 text-xs p-1">New</span></a>  */
+      /* <div class="p-5 w-48 ">
+            <div class="text-xs uppercase text-gray-500 font-medium">Product</div>
+            <a class="my-3 block" href="/#">Our Products <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Great Deals <span class="text-teal-600 text-xs p-1">New</span></a><a class="my-3 block" href="/#">Analytics <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Mobile <span class="text-teal-600 text-xs p-1"></span></a>
+         </div>
+         <div class="p-5 w-48 ">
+            <div class="text-xs uppercase text-gray-500 font-medium">Support</div>
+            <a class="my-3 block" href="/#">Help Center <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Privacy Policy <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Conditions <span class="text-teal-600 text-xs p-1"></span></a>
+         </div>
+         <div class="p-5 w-48 ">
+            <div class="text-xs uppercase text-gray-500 font-medium">Contact us</div>
+            <a class="my-3 block" href="/#">XXX XXXX, Floor 4 San Francisco, CA <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">contact@company.com <span class="text-teal-600 text-xs p-1"></span></a>
+         </div> */
       <div className="bg-gray-800">
         <div
           className="flex pb-5 px-3 m-auto pt-5 border-black	 border-t text-white text-sm flex-col

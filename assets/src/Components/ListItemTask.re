@@ -8,9 +8,6 @@ let make = (~id, ~name, ~content, ~experience) => {
     // project.name->str
     // " - "->str
     // <a href=url target="_blank"> "See"->str </a>
-    <Anchor target={"/tasks/" ++ id}>
-      <Button onClick={e => ()}> "See more"->str </Button>
-    </Anchor>
     <div>
       <Heading size=Small> "Experience: "->str </Heading>
       {(Js.Int.toString(experience) ++ " xp")->str}

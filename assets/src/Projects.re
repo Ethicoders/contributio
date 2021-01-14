@@ -4,6 +4,7 @@ module GetProjects = [%graphql
   {|
     query getProjects {
       projects {
+        id
         name
         url
         description
@@ -58,21 +59,18 @@ let make = () => {
      | {loading: true} => "Loading..."->React.string
      | {data: Some({projects}), loading: false} =>
        <div className="grid grid-cols-3 gap-4">
-         /* {switch (projects) {
-            | None => "No projects yet!"->str
-            | Some(items) => */
-
-           {projects
-            ->Belt.Array.map(project =>
-                <Project
-                  key={project.name}
-                  name={project.name}
-                  url={project.url}
-                />
-              )
-            ->React.array}
-         </div>
-     /* }} */
+         {projects
+          ->Belt.Array.map(project =>
+              <Project
+                key={project.id}
+                id={project.id}
+                name={project.name}
+                description={project.description}
+                url={project.url}
+              />
+            )
+          ->React.array}
+       </div>
      | {data: None} => <div />
      }}
   </div>;

@@ -26,13 +26,17 @@ let make = () => {
     </section>
     <Heading size=Big> "Wording"->str </Heading>
     <table>
-      <tr> <th> "Contributio"->str </th> <th> "VCS"->str </th> </tr>
-      <tr> <td> "Project"->str </td> <td> "Repository"->str </td> </tr>
-      <tr> <td> "Task"->str </td> <td> "Issue"->str </td> </tr>
-      <tr>
-        <td> "Submission"->str </td>
-        <td> "Pull/merge request"->str </td>
-      </tr>
+      <thead>
+        <tr> <th> "Contributio"->str </th> <th> "VCS"->str </th> </tr>
+      </thead>
+      <tbody>
+        <tr> <td> "Project"->str </td> <td> "Repository"->str </td> </tr>
+        <tr> <td> "Task"->str </td> <td> "Issue"->str </td> </tr>
+        <tr>
+          <td> "Submission"->str </td>
+          <td> "Pull/merge request"->str </td>
+        </tr>
+      </tbody>
     </table>
   </div>;
 };

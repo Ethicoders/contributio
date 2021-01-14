@@ -4,6 +4,7 @@ module GetTasks = [%graphql
   {|
     query getTasks {
       tasks {
+        id
         name
         content
         experience
@@ -27,12 +28,11 @@ let make = () => {
            {tasks
             ->Js.Array2.map(task =>
                 <Task
-                  key={task.name}
+                  key={task.id}
                   name={task.name}
+                  id={task.id}
                   content={task.content}
                   experience={task.experience}
-                  // url={task.url}
-                  project={task.project}
                 />
               )
             ->React.array}

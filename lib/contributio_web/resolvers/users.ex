@@ -2,6 +2,10 @@ defmodule Resolvers.Users do
   require Logger
   alias Contributio.{Accounts, Repo}
 
+  def get_user(%{id: id}, _info) do
+    {:ok, Accounts.get_user(id) |> Repo.preload(:projects)}
+  end
+
   def create(params, _info) do
     Accounts.create_user(params)
   end

@@ -164,7 +164,20 @@ defmodule Contributio.Market do
       ** (Ecto.NoResultsError)
 
   """
-  def get_task!(id), do: Repo.get!(Task, id)
+  def get_task_by(id) do
+    Repo.get(prepare_task_query(), id)
+  end
+
+  def get_task_by!(id) do
+    Repo.get!(prepare_task_query(), id)
+  end
+
+  def prepare_task_query() do
+    (from t in Task, select_merge: %{experience: fragment("? * ? AS experience", t.time, t.difficulty)}, preload: [:project])
+  end
+
+  def get_task!(id), do: get_task_by(id)
+  def get_task(id), do: get_task_by!(id)
 
   def get_task_by_origin_issue_id(_origin_id, issue_id), do: Repo.get_by(Task, issue_id: issue_id)
 

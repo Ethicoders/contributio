@@ -4,8 +4,8 @@ module GetUserProjects = [%graphql
   {|
     query getUserProjects {
       my {
-        email
         projects {
+          id
           name
           url
           description
@@ -27,9 +27,11 @@ let make = () => {
            {my.projects
             ->Belt.Array.map(project =>
                 <Project
-                  key={project.name}
-                  name={project.name}
-                  url={project.url}
+                  key={project.id}
+                  id=project.id
+                  name=project.name
+                  description=project.description
+                  url=project.url
                 />
               )
             ->React.array}

@@ -14,12 +14,24 @@ defmodule Contributio.Schema do
       end
     end
 
+    @desc "Get a single user"
+    field :user, f!(:user) do
+      arg :id, f!(:id)
+      resolve(&Resolvers.Accounts.get_user/2)
+    end
+
     @desc "Get a list of projects"
     field :projects, list_of!(:project) do
       arg :name, :string
       arg :languages, :string
 
       resolve(&Resolvers.Projects.get_projects/2)
+    end
+
+    @desc "Get a single project"
+    field :project, f!(:project) do
+      arg :id, f!(:id)
+      resolve(&Resolvers.Projects.get_project/2)
     end
 
     @desc "Get a list of projects languages"
@@ -32,6 +44,11 @@ defmodule Contributio.Schema do
       resolve(&Resolvers.Projects.list_tasks/2)
     end
 
+    @desc "Get a single task"
+    field :task, f!(:task) do
+      arg :id, f!(:id)
+      resolve(&Resolvers.Projects.get_task/2)
+    end
 
     @desc "Request access token from Version Control platform"
     field :request_access_token, f!(:access_token_payload) do

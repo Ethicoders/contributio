@@ -4,10 +4,13 @@ defmodule Contributio.Accounts.User do
   require Logger
 
   schema "users" do
+    field :name, :string
     field :email, :string
     field :password, :string, virtual: true
     field :hash, :string
     field :token, :string, allow_nil: true
+    field :level, :integer
+    field :current_experience, :integer
     has_many :projects, Contributio.Market.Project
 
     timestamps()
@@ -16,7 +19,7 @@ defmodule Contributio.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password, :hash, :token, :access_tokens, :origin_ids])
+    |> cast(attrs, [:name, :email, :password, :hash, :token, :level, :current_experience])
     |> validate_required([:email]) #, :password
     |> unique_constraint(:email)
     # |> set_password_hash()

@@ -18,7 +18,9 @@ defmodule Contributio.Schema.DataTypes do
 
   object :user do
     field :id, f!(:id)
-    field :email, f!(:string)
+    field :name, f!(:string)
+    field :level, f!(:string)
+    field :current_experience, f!(:integer)
     field :projects, list_of!(:project)
   end
 
@@ -44,7 +46,8 @@ defmodule Contributio.Schema.DataTypes do
     field :url, f!(:string)
     field :origin, f!(:origin)
     field :languages, :json
-    field :description, :string
+    field :description, f!(:string)
+    field :tasks, list_of!(:task)
   end
 
   object :task do
@@ -53,7 +56,7 @@ defmodule Contributio.Schema.DataTypes do
     field :project, f!(:project)
     field :content, f!(:string)
     field :experience, f!(:integer)
-    field :rewards, list_of!(:reward)
+    # field :rewards, list_of!(:reward)
   end
 
   object :reward do
@@ -61,7 +64,8 @@ defmodule Contributio.Schema.DataTypes do
   end
 
   scalar :json do
-    description "Any"
+    serialize &(&1)
+    parse &Jason.decode!/1
   end
 
   @desc "Authentication payload"

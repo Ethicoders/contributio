@@ -15,6 +15,7 @@
   "bs-dependencies": [
     "bs-css",
     "bs-css-emotion",
+    "bs-webapi",
     "reason-react",
     "reason-apollo-client",
     "@reasonml-community/graphql-ppx"

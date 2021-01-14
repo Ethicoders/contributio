@@ -1,7 +1,8 @@
 let str = React.string;
 
 type names =
-  | Github;
+  | Github
+  | User;
 
 [@react.component]
 let make = (~name: names) => {
@@ -9,6 +10,7 @@ let make = (~name: names) => {
     className={
       switch (name) {
       | Github => "cib-github"
+      | User => "cil-user"
       }
     }
   />;
