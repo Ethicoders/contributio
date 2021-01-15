@@ -6,7 +6,7 @@ defmodule Contributio.Platforms.Origin do
     field :name, :string
     field :url, :string
     field :webhook_secret, :string
-
+    has_many :users_origins, Contributio.Accounts.UserOrigin
     has_many :projects, Contributio.Market.Project
   end
 

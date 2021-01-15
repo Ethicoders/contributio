@@ -54,6 +54,7 @@ defmodule Contributio.Schema do
 
     @desc "Request access token from Version Control platform"
     field :request_access_token, f!(:access_token_payload) do
+      arg(:origin_id, f!(:integer))
       arg(:code, f!(:string))
 
       resolve(&Resolvers.Users.request_access_token/2)
@@ -66,7 +67,7 @@ defmodule Contributio.Schema do
 
     @desc "Fetch user repositories"
     field :fetch_repositories, list_of!(:repository) do
-      arg(:vendor, f!(:string))
+      arg(:origin_id, f!(:integer))
 
       resolve(&Resolvers.Users.fetch_repositories/2)
     end
@@ -125,17 +126,17 @@ defmodule Contributio.Schema do
       end)
     end
 
-    @desc "Set a VC service user access token"
-    field :set_user_access_token, f!(:user) do
-      arg(:vendor, f!(:string))
-      arg(:content, f!(:string))
+    # @desc "Set a VC service user access token"
+    # field :set_user_access_token, f!(:user) do
+    #   arg(:origin_id, f!(:string))
+    #   arg(:content, f!(:string))
 
-      resolve(&Resolvers.Users.set_access_token/2)
-    end
+    #   resolve(&Resolvers.Users.set_access_token/2)
+    # end
 
     @desc "Link VC service account"
     field :link_account, f!(:user) do
-      arg(:vendor, f!(:string))
+      arg(:origin_id, f!(:integer))
       arg(:content, f!(:string))
 
       resolve(&Resolvers.Users.link_account/2)
@@ -143,7 +144,7 @@ defmodule Contributio.Schema do
 
     @desc "Import VC service repositories as projects"
     field :import_repositories, :boolean do
-      arg(:vendor, f!(:string))
+      arg(:origin_id, f!(:integer))
       arg(:ids, list_of!(:integer))
 
       resolve(&Resolvers.Users.import_repositories/2)

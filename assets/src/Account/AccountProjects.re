@@ -19,6 +19,7 @@ module GetUserProjects = [%graphql
 let make = () => {
   <div>
     <h1> "My Projects"->str </h1>
+    <Anchor target="/account/import/projects">"Import Repositories"->str</Anchor>
     {switch (GetUserProjects.use()) {
      | {loading: true} => "Loading..."->React.string
      | {data: Some({my}), loading: false} =>

@@ -43,13 +43,17 @@ defmodule Contributio.Accounts do
 
   def get_user_by_email(email), do: Repo.get_by(User, email: email)
 
-
   def get_user_by_token!(token), do: Repo.get_by!(User, token: token)
 
   def get_user_by_token(token), do: Repo.get_by(User, token: token)
 
   def get_user_by_user_origin(origin_id, user_origin_id) do
-    (from u in User, join: :users_origins, select: u, where: u.origin_id == ^origin_id and u.user_origin_id == ^user_origin_id) |> Repo.one
+    from(u in User,
+      join: :users_origins,
+      select: u,
+      where: u.origin_id == ^origin_id and u.user_origin_id == ^user_origin_id
+    )
+    |> Repo.one()
   end
 
   def create_user_origin(attrs \\ %{}) do
@@ -58,7 +62,21 @@ defmodule Contributio.Accounts do
     |> Repo.insert()
   end
 
-  def user_origin_exists(origin_id, user_id), do: Repo.get_by!(UserOrigin, origin_id: origin_id, user_id: user_id)
+  def update_user_origin(%UserOrigin{} = user_origin, attrs \\ %{}) do
+    user_origin
+    |> UserOrigin.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def upsert_user_origin(attrs) do
+    case get_user_origin(attrs.origin_id, attrs.user_id) do
+      nil -> create_user_origin(attrs)
+      user_origin -> update_user_origin(user_origin, attrs)
+    end
+  end
+
+  def get_user_origin(origin_id, user_id),
+    do: Repo.get_by(UserOrigin, origin_id: origin_id, user_id: user_id)
 
   @doc """
   Creates a user.
@@ -97,7 +115,9 @@ defmodule Contributio.Accounts do
   end
 
   def reward_user(%User{} = user, experience) do
-    calculated_level_experience = Contributio.Game.add_experience_to_current_level(user.level, user.experience, experience)
+    calculated_level_experience =
+      Contributio.Game.add_experience_to_current_level(user.level, user.experience, experience)
+
     user |> update_user(calculated_level_experience)
   end
 

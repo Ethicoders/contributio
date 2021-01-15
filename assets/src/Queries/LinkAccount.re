@@ -2,8 +2,8 @@ let str = React.string;
 
 module LinkAccountGQL = [%graphql
   {|
-    mutation linkAccount($vendor: String!, $content: String!) {
-      linkAccount(vendor: $vendor, content: $content) {
+    mutation linkAccount($originId: Int!, $content: String!) {
+      linkAccount(originId: $originId, content: $content) {
         id
       }
     }
@@ -22,7 +22,7 @@ let make = (~accessToken, ~onDone) => {
         | None => ()
         },
         {
-          vendor: "github", content: accessToken
+          originId: 1, content: accessToken
         },
   )
   ->ignore

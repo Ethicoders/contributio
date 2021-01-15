@@ -2,8 +2,8 @@ let str = React.string;
 
 module RequestAccessToken = [%graphql
   {|
-    query requestAccessToken($code: String!) {
-      requestAccessToken(code: $code) {
+    query requestAccessToken($originId: Int!, $code: String!) {
+      requestAccessToken(originId: $originId, code: $code) {
         accessToken
       }
     }
@@ -12,7 +12,7 @@ module RequestAccessToken = [%graphql
 
 [@react.component]
 let make = (~code) => {
-  switch (RequestAccessToken.use({code: code})) {
+  switch (RequestAccessToken.use({originId: 1, code: code})) {
   | {data: Some(response)} =>
     let accessToken =
       Js.Dict.unsafeGet(

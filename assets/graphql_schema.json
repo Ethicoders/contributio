@@ -1139,13 +1139,13 @@
               {
                 "defaultValue": null,
                 "description": null,
-                "name": "vendor",
+                "name": "originId",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "Int",
                     "ofType": null
                   }
                 }
@@ -1180,13 +1180,13 @@
               {
                 "defaultValue": null,
                 "description": null,
-                "name": "vendor",
+                "name": "originId",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "Int",
                     "ofType": null
                   }
                 }
@@ -1196,51 +1196,6 @@
             "description": "Link VC service account",
             "isDeprecated": false,
             "name": "linkAccount",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "User",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [
-              {
-                "defaultValue": null,
-                "description": null,
-                "name": "content",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                }
-              },
-              {
-                "defaultValue": null,
-                "description": null,
-                "name": "vendor",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                }
-              }
-            ],
-            "deprecationReason": null,
-            "description": "Set a VC service user access token",
-            "isDeprecated": false,
-            "name": "setUserAccessToken",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -1491,13 +1446,13 @@
               {
                 "defaultValue": null,
                 "description": null,
-                "name": "vendor",
+                "name": "originId",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "Int",
                     "ofType": null
                   }
                 }
@@ -1653,6 +1608,20 @@
                   "ofType": {
                     "kind": "SCALAR",
                     "name": "String",
+                    "ofType": null
+                  }
+                }
+              },
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "originId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
                     "ofType": null
                   }
                 }

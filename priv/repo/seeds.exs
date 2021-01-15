@@ -1,11 +1,8 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     Contributio.Repo.insert!(%Contributio.SomeSchema{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+alias Contributio.Repo
+alias Contributio.Platforms.Origin
+
+Repo.insert!(%Origin{
+  id: 1,
+  name: "github",
+  url: "github.com"
+})

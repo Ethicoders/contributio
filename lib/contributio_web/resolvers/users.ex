@@ -68,44 +68,38 @@ defmodule Resolvers.Users do
 
   def request_access_token(_args, _info), do: {:error, "Not Authorized"}
 
-  def set_access_token(%{vendor: vendor, content: content}, %{
+  # def set_access_token(%{origin_id: origin_id, content: content}, %{
+  #       context: %{current_user: current_user}
+  #     }) do
+  #   access_tokens =
+  #     case current_user.access_tokens do
+  #       nil -> Map.put(%{}, vendor, content)
+  #       _ -> current_user.access_tokens |> Map.put(vendor, %{content: content})
+  #     end
+
+  #   # Check other platforms but should be stored as:
+  #   # {
+  #   #   access_token: 4a7c72cc2eaa8e3fa6c988b94543d31f28396a96,
+  #   #   expires_in: 28800,
+  #   #   refresh_token: r1.a4f05c7626645166071140fcd4bd0f0ea70173ae20959d3efd2bda2c3c25f73880fafc4b164d57a1,
+  #   #   refresh_token_expires_in: 15724800,
+  #   #   scope: , ???
+  #   #   token_type: bearer
+  #   # }
+
+  #   current_user
+  #   |> Accounts.User.changeset(%{access_tokens: access_tokens})
+  #   |> Repo.update!()
+
+  #   {:ok, current_user}
+  # end
+
+  def link_account(%{origin_id: origin_id, content: content}, %{
         context: %{current_user: current_user}
       }) do
-    access_tokens =
-      case current_user.access_tokens do
-        nil -> Map.put(%{}, vendor, content)
-        _ -> current_user.access_tokens |> Map.put(vendor, %{content: content})
-      end
+    access_token = content
 
-    # Check other platforms but should be stored as:
-    # {
-    #   access_token: 4a7c72cc2eaa8e3fa6c988b94543d31f28396a96,
-    #   expires_in: 28800,
-    #   refresh_token: r1.a4f05c7626645166071140fcd4bd0f0ea70173ae20959d3efd2bda2c3c25f73880fafc4b164d57a1,
-    #   refresh_token_expires_in: 15724800,
-    #   scope: , ???
-    #   token_type: bearer
-    # }
-
-    current_user
-    |> Accounts.User.changeset(%{access_tokens: access_tokens})
-    |> Repo.update!()
-
-    {:ok, current_user}
-  end
-
-  def link_account(%{vendor: vendor, content: content}, %{
-        context: %{current_user: current_user}
-      }) do
-    access_tokens =
-      case current_user.access_tokens do
-        nil -> Map.put(%{}, vendor, content)
-        _ -> current_user.access_tokens |> Map.put(vendor, content)
-      end
-
-    access_token = current_user.access_tokens[vendor]
-
-    origin_id =
+    user_origin_id =
       case HTTPoison.get(
              "https://api.github.com/user",
              "Content-Type": "application/json",
@@ -120,33 +114,23 @@ defmodule Resolvers.Users do
           IO.inspect(inspect(reason))
       end
 
-    origin_ids =
-      case current_user.origin_ids do
-        nil -> Map.put(%{}, vendor, origin_id)
-        _ -> current_user.origin_ids |> Map.put(vendor, origin_id)
-      end
-
-    current_user
-    |> Accounts.User.changeset(%{access_tokens: access_tokens, origin_ids: origin_ids})
-    |> Repo.update!()
+    Accounts.upsert_user_origin(%{
+      origin_id: origin_id,
+      user_id: current_user.id,
+      access_token: access_token,
+      user_origin_id: user_origin_id
+    })
 
     {:ok, current_user}
   end
 
   def link_account(_args, _info), do: {:error, "Not Authorized"}
 
-  def fetch_repositories(%{vendor: vendor}, %{
+  def fetch_repositories(%{origin_id: origin_id}, %{
         context: %{current_user: current_user}
       }) do
-    # with repos <- Contributio.Platforms.GitHub.get(
-    #   "/user/repos",
-    #   current_user.access_tokens[vendor],
-    #   %{type: "public"}
-    # ) do
-    #   Logger.debug(inspect repos)
-    # end
 
-    access_token = current_user.access_tokens[vendor]
+    access_token = Accounts.get_user_origin(origin_id, current_user.user_id).token
 
     case HTTPoison.get(
            "https://api.github.com/user/repos",
@@ -164,10 +148,10 @@ defmodule Resolvers.Users do
     end
   end
 
-  def import_repositories(%{vendor: vendor, ids: ids}, %{
+  def import_repositories(%{origin_id: origin_id, ids: ids}, %{
         context: %{current_user: current_user}
       }) do
-    access_token = current_user.access_tokens[vendor]
+    access_token = Accounts.get_user_origin(origin_id, current_user.user_id).token
 
     ids
     |> Enum.map(

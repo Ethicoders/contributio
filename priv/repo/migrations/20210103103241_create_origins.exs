@@ -3,9 +3,8 @@ defmodule Contributio.Repo.Migrations.CreateOrigins do
 
   def change do
     create table(:origins) do
-
-      timestamps()
+      add :name, :string
+      add :url, :string
     end
-
   end
 end
