@@ -8,7 +8,7 @@ defmodule Contributio.Market.Task do
     field :difficulty, :integer
     field :time, :integer
     field :experience, :integer, virtual: true
-    field :issue_id, :integer
+    field :issue_id, :string
     field :url, :string
     belongs_to :project, Contributio.Market.Project
     has_many :submissions, Contributio.Market.Submission

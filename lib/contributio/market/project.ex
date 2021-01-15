@@ -4,7 +4,7 @@ defmodule Contributio.Market.Project do
 
   schema "projects" do
     field :name, :string
-    field :repo_id, :integer
+    field :repo_id, :string
     field :description, :string
     field :url, :string
     # field :readme, :string

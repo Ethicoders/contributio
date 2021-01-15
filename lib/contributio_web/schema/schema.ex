@@ -71,6 +71,14 @@ defmodule Contributio.Schema do
 
       resolve(&Resolvers.Users.fetch_repositories/2)
     end
+
+    @desc "Fetch issues linked to a given project"
+    field :fetch_project_issues, list_of!(:issue) do
+      arg(:origin_id, f!(:integer))
+      arg(:project_id, f!(:string))
+
+      resolve(&Resolvers.Users.fetch_issues/2)
+    end
   end
 
   mutation do
@@ -134,7 +142,7 @@ defmodule Contributio.Schema do
     #   resolve(&Resolvers.Users.set_access_token/2)
     # end
 
-    @desc "Link VC service account"
+    @desc "Link VCS service account"
     field :link_account, f!(:user) do
       arg(:origin_id, f!(:integer))
       arg(:content, f!(:string))
@@ -142,12 +150,21 @@ defmodule Contributio.Schema do
       resolve(&Resolvers.Users.link_account/2)
     end
 
-    @desc "Import VC service repositories as projects"
+    @desc "Import VCS service repositories as projects"
     field :import_repositories, :boolean do
       arg(:origin_id, f!(:integer))
-      arg(:ids, list_of!(:integer))
+      arg(:ids, list_of!(:string))
 
       resolve(&Resolvers.Users.import_repositories/2)
+    end
+
+    @desc "Import VCS service issues as tasks from a given project"
+    field :import_project_issues, :boolean do
+      arg(:origin_id, f!(:integer))
+      arg(:ids, list_of!(:string))
+      arg(:project_id, f!(:string))
+
+      resolve(&Resolvers.Users.import_issues/2)
     end
   end
 end

@@ -959,6 +959,97 @@
         "possibleTypes": null
       },
       {
+        "description": "Issue data fetched from a VCS platform",
+        "enumValues": null,
+        "fields": [
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "number",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "statusesUrl",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "title",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "url",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "kind": "OBJECT",
+        "name": "Issue",
+        "possibleTypes": null
+      },
+      {
         "description": null,
         "enumValues": null,
         "fields": null,
@@ -1129,7 +1220,70 @@
                       "name": null,
                       "ofType": {
                         "kind": "SCALAR",
-                        "name": "Int",
+                        "name": "String",
+                        "ofType": null
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "originId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                }
+              },
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "projectId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Import VCS service issues as tasks from a given project",
+            "isDeprecated": false,
+            "name": "importProjectIssues",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "ids",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "SCALAR",
+                        "name": "String",
                         "ofType": null
                       }
                     }
@@ -1152,7 +1306,7 @@
               }
             ],
             "deprecationReason": null,
-            "description": "Import VC service repositories as projects",
+            "description": "Import VCS service repositories as projects",
             "isDeprecated": false,
             "name": "importRepositories",
             "type": {
@@ -1193,7 +1347,7 @@
               }
             ],
             "deprecationReason": null,
-            "description": "Link VC service account",
+            "description": "Link VCS service account",
             "isDeprecated": false,
             "name": "linkAccount",
             "type": {
@@ -1441,6 +1595,59 @@
         "description": null,
         "enumValues": null,
         "fields": [
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "originId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                }
+              },
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "projectId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Fetch issues linked to a given project",
+            "isDeprecated": false,
+            "name": "fetchProjectIssues",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Issue",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          },
           {
             "args": [
               {
@@ -1759,7 +1966,7 @@
         "possibleTypes": null
       },
       {
-        "description": "",
+        "description": "Repository data fetched from a VCS platform",
         "enumValues": null,
         "fields": [
           {
@@ -1789,7 +1996,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "String",
                 "ofType": null
               }
             }

@@ -1,33 +1,33 @@
 let str = React.string;
 
-module FetchRepositories = [%graphql
+module FetchIssues = [%graphql
   {|
-    query fetchRepositories($originId: Int!) {
-      fetchRepositories(originId: $originId) {
+    query fetchProjectIssues($originId: Int!, $projectId: String!) {
+      fetchProjectIssues(originId: $originId, projectId: $projectId) {
         id
         url
-        name
-        fullName
+        title
+        number
       }
     }
 |}
 ];
 
-module ImportRepositories = [%graphql
+module ImportIssues = [%graphql
   {|
-  mutation importRepositories ($originId: Int!, $ids: [String!]!) {
-    importRepositories(originId: $originId, ids: $ids)
+  mutation importProjectIssues ($originId: Int!, $ids: [String!]!, $projectId: String!) {
+    importProjectIssues(originId: $originId, ids: $ids, projectId: $projectId)
   }
 |}
 ];
 
 [@react.component]
-let make = () => {
+let make = (~projectId) => {
   let (ids, setIDs) = React.useState(_ => [||]);
-  let (mutate, _mutationResult) = ImportRepositories.use();
+  let (mutate, _mutationResult) = ImportIssues.use();
 
   <div>
-    <h1> "My Repositories"->str </h1>
+    <h1> "My Issues"->str </h1>
     <div className="px-2">
       <svg
         className="absolute z-50 m-1 text-blue-400"
@@ -48,16 +48,13 @@ let make = () => {
         placeholder="Search..."
       />
     </div>
-    {switch (FetchRepositories.use({originId: 1})) {
+    {switch (FetchIssues.use({originId: 1, projectId})) {
      | {loading: true} => "Loading..."->React.string
-     | {data: None, loading: false} => "No repositories found!"->React.string
-     | {data: Some({fetchRepositories}), loading: false} =>
+     | {data: None, loading: false} => "No issues found!"->React.string
+     | {data: Some({fetchProjectIssues}), loading: false} =>
        let handleClick = _ => {
-         let result = mutate({originId: 1, ids});
-
-         result
-         |> Js.Promise.then_(value => {Js.Promise.resolve(value)})
-         |> ignore;
+         let result = mutate({originId: 1, ids, projectId}) |> ignore;
+         ();
        };
        let removeFromArray = (item, values) => {
          let _ =
@@ -79,17 +76,17 @@ let make = () => {
 
        <>
          <ul>
-           {fetchRepositories
-            ->Belt.Array.map(repo =>
+           {fetchProjectIssues
+            ->Belt.Array.map(issue =>
                 <li>
                   <input
-                    onClick={_ => handleCheckboxClick(repo.id)}
+                    onClick={_ => handleCheckboxClick(issue.id)}
                     type_="checkbox"
-                    value={repo.id}
+                    value={issue.id}
                   />
-                  repo.fullName->str
+                  issue.title->str
                   " - "->str
-                  <a href={repo.url} target="_blank"> "See"->str </a>
+                  <a href={issue.url} target="_blank"> "See"->str </a>
                 </li>
               )
             ->React.array}

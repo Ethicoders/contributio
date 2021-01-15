@@ -80,12 +80,21 @@ defmodule Contributio.Schema.DataTypes do
     field :access_token, f!(:string)
   end
 
-  @desc ""
+  @desc "Repository data fetched from a VCS platform"
   object :repository do
-    field :id, f!(:integer)
+    field :id, f!(:string)
     field :statuses_url, f!(:string)
     field :name, f!(:string)
     field :full_name, f!(:string)
+    field :url, f!(:string)
+  end
+
+  @desc "Issue data fetched from a VCS platform"
+  object :issue do
+    field :id, f!(:string)
+    field :statuses_url, f!(:string)
+    field :title, f!(:string)
+    field :number, f!(:integer)
     field :url, f!(:string)
   end
 end

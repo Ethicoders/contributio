@@ -8,7 +8,7 @@ let make = () => {
     | ["account", "projects"] => <AccountProjects />
     | ["account", "import", "projects"] => <ImportProjects />
     // | ["account", "tasks"] => <AccountTasks />
-    // | ["account", "import", "tasks"] => <ImportTasks />
+    | ["account", "import", "projects", projectId, "tasks"] => <ImportTasks projectId />
     | _ => <Details />
     };
 

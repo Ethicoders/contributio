@@ -1,6 +1,7 @@
 defmodule Resolvers.Users do
   require Logger
-  alias Contributio.{Accounts, Repo}
+  alias Contributio.{Accounts, Market, Repo}
+  alias ContributioWeb.Utils
 
   def get_user(%{id: id}, _info) do
     {:ok,
@@ -129,7 +130,6 @@ defmodule Resolvers.Users do
   def fetch_repositories(%{origin_id: origin_id}, %{
         context: %{current_user: current_user}
       }) do
-
     access_token = Accounts.get_user_origin(origin_id, current_user.id).access_token
 
     case HTTPoison.get(
@@ -140,7 +140,7 @@ defmodule Resolvers.Users do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         case Jason.decode!(body, keys: :atoms) do
           repos ->
-            {:ok, repos}
+            {:ok, Enum.map(repos, &(%{&1 | url: &1.html_url, id: &1.full_name}))}
         end
 
       {:error, %HTTPoison.Error{reason: reason}} ->
@@ -156,7 +156,7 @@ defmodule Resolvers.Users do
     ids
     |> Enum.map(
       &case HTTPoison.get(
-              "https://api.github.com/repositories/#{&1}",
+              "https://api.github.com/repos/#{&1}",
               ["Content-Type": "application/json", Authorization: "token #{access_token}"],
               params: %{type: "public"},
               hackney: [pool: :default]
@@ -172,9 +172,9 @@ defmodule Resolvers.Users do
                 {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
                   case Jason.decode!(body, keys: :atoms) do
                     languages ->
-                      Contributio.Market.create_project(%{
+                      Market.create_project(%{
                         name: repo.name,
-                        repo_id: repo.id,
+                        repo_id: repo.full_name,
                         description: repo.description,
                         url: repo.html_url,
                         languages: languages,
@@ -182,6 +182,63 @@ defmodule Resolvers.Users do
                       })
                   end
               end
+          end
+
+        {:error, %HTTPoison.Error{reason: reason}} ->
+          IO.inspect(reason)
+      end
+    )
+
+    {:ok, true}
+  end
+
+  def fetch_issues(%{origin_id: _origin_id, project_id: project_id}, %{
+        context: %{current_user: _current_user}
+      }) do
+    # access_token = Accounts.get_user_origin(origin_id, current_user.id).access_token
+
+    repo_id = Market.get_project!(project_id).repo_id
+
+    case HTTPoison.get(
+           "https://api.github.com/repos/#{repo_id}/issues",
+           "Content-Type": "application/json"
+         ) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        case Jason.decode!(body, keys: :atoms) do
+          issues ->
+            {:ok, Enum.map(issues, &(%{&1 | url: &1.html_url, id: &1.number}))}
+        end
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        IO.inspect(reason)
+    end
+  end
+
+  def import_issues(%{origin_id: _origin_id, ids: ids, project_id: project_id}, %{
+        context: %{current_user: _current_user}
+      }) do
+    # access_token = Accounts.get_user_origin(origin_id, current_user.id).access_token
+    repo_id = Market.get_project!(project_id).repo_id
+
+    ids
+    |> Enum.map(
+      &case HTTPoison.get(
+              "https://api.github.com/repos/#{repo_id}/issues/#{&1}",
+              ["Content-Type": "application/json"],
+              hackney: [pool: :default]
+            ) do
+        {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+          case Jason.decode!(body, keys: :atoms) do
+            issue ->
+              Utils.extract_contributio_code_data(issue.body)
+              |> Map.merge(%{
+                name: issue.title,
+                content: issue.body,
+                url: issue.html_url,
+                issue_id: Integer.to_string(issue.number),
+                project_id: project_id
+              })
+              |> Contributio.Market.create_task()
           end
 
         {:error, %HTTPoison.Error{reason: reason}} ->
