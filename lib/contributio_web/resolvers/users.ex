@@ -130,7 +130,7 @@ defmodule Resolvers.Users do
         context: %{current_user: current_user}
       }) do
 
-    access_token = Accounts.get_user_origin(origin_id, current_user.user_id).token
+    access_token = Accounts.get_user_origin(origin_id, current_user.id).access_token
 
     case HTTPoison.get(
            "https://api.github.com/user/repos",
@@ -151,7 +151,7 @@ defmodule Resolvers.Users do
   def import_repositories(%{origin_id: origin_id, ids: ids}, %{
         context: %{current_user: current_user}
       }) do
-    access_token = Accounts.get_user_origin(origin_id, current_user.user_id).token
+    access_token = Accounts.get_user_origin(origin_id, current_user.id).access_token
 
     ids
     |> Enum.map(

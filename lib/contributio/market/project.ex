@@ -31,7 +31,7 @@ defmodule Contributio.Market.Project do
   @doc false
   def changeset(project, attrs) do
     project
-    |> cast(attrs, [:name, :repo_id, :description, :url, :languages])
+    |> cast(attrs, [:name, :repo_id, :description, :url, :languages, :user_id])
     |> validate_required([:name])
   end
 end

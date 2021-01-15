@@ -41,7 +41,7 @@ defmodule Contributio.Market do
   end
 
   def list_projects_languages do
-    (from q in Project, select: fragment("jsonb_object_keys(?)", q.languages)) |> Repo.all()
+    (from q in Project, select: fragment("DISTINCT jsonb_object_keys(?)", q.languages)) |> Repo.all()
   end
 
   @doc """

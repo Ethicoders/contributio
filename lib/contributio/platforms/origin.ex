@@ -13,7 +13,7 @@ defmodule Contributio.Platforms.Origin do
   @doc false
   def changeset(origin, attrs) do
     origin
-    |> cast(attrs, [])
+    |> cast(attrs, [:name, :url])
     |> validate_required([])
   end
 end
