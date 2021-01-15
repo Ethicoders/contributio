@@ -56,8 +56,8 @@ defmodule ContributioWeb.Webhooks.Github do
         name: issue["title"],
         content: issue["body"],
         url: issue["html_url"],
-        issue_id: issue["id"],
-        project_id: repository["id"]
+        issue_id: Integer.to_string(issue["number"]),
+        project_id: repository["full_name"]
       })
 
     {nil, :task, :create, data}
@@ -96,8 +96,12 @@ defmodule ContributioWeb.Webhooks.Github do
   #   {issue["id"], :task, :update, data}
   # end
 
-  defp resolve("???", %{repository: repository, action: "deleted"}) do
-    {repository["id"], :project, :closed, %{}}
+  defp resolve("repository", %{repository: repository, action: "renamed"}) do
+    {repository["id"], :update, :project, %{repo_id: repository["full_name"]}}
+  end
+
+  defp resolve("repository", %{repository: repository, action: "deleted"}) do
+    {repository["id"], :close, :project, %{}}
   end
 
   defp resolve(_, _) do
