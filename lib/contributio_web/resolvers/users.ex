@@ -50,6 +50,14 @@ defmodule Resolvers.Users do
 
   # VCS part
   def request_access_token(%{code: code}, %{context: %{current_user: _current_user}}) do
+    {:ok, fetch_access_token(code)}
+  end
+
+  def request_access_token(%{code: code}, _info) do
+    {:ok, fetch_access_token(code)}
+  end
+
+  defp fetch_access_token(code) do
     case HTTPoison.post(
            "https://github.com/login/oauth/access_token",
            Jason.encode!(%{
@@ -60,14 +68,12 @@ defmodule Resolvers.Users do
            [{"Content-Type", "application/json"}]
          ) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, %{access_token: body}}
+        %{access_token: body}
 
       {:error, %HTTPoison.Error{reason: reason}} ->
         IO.inspect(reason)
     end
   end
-
-  def request_access_token(_args, _info), do: {:error, "Not Authorized"}
 
   # def set_access_token(%{origin_id: origin_id, content: content}, %{
   #       context: %{current_user: current_user}
@@ -100,20 +106,7 @@ defmodule Resolvers.Users do
       }) do
     access_token = content
 
-    user_origin_id =
-      case HTTPoison.get(
-             "https://api.github.com/user",
-             "Content-Type": "application/json",
-             Authorization: "token #{access_token}"
-           ) do
-        {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-          case Jason.decode!(body, keys: :atoms) do
-            user -> user.id
-          end
-
-        {:error, %HTTPoison.Error{reason: reason}} ->
-          IO.inspect(inspect(reason))
-      end
+    user_origin_id = fetch_user_origin_data(access_token).id
 
     Accounts.upsert_user_origin(%{
       origin_id: origin_id,
@@ -126,6 +119,57 @@ defmodule Resolvers.Users do
   end
 
   def link_account(_args, _info), do: {:error, "Not Authorized"}
+
+  def create_linked_account(%{origin_id: origin_id, content: content}, _info) do
+    access_token = content
+
+    user_origin = fetch_user_origin_data(access_token)
+
+    current_user =
+      case Accounts.create_user(%{
+             name: user_origin.login,
+             email: user_origin.email
+           }) do
+        {:ok, user} -> user
+      end
+
+    Accounts.upsert_user_origin(%{
+      origin_id: origin_id,
+      user_id: current_user.id,
+      access_token: access_token,
+      user_origin_id: user_origin.id
+    })
+
+    # {:ok, current_user}
+
+    {:ok, current_user |> set_user_token()}
+  end
+
+  defp set_user_token(%Accounts.User{} = user) do
+    token = Phoenix.Token.sign(ContributioWeb.Endpoint, "user auth", user.id)
+
+    user
+    |> Accounts.User.changeset(%{token: token})
+    |> Repo.update!()
+
+    %{user: user, token: token}
+  end
+
+  defp fetch_user_origin_data(access_token) do
+    case HTTPoison.get(
+           "https://api.github.com/user",
+           "Content-Type": "application/json",
+           Authorization: "token #{access_token}"
+         ) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        case Jason.decode!(body, keys: :atoms) do
+          user -> user
+        end
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        IO.inspect(inspect(reason))
+    end
+  end
 
   def fetch_repositories(%{origin_id: origin_id}, %{
         context: %{current_user: current_user}
@@ -140,7 +184,7 @@ defmodule Resolvers.Users do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         case Jason.decode!(body, keys: :atoms) do
           repos ->
-            {:ok, Enum.map(repos, &(%{&1 | url: &1.html_url, id: &1.full_name}))}
+            {:ok, Enum.map(repos, &%{&1 | url: &1.html_url, id: &1.full_name})}
         end
 
       {:error, %HTTPoison.Error{reason: reason}} ->
@@ -206,7 +250,7 @@ defmodule Resolvers.Users do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         case Jason.decode!(body, keys: :atoms) do
           issues ->
-            {:ok, Enum.map(issues, &(%{&1 | url: &1.html_url, id: &1.number}))}
+            {:ok, Enum.map(issues, &%{&1 | url: &1.html_url, id: &1.number})}
         end
 
       {:error, %HTTPoison.Error{reason: reason}} ->

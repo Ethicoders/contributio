@@ -1,4 +1,4 @@
-let str = React.string;
+/* let str = React.string;
 
 module SetUserAccessTokenGQL = [%graphql
   {|
@@ -44,4 +44,4 @@ let make = (~accessToken) => {
     </>
   };
     
-};
+}; */

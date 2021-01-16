@@ -18,7 +18,7 @@ type entryType =
   | SignUp;
 
 [@react.component]
-let make = () => {
+let make = (~onSignIn) => {
   let (state, send) =
     React.useState(() =>
       Js.Dict.fromList([("email", ""), ("password", "")])
@@ -37,24 +37,16 @@ let make = () => {
   let handleSubmit = evt => {
     ReactEvent.Form.preventDefault(evt);
 
-    mutate(
-      ~update=
-        (_, {data}) =>
-          switch (data) {
-          | Some(_) => ()
-          | None => ()
-          },
-      {
-        email: Js.Dict.unsafeGet(state, "email"),
-        password: Js.Dict.unsafeGet(state, "password"),
-      },
-    )
+    mutate({
+      email: Js.Dict.unsafeGet(state, "email"),
+      password: Js.Dict.unsafeGet(state, "password"),
+    })
     ->ignore;
 
     switch (result) {
     | {called: false} => Js.log("Not called... ")
     | {loading: true} => Js.log("Loading...")
-    | {data: Some(_), error: None} => Js.log("Done.")
+    | {data: Some(_), error: None} => onSignIn()
     | {error} =>
       Js.log(
         "Error loading data"
@@ -68,12 +60,32 @@ let make = () => {
     };
   };
 
+  let url =
+    Url.buildFrom(
+      "https://github.com/",
+      ["login", "oauth", "authorize"],
+      {
+        "client_id": Env.githubClientID,
+        "redirect_uri": Js.Global.encodeURI(Env.allowEndpoint),
+      },
+    );
+
+  let msgBackSuccessHandler = (e: Window.MessageEvent.t) => {
+    Js.log("Success!");
+  };
+
+  let handleClick = _ => {
+    Window.onMessage("link:success", msgBackSuccessHandler);
+    /* Window.onMessage("link:error", msgBackErrorHandler); */
+    Window.open_(url, "GitHub");
+  };
+
   let baseClassNames =
     ClassName.create([|
       Value("flex-1"),
       Value("bg-gray-200"),
       Value("p-4"),
-      Value("cursor-pointer")
+      Value("cursor-pointer"),
     |]);
 
   let classNamesSignIn =
@@ -88,16 +100,28 @@ let make = () => {
     );
   <>
     <ul className="flex">
-      <li className={ClassName.output(classNamesSignIn)} onClick={_ => setEntryType(_ => SignIn)}>
+      <li
+        className={ClassName.output(classNamesSignIn)}
+        onClick={_ => setEntryType(_ => SignIn)}>
         <Heading size=Small> "Sign In"->str </Heading>
       </li>
-      <li className={ClassName.output(classNamesSignUp)} onClick={_ => setEntryType(_ => SignUp)}>
+      <li
+        className={ClassName.output(classNamesSignUp)}
+        onClick={_ => setEntryType(_ => SignUp)}>
         <Heading size=Small> "Sign Up"->str </Heading>
       </li>
     </ul>
     <div
       className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
+        <div>
+          <Icon
+            name=Github
+            size={EvenLarger(5)}
+            onClick={Some(handleClick)}
+          />
+        </div>
+        <span> "OR"->str </span>
         <form onSubmit=handleSubmit className="mt-8 space-y-6">
           <input type_="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">

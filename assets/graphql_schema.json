@@ -1113,6 +1113,51 @@
               {
                 "defaultValue": null,
                 "description": null,
+                "name": "content",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              },
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "originId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Create a linked VCS service account",
+            "isDeprecated": false,
+            "name": "createLinkedAccount",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AuthPayload",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
                 "name": "name",
                 "type": {
                   "kind": "NON_NULL",

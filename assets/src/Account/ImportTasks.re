@@ -53,7 +53,7 @@ let make = (~projectId) => {
      | {data: None, loading: false} => "No issues found!"->React.string
      | {data: Some({fetchProjectIssues}), loading: false} =>
        let handleClick = _ => {
-         let result = mutate({originId: 1, ids, projectId}) |> ignore;
+         mutate({originId: 1, ids, projectId}) |> ignore;
          ();
        };
        let removeFromArray = (item, values) => {

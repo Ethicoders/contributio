@@ -12,14 +12,25 @@ module RequestAccessToken = [%graphql
 
 [@react.component]
 let make = (~code) => {
-  switch (RequestAccessToken.use({originId: 1, code: code})) {
+  switch (RequestAccessToken.use({originId: 1, code})) {
   | {data: Some(response)} =>
     let accessToken =
       Js.Dict.unsafeGet(
         Url.parseQueryArgs(response.requestAccessToken.accessToken),
         "access_token",
       );
-    <LinkAccount accessToken onDone={() => Window.close()} />;
+
+    if (Session.isConnected()) {
+      <LinkAccount accessToken onDone={() => Window.close()} />;
+    } else {
+      <CreateAccount
+        accessToken
+        onDone={() => {
+          Window.postMessage("link:success");
+          Window.close();
+        }}
+      />;
+    };
 
   | {data: None} => <div> "Loading..."->str </div>
   };

@@ -5,6 +5,11 @@ let make = (~children) => {
   let (isVisible, setVisible) = React.useState(() => false);
 
   let handleToggleOverlay = _ => setVisible(_ => !isVisible);
+
+  let handleOnSignIn = _ => {
+    Js.log("in!");
+    setVisible(_ => false);
+  };
   <>
     <nav className="bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -138,7 +143,7 @@ let make = (~children) => {
                            "Entry"->str
                          </Button>
                          <Overlay onClose=handleToggleOverlay isVisible>
-                           <Login />
+                           <Login onSignIn=handleOnSignIn />
                          </Overlay>
                        </>}
                 </div>
@@ -244,46 +249,44 @@ let make = (~children) => {
     </main>
     <footer className="w-full">
       <div className="bg-gray-700">
-
-          <div
-            className="max-w-6xl m-auto text-gray-800 flex flex-wrap justify-center">
-            <div className="p-5 w-48 ">
-              <Anchor
-                target="/operation"
-                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                "Operation"->str
-              </Anchor>
-            </div>
-            /* <div class="text-xs uppercase text-gray-500 font-medium">Home</div>
-               <a class="my-3 block" href="/#">Services <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Products <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">About Us <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Pricing <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Partners <span class="text-teal-600 text-xs p-1">New</span></a>  */
-            <div className="p-5 w-48 ">
-              <Anchor
-                target="/projects"
-                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                "Projects"->str
-              </Anchor>
-            </div>
-            /* <div class="text-xs uppercase text-gray-500 font-medium">User</div>
-               <a class="my-3 block" href="/#">Sign in <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">New Account <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Demo <span class="text-teal-600 text-xs p-1">New</span></a><a class="my-3 block" href="/#">Career <span class="text-teal-600 text-xs p-1">We're hiring</span></a><a class="my-3 block" href="/#">Surveys <span class="text-teal-600 text-xs p-1">New</span></a>  */
-            <div className="p-5 w-48 ">
-              <Anchor
-                target="/tasks"
-                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                "Tasks"->str
-              </Anchor>
-            </div>
-
-            <div className="p-5 w-48">
-              <Anchor
-                target="/users"
-                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                "Users"->str
-              </Anchor>
-            </div>
+        <div
+          className="max-w-6xl m-auto text-gray-800 flex flex-wrap justify-center">
+          <div className="p-5 w-48 ">
+            <Anchor
+              target="/operation"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+              "Operation"->str
+            </Anchor>
+          </div>
+          /* <div class="text-xs uppercase text-gray-500 font-medium">Home</div>
+             <a class="my-3 block" href="/#">Services <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Products <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">About Us <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Pricing <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Partners <span class="text-teal-600 text-xs p-1">New</span></a>  */
+          <div className="p-5 w-48 ">
+            <Anchor
+              target="/projects"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+              "Projects"->str
+            </Anchor>
+          </div>
+          /* <div class="text-xs uppercase text-gray-500 font-medium">User</div>
+             <a class="my-3 block" href="/#">Sign in <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">New Account <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Demo <span class="text-teal-600 text-xs p-1">New</span></a><a class="my-3 block" href="/#">Career <span class="text-teal-600 text-xs p-1">We're hiring</span></a><a class="my-3 block" href="/#">Surveys <span class="text-teal-600 text-xs p-1">New</span></a>  */
+          <div className="p-5 w-48 ">
+            <Anchor
+              target="/tasks"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+              "Tasks"->str
+            </Anchor>
+          </div>
+          <div className="p-5 w-48">
+            <Anchor
+              target="/users"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+              "Users"->str
+            </Anchor>
           </div>
         </div>
-        /* <div class="text-xs uppercase text-gray-500 font-medium">Resources</div>
-           <a class="my-3 block" href="/#">Documentation <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Tutorials <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Support <span class="text-teal-600 text-xs p-1">New</span></a>  */
+      </div>
+      /* <div class="text-xs uppercase text-gray-500 font-medium">Resources</div>
+         <a class="my-3 block" href="/#">Documentation <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Tutorials <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Support <span class="text-teal-600 text-xs p-1">New</span></a>  */
       /* <div class="p-5 w-48 ">
             <div class="text-xs uppercase text-gray-500 font-medium">Product</div>
             <a class="my-3 block" href="/#">Our Products <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Great Deals <span class="text-teal-600 text-xs p-1">New</span></a><a class="my-3 block" href="/#">Analytics <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Mobile <span class="text-teal-600 text-xs p-1"></span></a>

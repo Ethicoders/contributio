@@ -52,6 +52,7 @@ defmodule Contributio.MixProject do
       {:httpoison, "~> 1.7"},
       {:corsica, "~> 1.0"},
       {:plug, "~> 1.0"},
+      {:timex, "~> 3.6"},
     ]
   end
 

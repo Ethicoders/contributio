@@ -150,6 +150,14 @@ defmodule Contributio.Schema do
       resolve(&Resolvers.Users.link_account/2)
     end
 
+    @desc "Create a linked VCS service account"
+    field :create_linked_account, f!(:auth_payload) do
+      arg(:origin_id, f!(:integer))
+      arg(:content, f!(:string))
+
+      resolve(&Resolvers.Users.create_linked_account/2)
+    end
+
     @desc "Import VCS service repositories as projects"
     field :import_repositories, :boolean do
       arg(:origin_id, f!(:integer))

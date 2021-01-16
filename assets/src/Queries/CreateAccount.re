@@ -1,10 +1,13 @@
 let str = React.string;
 
-module LinkAccountGQL = [%graphql
+module CreateLinkedAccount = [%graphql
   {|
-    mutation linkAccount($originId: Int!, $content: String!) {
-      linkAccount(originId: $originId, content: $content) {
-        id
+    mutation createLinkedAccount($originId: Int!, $content: String!) {
+      createLinkedAccount(originId: $originId, content: $content) {
+        token
+        user {
+          id
+        }
       }
     }
    |}
@@ -12,7 +15,7 @@ module LinkAccountGQL = [%graphql
 
 [@react.component]
 let make = (~accessToken, ~onDone) => {
-  let (mutate, result) = LinkAccountGQL.use();
+  let (mutate, result) = CreateLinkedAccount.use();
 
   mutate(
     ~update=

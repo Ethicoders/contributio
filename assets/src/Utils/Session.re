@@ -1,15 +1,16 @@
-let cookieExists: unit => int = [%bs.raw
+let cookieDidNotExpire: unit => bool = [%bs.raw
   {|
     function() {
-      document.cookie = 'ctiotoken=test';
-      return document.cookie.indexOf('ctiotoken');
+      console.log(document.cookie.indexOf('ctiotokenexpire'));
+      if (-1 === document.cookie.indexOf('ctiotokenexpire')) {
+        return false;
+      }
+      var out = /ctiotokenexpire=([^;]*)/.exec(document.cookie);
+      return new Date(out[1]) >= new Date();
     }
   |}
 ];
 
 let isConnected = () => {
-  switch (cookieExists()) {
-  | -1 => true
-  | _ => false
-  };
-}
+  cookieDidNotExpire();
+};

@@ -31,7 +31,13 @@ defmodule ContributioWeb.Router do
   end
 
   def before_send(conn, %{execution: %{context: %{token: token}}}) do
-    conn |> put_resp_cookie("ctiotoken", token, http_only: true)
+    conn
+    |> put_resp_cookie("ctiotoken", token, http_only: true)
+    |> put_resp_cookie(
+      "ctiotokenexpire",
+      Timex.now() |> Timex.shift(minutes: 30) |> Timex.format!("%FT%T.%f%z", :strftime),
+      http_only: false
+    )
   end
 
   def before_send(conn, _), do: conn
