@@ -70,7 +70,7 @@ let make = (~onSignIn) => {
       },
     );
 
-  let msgBackSuccessHandler = (e: Window.MessageEvent.t) => {
+  let msgBackSuccessHandler = (_: Window.MessageEvent.t) => {
     Js.log("Success!");
   };
 

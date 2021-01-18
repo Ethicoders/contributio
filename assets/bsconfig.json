@@ -3,15 +3,23 @@
   "reason": {
     "react-jsx": 3
   },
-  "sources": {
-    "dir": "src",
-    "subdirs": true
-  },
-  "package-specs": {
-    "module": "commonjs",
-    "in-source": true
-  },
+  "bsc-flags": [
+    "-bs-super-errors"
+  ],
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    }
+  ],
+  "package-specs": [
+    {
+      "module": "es6",
+      "in-source": true
+    }
+  ],
   "suffix": ".bs.js",
+  "namespace": true,
   "bs-dependencies": [
     "bs-css",
     "bs-css-emotion",
@@ -32,9 +40,5 @@
   "ppx-flags": [
     "@reasonml-community/graphql-ppx/ppx"
   ],
-  "warnings": {
-    "error": "+101"
-  },
-  "namespace": true,
   "refmt": 3
 }

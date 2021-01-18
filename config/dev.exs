@@ -29,11 +29,11 @@ config :contributio, ContributioWeb.Endpoint,
     #   "../priv/static/js",
     #   cd: Path.expand("../front", __DIR__)
     # ]
-    npm: [
-      "run",
-      "watch",
-      cd: Path.expand("../assets", __DIR__)
-    ]
+    # npm: [
+    #   "run",
+    #   "watch",
+    #   cd: Path.expand("../assets", __DIR__)
+    # ]
     # node: [
     #   "node_modules/webpack/bin/webpack.js",
     #   "--mode",
