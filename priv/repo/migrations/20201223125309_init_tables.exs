@@ -22,6 +22,8 @@ defmodule Contributio.Repo.Migrations.AddUserTable do
       add :content, :string
       add :issue_id, :string
       add :url, :string
+      add :difficulty, :integer
+      add :project_id, references(:projects)
     end
   end
 end
