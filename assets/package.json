@@ -4,10 +4,12 @@
   "license": "MIT",
   "scripts": {
     "build:res": "bsb -make-world",
-    "build": "snowpack build",
     "clean:res": "bsb -clean-world",
     "start": "snowpack dev",
-    "watch": "snowpack build --watch"
+    "watch": "snowpack build --watch",
+    "build:styles": "postcss css/style.css -o ../priv/static/css/output.css",
+    "build:source": "snowpack build",
+    "build": "npm run build:source && npm run build:styles"
   },
   "dependencies": {
     "@coreui/icons": "^1.0.1",
@@ -42,6 +44,6 @@
     "reason-react": "^0.9.1",
     "rollup-plugin-commonjs": "^10.1.0",
     "snowpack": "^3.0.10",
-    "snowpack-graphql-ppx": "1.0.0"
+    "snowpack-graphql-ppx": "^1.0.0"
   }
 }
