@@ -140,8 +140,6 @@ defmodule Resolvers.Users do
       user_origin_id: user_origin.id
     })
 
-    # {:ok, current_user}
-
     {:ok, current_user |> set_user_token()}
   end
 

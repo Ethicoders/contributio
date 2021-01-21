@@ -10,7 +10,7 @@ defmodule Contributio.Market.Project do
     # field :readme, :string
     field :languages, :map
     # field :owner, :string
-    has_one :origin, Contributio.Platforms.Origin
+    belongs_to :origin, Contributio.Platforms.Origin
     belongs_to :user, Contributio.Accounts.User
     has_many :tasks, Contributio.Market.Task
 
