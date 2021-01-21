@@ -19,11 +19,16 @@ module.exports = {
     [
       "snowpack-plugin-rollup-bundle",
       {
-        entrypoints: {
-          index: {
-            css: "/assets/index.css",
-          },
-        },
+        entrypoints: [
+          "@coreui/icons/fonts/CoreUI-Icons-Brand.eot",
+          "@coreui/icons/fonts/CoreUI-Icons-Brand.ttf",
+          "@coreui/icons/fonts/CoreUI-Icons-Brand.svg",
+          "@coreui/icons/fonts/CoreUI-Icons-Brand.woff",
+          "@coreui/icons/fonts/CoreUI-Icons-Free.eot",
+          "@coreui/icons/fonts/CoreUI-Icons-Free.ttf",
+          "@coreui/icons/fonts/CoreUI-Icons-Free.svg",
+          "@coreui/icons/fonts/CoreUI-Icons-Free.woff",
+        ],
         emitHtmlFiles: true,
         extendConfig: (config) => {
           config.inputOptions.input = "../priv/static/js/index.bs.js";
