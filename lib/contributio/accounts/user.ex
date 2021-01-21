@@ -14,8 +14,6 @@ defmodule Contributio.Accounts.User do
     field :next_level_experience, :integer, virtual: true
     has_many :projects, Contributio.Market.Project
     has_many :users_origins, Contributio.Accounts.UserOrigin
-
-    timestamps()
   end
 
   @doc false

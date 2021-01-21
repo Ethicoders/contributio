@@ -24,8 +24,6 @@ defmodule Contributio.Market.Project do
 # - owner/organization
 # - tags
 # - license?
-
-    timestamps()
   end
 
   @doc false

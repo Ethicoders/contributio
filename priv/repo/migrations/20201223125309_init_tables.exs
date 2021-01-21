@@ -24,6 +24,7 @@ defmodule Contributio.Repo.Migrations.AddUserTable do
       add :url, :string
       add :difficulty, :integer
       add :project_id, references(:projects)
+      timestamps()
     end
   end
 end
