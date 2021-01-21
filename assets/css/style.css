@@ -1,0 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '@coreui/icons/css/free.min.css';
+@import '@coreui/icons/css/brand.min.css';
