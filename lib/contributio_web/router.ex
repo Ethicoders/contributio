@@ -30,7 +30,7 @@ defmodule ContributioWeb.Router do
     forward "/graphiql", Absinthe.Plug.GraphiQL, schema: Contributio.Schema
   end
 
-  def before_send(conn, %{execution: %{context: %{token: token}}}) do
+  def before_send(conn, %Absinthe.Blueprint{execution: %{context: %{token: token}}}) do
     conn
     |> put_resp_cookie("ctiotoken", token, http_only: true)
     |> put_resp_cookie(

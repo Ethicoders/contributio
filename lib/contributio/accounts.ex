@@ -39,6 +39,10 @@ defmodule Contributio.Accounts do
 
   def get_user(id), do: Repo.get(User, id)
 
+  def get_user_by!(attrs), do: Repo.get_by!(User, attrs)
+
+  def get_user_by(attrs), do: Repo.get_by(User, attrs)
+
   def get_user_by_email!(email), do: Repo.get_by!(User, email: email)
 
   def get_user_by_email(email), do: Repo.get_by(User, email: email)
@@ -46,6 +50,13 @@ defmodule Contributio.Accounts do
   def get_user_by_token!(token), do: Repo.get_by!(User, token: token)
 
   def get_user_by_token(token), do: Repo.get_by(User, token: token)
+
+  def get_or_create_user(attrs) do
+    case get_user_by_email(attrs.email) do
+      nil -> create_user(attrs)
+      user -> user
+    end
+  end
 
   def get_user_by_user_origin(origin_id, user_origin_id) do
     from(u in User,

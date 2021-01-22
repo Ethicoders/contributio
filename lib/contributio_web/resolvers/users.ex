@@ -34,13 +34,7 @@ defmodule Resolvers.Users do
          |> Accounts.get_user_by_email()
          |> Bcrypt.check_pass(password, hash_key: :hash) do
       {:ok, user} ->
-        token = Phoenix.Token.sign(ContributioWeb.Endpoint, "user auth", user.id)
-
-        user
-        |> Accounts.User.changeset(%{token: token})
-        |> Repo.update!()
-
-        {:ok, %{user: user, token: token}}
+        {:ok, user |> set_user_token()}
 
       payload
       when payload in [{:error, "invalid user-identifier"}, {:error, "invalid password"}] ->
@@ -125,13 +119,10 @@ defmodule Resolvers.Users do
 
     user_origin = fetch_user_origin_data(access_token)
 
-    current_user =
-      case Accounts.create_user(%{
-             name: user_origin.login,
-             email: user_origin.email
-           }) do
-        {:ok, user} -> user
-      end
+    current_user = Accounts.get_or_create_user(%{
+      name: user_origin.login,
+      email: user_origin.email
+    })
 
     Accounts.upsert_user_origin(%{
       origin_id: origin_id,
@@ -149,8 +140,6 @@ defmodule Resolvers.Users do
     user
     |> Accounts.User.changeset(%{token: token})
     |> Repo.update!()
-
-    %{user: user, token: token}
   end
 
   defp fetch_user_origin_data(access_token) do

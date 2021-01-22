@@ -119,19 +119,21 @@ defmodule Contributio.Schema do
 
       resolve(&Resolvers.Users.authenticate/2)
 
-      middleware(fn resolution, _ ->
-        case resolution.value do
-          %{user: _, token: token} ->
-            Map.update!(
-              resolution,
-              :context,
-              &Map.merge(&1, %{token: token})
-            )
+      middleware(&add_token_to_context/2)
+    end
 
-          _ ->
-            resolution
-        end
-      end)
+    defp add_token_to_context(resolution, _) do
+      case resolution.value do
+        %{token: token} ->
+          Map.update!(
+            resolution,
+            :context,
+            &Map.merge(&1, %{token: token})
+          )
+
+        _ ->
+          resolution
+      end
     end
 
     # @desc "Set a VC service user access token"
@@ -156,6 +158,7 @@ defmodule Contributio.Schema do
       arg(:content, f!(:string))
 
       resolve(&Resolvers.Users.create_linked_account/2)
+      middleware(&add_token_to_context/2)
     end
 
     @desc "Import VCS service repositories as projects"

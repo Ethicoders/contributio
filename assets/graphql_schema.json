@@ -763,22 +763,6 @@
             "deprecationReason": null,
             "description": null,
             "isDeprecated": false,
-            "name": "token",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [],
-            "deprecationReason": null,
-            "description": null,
-            "isDeprecated": false,
             "name": "user",
             "type": {
               "kind": "NON_NULL",

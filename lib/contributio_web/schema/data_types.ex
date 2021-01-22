@@ -71,7 +71,6 @@ defmodule Contributio.Schema.DataTypes do
 
   @desc "Authentication payload"
   object :auth_payload do
-    field :token, f!(:string)
     field :user, f!(:user)
   end
 

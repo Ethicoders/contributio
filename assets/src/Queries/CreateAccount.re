@@ -4,7 +4,6 @@ module CreateLinkedAccount = [%graphql
   {|
     mutation createLinkedAccount($originId: Int!, $content: String!) {
       createLinkedAccount(originId: $originId, content: $content) {
-        token
         user {
           id
         }
