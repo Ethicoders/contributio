@@ -1,8 +1,8 @@
-defmodule Contributio.Market.Submission do
+defmodule Contributio.Market.Contribution do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "submissions" do
+  schema "contributions" do
     field :status, :integer
     belongs_to :user, Contributio.Accounts.User
 
@@ -10,8 +10,8 @@ defmodule Contributio.Market.Submission do
   end
 
   @doc false
-  def changeset(submission, attrs) do
-    submission
+  def changeset(contribution, attrs) do
+    contribution
     |> cast(attrs, [:status])
     |> validate_required([])
   end

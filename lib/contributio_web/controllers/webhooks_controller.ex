@@ -67,23 +67,23 @@ defmodule ContributioWeb.WebhooksController do
 
   defp execute(%Contributio.Market.Task{} = task, action, %{
          user_ids: user_ids,
-         submission: submission
+         contribution: contribution
        })
        when action == :validate do
 
     experience = Game.get_experience_from_effort(task.time, task.difficulty)
 
-    task |> Repo.preload(:submissions)
+    task |> Repo.preload(:contributions)
 
     origin_id = get_origin_id()
     # Send max XP to users who contributed to merged PR
-    task[:submissions]
+    task[:contributions]
     |> Enum.filter(&(&1 in user_ids))
     |> Enum.map(&(Accounts.get_user_by_user_origin(origin_id, &1) |> Accounts.reward_user(experience)))
 
     # Send little XP to users who created a PR
     # Waiting for a better way to share XP, more adapted to the result
-    task[:submissions]
+    task[:contributions]
     |> Enum.filter(&(&1 not in user_ids))
     |> Enum.map(&(Accounts.get_user_by_user_origin(origin_id, &1) |> Accounts.reward_user(experience / 10)))
 
@@ -94,17 +94,17 @@ defmodule ContributioWeb.WebhooksController do
     Market.close_task(task)
   end
 
-  defp execute(type, action, data) when type == :submission and action == :create do
-    Market.create_submission(data)
+  defp execute(type, action, data) when type == :contribution and action == :create do
+    Market.create_contribution(data)
   end
 
-  defp execute(%Contributio.Market.Submission{} = submission, action, data)
+  defp execute(%Contributio.Market.Contribution{} = contribution, action, data)
        when action == :update do
-    Market.update_submission(submission, data)
+    Market.update_contribution(contribution, data)
   end
 
-  defp execute(%Contributio.Market.Submission{} = submission, action, _) when action == :close do
-    Market.close_submission(submission)
+  defp execute(%Contributio.Market.Contribution{} = contribution, action, _) when action == :close do
+    Market.close_contribution(contribution)
   end
 
   defp get_tracked_subject(subject_type, subject_id) do
@@ -114,7 +114,7 @@ defmodule ContributioWeb.WebhooksController do
       :user -> Accounts.get_user_by_user_origin(origin_id, subject_id)
       :project -> Market.get_project_by_origin_repo_id(origin_id, subject_id)
       :task -> Market.get_task_by_origin_issue_id(origin_id, subject_id)
-      :submission -> Market.get_submission_by_origin_pull_request_id(origin_id, subject_id)
+      :contribution -> Market.get_contribution_by_origin_pull_request_id(origin_id, subject_id)
     end
   end
 end

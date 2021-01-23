@@ -14,7 +14,7 @@ defmodule ContributioWeb.Webhooks.Github do
          pull_request: pull_request,
          action: "opened"
        }) do
-    {nil, :submission, :create, %{pull_request_id: pull_request["id"]}}
+    {nil, :contribution, :create, %{pull_request_id: pull_request["id"]}}
   end
 
   defp resolve("pull_request", %{
@@ -22,7 +22,7 @@ defmodule ContributioWeb.Webhooks.Github do
          action: "closed",
          merged: false
        }) do
-    {:submission, :close, pull_request["id"], %{}}
+    {:contribution, :close, pull_request["id"], %{}}
   end
 
   defp resolve("pull_request", %{
@@ -46,7 +46,7 @@ defmodule ContributioWeb.Webhooks.Github do
           IO.inspect(inspect(reason))
       end
 
-    {linked_issue, :task, :validate, %{submission: pull_request["id"], user_ids: user_ids}}
+    {linked_issue, :task, :validate, %{contribution: pull_request["id"], user_ids: user_ids}}
   end
 
   defp resolve("issues", %{issue: issue, action: "opened", repository: repository}) do

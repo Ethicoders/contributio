@@ -11,7 +11,7 @@ defmodule Contributio.Market.Task do
     field :issue_id, :string
     field :url, :string
     belongs_to :project, Contributio.Market.Project
-    has_many :submissions, Contributio.Market.Submission
+    has_many :contributions, Contributio.Market.Contribution
 
     timestamps()
   end

@@ -23,7 +23,10 @@ defmodule ContributioWeb.Context do
   defp build_context(%{req_cookies: req_cookies}) do
     with true <- Map.has_key?(req_cookies, "ctiotoken"),
          user <- Accounts.get_user_by_token(req_cookies["ctiotoken"]) do
-      {:ok, %{current_user: user}}
+      case user do
+        nil -> {:error, message: "You're not connected"}
+        user -> {:ok, %{current_user: user}}
+      end
       #  else
       #   {:error, "Error"}
     end

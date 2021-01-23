@@ -19,9 +19,9 @@ let make = () => {
     </section>
     <section>
       <Heading> "As a Contributor"->str </Heading>
-      "You can browse projects and tasks, filter by used language, etc. When you create a submission, maintainers will review your code and validate it.
+      "You can browse projects and tasks, filter by used language, etc. When you create a contribution, maintainers will review your code and validate it.
       If it satisfies the criteria, it will be merged and you'll get rewarded for that with experience and more (TBD!).
-      Even if your submission isn't validated, you'll get a portion of the experience when it is closed, as Contributio considers that any work provided should be rewarded."
+      Even if your contribution isn't validated, you'll get a portion of the experience when it is closed, as Contributio considers that any work provided should be rewarded."
       ->str
     </section>
     <Heading size=Big> "Wording"->str </Heading>
@@ -33,7 +33,7 @@ let make = () => {
         <tr> <td> "Project"->str </td> <td> "Repository"->str </td> </tr>
         <tr> <td> "Task"->str </td> <td> "Issue"->str </td> </tr>
         <tr>
-          <td> "Submission"->str </td>
+          <td> "Contribution"->str </td>
           <td> "Pull/merge request"->str </td>
         </tr>
       </tbody>

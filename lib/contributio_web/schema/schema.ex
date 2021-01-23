@@ -123,17 +123,11 @@ defmodule Contributio.Schema do
     end
 
     defp add_token_to_context(resolution, _) do
-      case resolution.value do
-        %{token: token} ->
-          Map.update!(
-            resolution,
-            :context,
-            &Map.merge(&1, %{token: token})
-          )
-
-        _ ->
-          resolution
-      end
+      Map.update!(
+        resolution,
+        :context,
+        &Map.merge(&1, %{token: resolution.value.user.token})
+      )
     end
 
     # @desc "Set a VC service user access token"

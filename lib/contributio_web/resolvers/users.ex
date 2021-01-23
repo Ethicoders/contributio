@@ -69,32 +69,6 @@ defmodule Resolvers.Users do
     end
   end
 
-  # def set_access_token(%{origin_id: origin_id, content: content}, %{
-  #       context: %{current_user: current_user}
-  #     }) do
-  #   access_tokens =
-  #     case current_user.access_tokens do
-  #       nil -> Map.put(%{}, vendor, content)
-  #       _ -> current_user.access_tokens |> Map.put(vendor, %{content: content})
-  #     end
-
-  #   # Check other platforms but should be stored as:
-  #   # {
-  #   #   access_token: 4a7c72cc2eaa8e3fa6c988b94543d31f28396a96,
-  #   #   expires_in: 28800,
-  #   #   refresh_token: r1.a4f05c7626645166071140fcd4bd0f0ea70173ae20959d3efd2bda2c3c25f73880fafc4b164d57a1,
-  #   #   refresh_token_expires_in: 15724800,
-  #   #   scope: , ???
-  #   #   token_type: bearer
-  #   # }
-
-  #   current_user
-  #   |> Accounts.User.changeset(%{access_tokens: access_tokens})
-  #   |> Repo.update!()
-
-  #   {:ok, current_user}
-  # end
-
   def link_account(%{origin_id: origin_id, content: content}, %{
         context: %{current_user: current_user}
       }) do
@@ -119,10 +93,11 @@ defmodule Resolvers.Users do
 
     user_origin = fetch_user_origin_data(access_token)
 
-    current_user = Accounts.get_or_create_user(%{
-      name: user_origin.login,
-      email: user_origin.email
-    })
+    current_user =
+      Accounts.get_or_create_user(%{
+        name: user_origin.login,
+        email: user_origin.email
+      })
 
     Accounts.upsert_user_origin(%{
       origin_id: origin_id,
@@ -131,7 +106,7 @@ defmodule Resolvers.Users do
       user_origin_id: user_origin.id
     })
 
-    {:ok, current_user |> set_user_token()}
+    {:ok, %{user: current_user |> set_user_token()}}
   end
 
   defp set_user_token(%Accounts.User{} = user) do
@@ -159,8 +134,9 @@ defmodule Resolvers.Users do
   end
 
   def fetch_repositories(%{origin_id: origin_id}, %{
-        context: %{current_user: current_user}
+        context: %{current_user: %Accounts.User{} = current_user}
       }) do
+    Logger.debug(inspect(current_user))
     access_token = Accounts.get_user_origin(origin_id, current_user.id).access_token
 
     case HTTPoison.get(
@@ -178,6 +154,8 @@ defmodule Resolvers.Users do
         IO.inspect(reason)
     end
   end
+
+  def fetch_repositories(_args, _info), do: {:error, "Not Authorized"}
 
   def import_repositories(%{origin_id: origin_id, ids: ids}, %{
         context: %{current_user: current_user}
@@ -223,6 +201,8 @@ defmodule Resolvers.Users do
     {:ok, true}
   end
 
+  def import_repositories(_args, _info), do: {:error, "Not Authorized"}
+
   def fetch_issues(%{origin_id: _origin_id, project_id: project_id}, %{
         context: %{current_user: _current_user}
       }) do
@@ -244,6 +224,8 @@ defmodule Resolvers.Users do
         IO.inspect(reason)
     end
   end
+
+  def fetch_issues(_args, _info), do: {:error, "Not Authorized"}
 
   def import_issues(%{origin_id: _origin_id, ids: ids, project_id: project_id}, %{
         context: %{current_user: _current_user}
@@ -279,4 +261,6 @@ defmodule Resolvers.Users do
 
     {:ok, true}
   end
+
+  def import_issues(_args, _info), do: {:error, "Not Authorized"}
 end

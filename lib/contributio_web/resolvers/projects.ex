@@ -18,7 +18,7 @@ defmodule Resolvers.Projects do
 
   def get_task(%{id: id}, _info) do
     {:ok, Market.get_task!(id)
-    #  |> Repo.preload(:submissions)
+    #  |> Repo.preload(:contributions)
     }
   end
 
