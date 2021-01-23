@@ -59,17 +59,21 @@ let make = () => {
      | {loading: true} => "Loading..."->React.string
      | {data: Some({projects}), loading: false} =>
        <div className="grid grid-cols-3 gap-4">
-         {projects
-          ->Belt.Array.map(project =>
-              <Project
-                key={project.id}
-                id={project.id}
-                name={project.name}
-                description={project.description}
-                url={project.url}
-              />
-            )
-          ->React.array}
+         {switch (projects) {
+          | [||] => "No projects yet!"->str
+          | values =>
+            values
+            ->Belt.Array.map(project =>
+                <Project
+                  key={project.id}
+                  id={project.id}
+                  name={project.name}
+                  description={project.description}
+                  url={project.url}
+                />
+              )
+            ->React.array
+          }}
        </div>
      | {data: None} => <div />
      }}

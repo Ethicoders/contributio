@@ -1,7 +1,6 @@
 let cookieDidNotExpire: unit => bool = [%bs.raw
   {|
     function() {
-      console.log(document.cookie.indexOf('ctiotokenexpire'));
       if (-1 === document.cookie.indexOf('ctiotokenexpire')) {
         return false;
       }
@@ -14,3 +13,11 @@ let cookieDidNotExpire: unit => bool = [%bs.raw
 let isConnected = () => {
   cookieDidNotExpire();
 };
+
+let logout: unit => unit = [%bs.raw
+  {|
+    function() {
+      document.cookie = 'ctiotokenexpire= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
+    }
+  |}
+];

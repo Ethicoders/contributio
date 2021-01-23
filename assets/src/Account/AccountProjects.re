@@ -26,25 +26,29 @@ let make = () => {
      | {loading: true} => "Loading..."->React.string
      | {data: Some({my}), loading: false} =>
        <div className="grid grid-cols-3 gap-4">
-         {my.projects
-          ->Belt.Array.map(project =>
-              <div>
-                <Project
-                  key={project.id}
-                  id={project.id}
-                  name={project.name}
-                  description={project.description}
-                  url={project.url}
-                />
-                <Anchor
-                  target={
-                    "/account/import/projects/" ++ project.id ++ "/tasks/"
-                  }>
-                  "Import Issues from this Repository"->str
-                </Anchor>
-              </div>
-            )
-          ->React.array}
+         {switch (my.projects) {
+          | [||] => "No projects yet!"->str
+          | values =>
+            values
+            ->Belt.Array.map(project =>
+                <div>
+                  <Project
+                    key={project.id}
+                    id={project.id}
+                    name={project.name}
+                    description={project.description}
+                    url={project.url}
+                  />
+                  <Anchor
+                    target={
+                      "/account/import/projects/" ++ project.id ++ "/tasks/"
+                    }>
+                    "Import Issues from this Repository"->str
+                  </Anchor>
+                </div>
+              )
+            ->React.array
+          }}
        </div>
      /* {switch my.projects {
          | None => "No projects yet!"->str

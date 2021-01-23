@@ -8,6 +8,8 @@
     "start": "snowpack dev",
     "watch": "snowpack build --watch",
     "build:styles": "postcss css/style.css -o ../priv/static/css/output.css",
+    "build:fonts": "cp -r node_modules/@coreui/icons/fonts ../priv/static/fonts",
+    "build:assets": "npm run build:styles && npm run build:fonts",
     "build:source": "snowpack build",
     "build": "npm run build:source && npm run build:styles",
     "schema": "node node_modules/.bin/get-graphql-schema http://localhost:4000/graphiql -j > graphql_schema.json"

@@ -13,6 +13,8 @@ module GetProject = [%graphql
           name
           content
           experience
+          difficulty
+          time
         }
       }
     }
@@ -45,6 +47,8 @@ let make = (~id) => {
                   id={task.id}
                   content={task.content}
                   experience={task.experience}
+                  difficulty={task.difficulty}
+                  time={task.time}
                 />
               )
             ->React.array}

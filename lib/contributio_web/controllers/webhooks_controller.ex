@@ -45,7 +45,7 @@ defmodule ContributioWeb.WebhooksController do
   end
 
   defp execute(%Contributio.Market.Project{} = project, action, data) when action == :revoke do
-    Accounts.update_user(project, data)
+    Market.update_project(project, data)
   end
 
   defp execute(%Contributio.Market.Project{} = project, action, data) when action == :update do

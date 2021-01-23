@@ -21,17 +21,21 @@ let make = () => {
      | {loading: true} => "Loading..."->React.string
      | {data: Some({users}), loading: false} =>
        <div className="grid grid-cols-3 gap-4">
-         {users
-          ->Js.Array2.map(user =>
-              <User
-                key={user.name}
-                name={user.name}
-                level={user.level}
-                currentExperience={user.currentExperience}
-                nextLevelExperience={user.nextLevelExperience}
-              />
-            )
-          ->React.array}
+         {switch (users) {
+          | [||] => "No users yet!"->str
+          | values =>
+            values
+            ->Js.Array2.map(user =>
+                <User
+                  key={user.name}
+                  name={user.name}
+                  level={user.level}
+                  currentExperience={user.currentExperience}
+                  nextLevelExperience={user.nextLevelExperience}
+                />
+              )
+            ->React.array
+          }}
        </div>
      | {data: None} => <div />
      }}

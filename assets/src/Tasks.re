@@ -8,7 +8,10 @@ module GetTasks = [%graphql
         name
         content
         experience
+        difficulty
+        time
         project {
+          id
           name
         }
       }
@@ -22,37 +25,33 @@ let make = () => {
     <Heading size=Big> "Tasks"->str </Heading>
     {switch (GetTasks.use()) {
      | {loading: true} => "Loading..."->React.string
+     | {data: None} => React.null
      | {data: Some({tasks}), loading: false} =>
        <div className="grid grid-cols-3 gap-4">
+         {switch (tasks) {
+          | [||] => "No tasks yet!"->str
+          | values =>
+            values
+            ->Js.Array2.map(task => {
+                let project: Types.projectData = {
+                  id: task.project.id,
+                  name: task.project.name,
+                };
 
-           {tasks
-            ->Js.Array2.map(task =>
                 <Task
                   key={task.id}
                   name={task.name}
                   id={task.id}
                   content={task.content}
                   experience={task.experience}
-                />
-              )
-            ->React.array}
-         </div>
-         //  {switch (tasks) {
-         //   | Some(items) =>
-         //     items
-         //     ->Js.Array2.map(task =>
-         //         <Task
-         //           key={task.name}
-         //           name={task.name}
-         //           content={task.content}
-         //           // url={task.url}
-         //           project={task.project}
-         //         />
-         //       )
-         //     ->React.array
-         //   | None => "No tasks yet!"->str
-         //   }}
-     | {data: None} => <div />
+                  difficulty={task.difficulty}
+                  time={task.time}
+                  maybeProject={Some(project)}
+                />;
+              })
+            ->React.array
+          }}
+       </div>
      }}
   </div>;
 };

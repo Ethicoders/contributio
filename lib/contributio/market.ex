@@ -41,7 +41,8 @@ defmodule Contributio.Market do
   end
 
   def list_projects_languages do
-    (from q in Project, select: fragment("DISTINCT jsonb_object_keys(?)", q.languages)) |> Repo.all()
+    from(q in Project, select: fragment("DISTINCT jsonb_object_keys(?)", q.languages))
+    |> Repo.all()
   end
 
   @doc """
@@ -60,9 +61,11 @@ defmodule Contributio.Market do
   """
   def get_project!(id), do: Repo.get!(Project, id)
 
-  def get_project_by_origin_repo_id!(_origin_id, repo_id), do: Repo.get_by!(Project, repo_id: repo_id)
+  def get_project_by_origin_repo_id!(_origin_id, repo_id),
+    do: Repo.get_by!(Project, repo_id: repo_id)
 
-  def get_project_by_origin_repo_id(_origin_id, repo_id), do: Repo.get_by(Project, repo_id: repo_id)
+  def get_project_by_origin_repo_id(_origin_id, repo_id),
+    do: Repo.get_by(Project, repo_id: repo_id)
 
   @doc """
   Creates a project.
@@ -147,7 +150,11 @@ defmodule Contributio.Market do
 
   """
   def list_tasks do
-    Repo.all from t in Contributio.Market.Task, select_merge: %{experience: fragment("? * ? AS experience", t.time, t.difficulty)}, preload: [:project]
+    Repo.all(
+      from t in Contributio.Market.Task,
+        select_merge: %{experience: fragment("? * ? AS experience", t.time, t.difficulty)},
+        preload: [:project]
+    )
   end
 
   @doc """
@@ -173,7 +180,9 @@ defmodule Contributio.Market do
   end
 
   def prepare_task_query() do
-    (from t in Task, select_merge: %{experience: fragment("? * ? AS experience", t.time, t.difficulty)}, preload: [:project])
+    from t in Task,
+      select_merge: %{experience: fragment("? * ? AS experience", t.time, t.difficulty)},
+      preload: [:project]
   end
 
   def get_task!(id), do: get_task_by(id)
@@ -181,7 +190,9 @@ defmodule Contributio.Market do
 
   def get_task_by_origin_issue_id(_origin_id, issue_id), do: Repo.get_by(Task, issue_id: issue_id)
 
-  def get_task_by_origin_issue_id!(_origin_id, issue_id), do: Repo.get_by!(Task, issue_id: issue_id)
+  def get_task_by_origin_issue_id!(_origin_id, issue_id),
+    do: Repo.get_by!(Task, issue_id: issue_id)
+
   @doc """
   Creates a task.
 
@@ -223,7 +234,6 @@ defmodule Contributio.Market do
     |> Task.changeset(%{status: :closed})
     |> Repo.update()
   end
-
 
   @doc """
   Deletes a task.
@@ -285,11 +295,14 @@ defmodule Contributio.Market do
   """
   def get_submission!(id), do: Repo.get!(Submission, id)
 
-  def get_submission_by_origin_pull_request_id(_origin_id, pull_request_id), do: Repo.get_by(Submission, pull_request_id: pull_request_id)
+  def get_submission_by_origin_pull_request_id(_origin_id, pull_request_id),
+    do: Repo.get_by(Submission, pull_request_id: pull_request_id)
 
-  def get_submission_by_origin_pull_request_id!(_origin_id, pull_request_id), do: Repo.get_by!(Submission, pull_request_id: pull_request_id)
+  def get_submission_by_origin_pull_request_id!(_origin_id, pull_request_id),
+    do: Repo.get_by!(Submission, pull_request_id: pull_request_id)
 
   def get_submissions_by_task_id(id), do: Submission |> where(task_id: ^id) |> Repo.all()
+
   @doc """
   Creates a submission.
 
@@ -326,7 +339,8 @@ defmodule Contributio.Market do
     |> Repo.update()
   end
 
-  def close_submission(%Submission{} = submission), do: submission |> update_submission(%{status: :closed})
+  def close_submission(%Submission{} = submission),
+    do: submission |> update_submission(%{status: :closed})
 
   @doc """
   Deletes a submission.

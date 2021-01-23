@@ -2,6 +2,7 @@ let str = React.string;
 
 type names =
   | Github
+  | Gitlab
   | User;
 
 type sizes =
@@ -11,19 +12,23 @@ type sizes =
   | ExtraLarge
   | EvenLarger(int);
 
+type colors =
+  | Default
+  | Black
+  | White
+  | Red
+  | Green
+  | Blue
+  | Custom(string);
+
 [@react.component]
-let make = (~onClick=None, ~name: names, ~size: sizes=Small) => {
+let make = (~name: names, ~size: sizes=Small, ~color: colors=Default) => {
   <i
-    onClick={e =>
-      switch (onClick) {
-      | Some(callback) => callback(e)
-      | None => ()
-      }
-    }
     className={
       (
         switch (name) {
         | Github => "cib-github"
+        | Gitlab => "cib-gitlab"
         | User => "cil-user"
         }
       )
@@ -36,6 +41,18 @@ let make = (~onClick=None, ~name: names, ~size: sizes=Small) => {
         | ExtraLarge => "text-xl"
         | EvenLarger(modifier) =>
           "text-" ++ Js.Int.toString(modifier) ++ "xl"
+        }
+      )
+      ++ " "
+      ++ (
+        switch (color) {
+        | Default => "text-current"
+        | Black => "text-black"
+        | White => "text-white"
+        | Red => "text-red-800"
+        | Green => "text-green-800"
+        | Blue => "text-blue-800"
+        | Custom(modifier) => "text-" ++ modifier
         }
       )
     }

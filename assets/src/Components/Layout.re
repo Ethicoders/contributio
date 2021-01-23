@@ -71,9 +71,9 @@ let make = (~children) => {
                                    "Open user menu"->str
                                  </span>
                                  <span
-                                   className="h-8 w-8 max-w-xs bg-gray-200 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                                   /* className="h-8 w-8 rounded-full" */
-                                    <Icon name=User /> </span>
+                                   className="h-8 w-8 max-w-xs bg-gray-200 rounded-full flex justify-center items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                                   <Icon name=User />
+                                 </span>
                                </button>,
                              )
                            }>
@@ -92,13 +92,12 @@ let make = (~children) => {
                              target="/account/tasks">
                              "My Tasks"->str
                            </Anchor>
-                           <a
-                             href="#"
-                             /* onClick={e => TBD} */
+                           <button
+                             onClick={_ => Session.logout()}
                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                              role="menuitem">
                              "Sign out"->str
-                           </a>
+                           </button>
                          </Dropdown>
                          /* <button
                               className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
@@ -195,18 +194,17 @@ let make = (~children) => {
         <div className="pt-4 pb-3 border-t border-gray-700">
           <div className="flex items-center px-5">
             <div className="flex-shrink-0">
-              <img
+              /* <img
                 className="h-10 w-10 rounded-full"
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                 alt=""
-              />
+              /> */
             </div>
             <div className="ml-3">
               <div className="text-base font-medium leading-none text-white">
-                "Tom Cook"->str
+                /* "Tom Cook"->str */
               </div>
               <div className="text-sm font-medium leading-none text-gray-400">
-                "tom@example.com"->str
+                /* "tom@example.com"->str */
               </div>
             </div>
             <button

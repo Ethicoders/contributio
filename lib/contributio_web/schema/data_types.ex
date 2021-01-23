@@ -57,6 +57,8 @@ defmodule Contributio.Schema.DataTypes do
     field :project, f!(:project)
     field :content, f!(:string)
     field :experience, f!(:integer)
+    field :difficulty, f!(:integer)
+    field :time, f!(:integer)
     # field :rewards, list_of!(:reward)
   end
 

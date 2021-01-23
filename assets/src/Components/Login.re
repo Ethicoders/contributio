@@ -4,7 +4,6 @@ module Auth = [%graphql
   {|
   mutation Auth ($email: String!, $password: String!) {
     auth(email: $email, password: $password) {
-      token
       user {
         id
       }
@@ -71,7 +70,7 @@ let make = (~onSignIn) => {
     );
 
   let msgBackSuccessHandler = (_: Window.MessageEvent.t) => {
-    Js.log("Success!");
+    onSignIn();
   };
 
   let handleClick = _ => {
@@ -99,6 +98,15 @@ let make = (~onSignIn) => {
       [|Toggleable("active", entryType == SignUp), Value("text-right")|],
     );
   <>
+    <Heading> "Connect with"->str </Heading>
+    <div className="text-center">
+
+        <button className="m-1.5" onClick=handleClick>
+          <Icon name=Github size={EvenLarger(5)} color=Black />
+        </button>
+      </div>
+      /* <Icon name=Gitlab size={EvenLarger(5)} color={Custom("yellow-600")} /> */
+    <span> "OR"->str </span>
     <ul className="flex">
       <li
         className={ClassName.output(classNamesSignIn)}
@@ -114,14 +122,6 @@ let make = (~onSignIn) => {
     <div
       className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        <div>
-          <Icon
-            name=Github
-            size={EvenLarger(5)}
-            onClick={Some(handleClick)}
-          />
-        </div>
-        <span> "OR"->str </span>
         <form onSubmit=handleSubmit className="mt-8 space-y-6">
           <input type_="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">

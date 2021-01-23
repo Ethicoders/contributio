@@ -6,11 +6,16 @@ let make = (~label, ~options, ~onChange, ~selected="") => {
 
   let handleToggleList = _ => setVisible(_ => !isVisible);
 
+  let handleClickOutside = _ => {
+    setVisible(_ => false);
+  };
+  let divRef = ClickOutside.useClickOutside(handleClickOutside);
+
   let style =
     isVisible
       ? ReactDOM.Style.make(~display="block", ())
       : ReactDOM.Style.make(~display="none", ());
-  <div>
+      <div ref={ReactDOMRe.Ref.domRef(divRef)}>
     <label
       id="listbox-label" className="block text-sm font-medium text-gray-700">
       label->str
