@@ -23,13 +23,16 @@ let make = (~code) => {
     if (Session.isConnected()) {
       <LinkAccount accessToken onDone={() => Window.close()} />;
     } else {
-      <CreateAccount
-        accessToken
-        onDone={() => {
-          Window.postMessage("link:success");
-          Window.close();
-        }}
-      />;
+      {
+        CreateAccount.trigger(
+          accessToken,
+          () => {
+            Window.postMessage("link:success");
+            Window.close();
+          },
+        );
+      };
+      React.null;
     };
 
   | {data: None} => <div> "Loading..."->str </div>

@@ -18,7 +18,7 @@ let close: unit => unit = [%bs.raw
 
 module MessageEvent = {
   type t;
-  [@bs.get] external data: t => 'a;
+  [@bs.get] external data: t => 'a = "data";
 };
 
 let onMessage: (string, MessageEvent.t => unit) => unit = [%bs.raw
@@ -36,8 +36,6 @@ let onMessage: (string, MessageEvent.t => unit) => unit = [%bs.raw
 let postMessage: string => unit = [%bs.raw
   {|
     function(event) {
-      console.log(window.opener);
-      alert(event);
       window.opener.postMessage(event);
     }
   |}
