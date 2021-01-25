@@ -126,5 +126,4 @@ let make = () => {
          </>;
        }}
     </div>;
-    // <button onClick={_ => dispatch(Toast.Add(toast))}> "CLICK"->str </button>
 };

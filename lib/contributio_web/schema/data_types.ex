@@ -98,4 +98,12 @@ defmodule Contributio.Schema.DataTypes do
     field :number, f!(:integer)
     field :url, f!(:string)
   end
+
+  object :delete_project_payload do
+    field :id, f!(:string)
+  end
+
+  object :delete_task_payload do
+    field :id, f!(:string)
+  end
 end

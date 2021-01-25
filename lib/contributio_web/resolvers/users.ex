@@ -24,7 +24,7 @@ defmodule Resolvers.Users do
 
   # Authorized context, can fetch sensitive data
   def get_current_user(_args, %{context: %{current_user: current_user}}) do
-    {:ok, current_user |> Repo.preload(:projects)}
+    {:ok, current_user |> Repo.preload([projects: :tasks])}
   end
 
   def get_current_user(_args, _info), do: {:error, "Not Authorized"}

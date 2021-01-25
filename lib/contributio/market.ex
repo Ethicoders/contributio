@@ -125,6 +125,10 @@ defmodule Contributio.Market do
     Repo.delete(project)
   end
 
+  def delete_project_by_id(id) do
+    from(p in Project, where: p.id == ^id) |> Repo.delete_all
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking project changes.
 
@@ -249,6 +253,10 @@ defmodule Contributio.Market do
   """
   def delete_task(%Task{} = task) do
     Repo.delete(task)
+  end
+
+  def delete_task_by_id(id) do
+    from(p in Task, where: p.id == ^id) |> Repo.delete_all
   end
 
   @doc """

@@ -2,9 +2,12 @@ let str = React.string;
 
 type names =
   | ExternalLink
+  | Import
   | Github
   | Gitlab
   | Link
+  | Pencil
+  | Trash
   | User;
 
 type sizes =
@@ -30,9 +33,12 @@ let make = (~name: names, ~size: sizes=Small, ~color: colors=Default) => {
       (
         switch (name) {
         | ExternalLink => "cil-external-link"
+        | Import => "cil-arrow-thick-from-top"
         | Github => "cib-github"
         | Gitlab => "cib-gitlab"
         | Link => "cil-link"
+        | Pencil => "cil-pencil"
+        | Trash => "cil-trash"
         | User => "cil-user"
         }
       )

@@ -122,6 +122,18 @@ defmodule Contributio.Schema do
       middleware(&add_token_to_context/2)
     end
 
+    field :delete_project, f!(:delete_project_payload) do
+      arg(:id, f!(:string))
+
+      resolve(&Resolvers.Projects.delete_project/2)
+    end
+
+    field :delete_task, f!(:delete_task_payload) do
+      arg(:id, f!(:string))
+
+      resolve(&Resolvers.Projects.delete_task/2)
+    end
+
     defp add_token_to_context(resolution, _) do
       Map.update!(
         resolution,

@@ -7,7 +7,7 @@ let make = () => {
     switch (url.path) {
     | ["account", "projects"] => <AccountProjects />
     | ["account", "import", "projects"] => <ImportProjects />
-    // | ["account", "tasks"] => <AccountTasks />
+    | ["account", "tasks"] => <AccountTasks />
     | ["account", "import", "projects", projectId, "tasks"] => <ImportTasks projectId />
     | _ => <Details />
     };
