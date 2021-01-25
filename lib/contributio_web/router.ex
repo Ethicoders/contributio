@@ -31,12 +31,13 @@ defmodule ContributioWeb.Router do
   end
 
   def before_send(conn, %Absinthe.Blueprint{execution: %{context: %{token: token}}}) do
+    max_age = 2592000
     conn
-    |> put_resp_cookie("ctiotoken", token, http_only: true)
+    |> put_resp_cookie("ctiotoken", token, http_only: true, max_age: max_age)
     |> put_resp_cookie(
       "ctiotokenexpire",
-      Timex.now() |> Timex.shift(minutes: 30) |> Timex.format!("%FT%T.%f%z", :strftime),
-      http_only: false
+      Timex.now() |> Timex.shift(seconds: max_age) |> Timex.format!("%FT%T.%f%z", :strftime),
+      http_only: false, max_age: max_age
     )
   end
 
