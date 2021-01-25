@@ -50,7 +50,7 @@ let make =
       {timeToHumanReadable(time)->str}
       <Heading size=Small> "Experience: "->str </Heading>
       {(Js.Int.toString(experience) ++ " xp")->str}
-      <Heading size=Small> "Rewards: "->str </Heading>
+      // <Heading size=Small> "Rewards: "->str </Heading>
     </div>
   </div>;
 };

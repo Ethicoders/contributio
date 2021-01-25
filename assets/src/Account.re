@@ -8,19 +8,26 @@ let make = () => {
     | ["account", "projects"] => <AccountProjects />
     | ["account", "import", "projects"] => <ImportProjects />
     | ["account", "tasks"] => <AccountTasks />
-    | ["account", "import", "projects", projectId, "tasks"] => <ImportTasks projectId />
+    | ["account", "import", "projects", projectId, "tasks"] =>
+      <ImportTasks projectId />
     | _ => <Details />
     };
 
   <div>
-    "Account"->str
-    <ul>
-      <li> <Anchor target="/account/"> "Details"->str </Anchor> </li>
-      <li> <Anchor target="/account/projects"> "My Projects"->str </Anchor> </li>
-      <li> <Anchor target="/account/tasks"> "My Tasks"->str </Anchor> </li>
-    </ul>
-    
-    <hr/>
+    <nav className="">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center">
+            <div className="ml-10 flex items-baseline space-x-4">
+              <Anchor target="/account/"> "Details"->str </Anchor>
+              <Anchor target="/account/projects"> "My Projects"->str </Anchor>
+              <Anchor target="/account/tasks"> "My Tasks"->str </Anchor>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <hr />
     view
   </div>;
 };
