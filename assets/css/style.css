@@ -8,3 +8,7 @@
 input:checked + svg {
   display: block;
 }
+
+iframe[hidden] {
+  display: none;
+}
