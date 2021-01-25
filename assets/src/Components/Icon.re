@@ -1,8 +1,10 @@
 let str = React.string;
 
 type names =
+  | ExternalLink
   | Github
   | Gitlab
+  | Link
   | User;
 
 type sizes =
@@ -27,8 +29,10 @@ let make = (~name: names, ~size: sizes=Small, ~color: colors=Default) => {
     className={
       (
         switch (name) {
+        | ExternalLink => "cil-external-link"
         | Github => "cib-github"
         | Gitlab => "cib-gitlab"
+        | Link => "cil-link"
         | User => "cil-user"
         }
       )

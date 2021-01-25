@@ -2,5 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@import '@coreui/icons/css/free.min.css';
-@import '@coreui/icons/css/brand.min.css';
+@import "@coreui/icons/css/free.min.css";
+@import "@coreui/icons/css/brand.min.css";
+
+input:checked + svg {
+  display: block;
+}

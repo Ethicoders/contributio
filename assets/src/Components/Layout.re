@@ -248,9 +248,13 @@ let make = (~children) => {
            </h1>
          </div>
        </header> */
-    <main className="min-h-screen">
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8"> children </div>
-    </main>
+    <Toaster>
+      <main className="min-h-screen">
+        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          children
+        </div>
+      </main>
+    </Toaster>
     <footer className="w-full">
       <div className="bg-gray-700">
         <div
