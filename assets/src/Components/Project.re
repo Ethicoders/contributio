@@ -6,10 +6,13 @@ let make = (~id, ~name, ~description, ~url) => {
     <Heading> name->str </Heading>
     " - "->str
     description->str
-    <Anchor target={"/projects/" ++ id}>
-      <Button onClick={_ => ()}> "See more"->str </Button>
-    </Anchor>
-    <a href={url} target="_blank"> "See on Origin"->str </a>
-    <Icon name=Github />
+    <div>
+      <Anchor target={"/projects/" ++ id}>
+        <Button type_=Primary> <Icon name=Eye /> "See more"->str </Button>
+      </Anchor>
+      <a href=url target="_blank">
+        <Button> <Icon name=ExternalLink /> </Button>
+      </a>
+    </div>
   </div>;
 };

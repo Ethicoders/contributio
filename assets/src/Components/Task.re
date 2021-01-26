@@ -53,8 +53,10 @@ let make =
     ) => {
   <div className="p-4 border-2 rounded-sm">
     <Heading> name->str </Heading>
-    content->str
-    {showProject(maybeProject)}
+    <span className="text-xs"> {showProject(maybeProject)} </span>
+    <div>
+      content->str
+    </div>
     <div>
       <span className="rounded-sm border-green-500 border-2 p-0.5 m-0.5">
         <Icon name=Lightbulb />

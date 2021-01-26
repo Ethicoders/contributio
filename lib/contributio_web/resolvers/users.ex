@@ -136,7 +136,6 @@ defmodule Resolvers.Users do
   def fetch_repositories(%{origin_id: origin_id}, %{
         context: %{current_user: %Accounts.User{} = current_user}
       }) do
-    Logger.debug(inspect(current_user))
     access_token = Accounts.get_user_origin(origin_id, current_user.id).access_token
 
     case HTTPoison.get(
