@@ -19,9 +19,9 @@ let make = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <div className="ml-10 flex items-baseline space-x-4">
-              <Anchor target="/account/"> "Details"->str </Anchor>
-              <Anchor target="/account/projects"> "My Projects"->str </Anchor>
-              <Anchor target="/account/tasks"> "My Tasks"->str </Anchor>
+              <Anchor target="/account" activeClassNames="underline"> "Details"->str </Anchor>
+              <Anchor target="/account/projects" activeClassNames="underline"> "My Projects"->str </Anchor>
+              <Anchor target="/account/tasks" activeClassNames="underline"> "My Tasks"->str </Anchor>
             </div>
           </div>
         </div>

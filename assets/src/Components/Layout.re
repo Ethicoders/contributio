@@ -27,22 +27,26 @@ let make = (~children) => {
               <div className="ml-10 flex items-baseline space-x-4">
                 <Anchor
                   target="/operation"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  activeClassNames="bg-gray-700 text-white">
                   "Operation"->str
                 </Anchor>
                 <Anchor
                   target="/projects"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  activeClassNames="bg-gray-700 text-white">
                   "Projects"->str
                 </Anchor>
                 <Anchor
                   target="/tasks"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  activeClassNames="bg-gray-700 text-white">
                   "Tasks"->str
                 </Anchor>
                 <Anchor
                   target="/users"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  activeClassNames="bg-gray-700 text-white">
                   "Users"->str
                 </Anchor>
               </div>
