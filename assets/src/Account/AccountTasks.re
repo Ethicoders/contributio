@@ -52,7 +52,6 @@ let make = () => {
                           <Checkbox
                             label={task.name}
                             value={task.id}
-                            onClick=ignore
                           />
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -63,7 +62,7 @@ let make = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <Anchor target={"/account/tasks/" ++ task.id}>
-                            <Button type_=Primary onClick=ignore>
+                            <Button type_=Primary>
                               <Icon name=Pencil />
                             </Button>
                           </Anchor>

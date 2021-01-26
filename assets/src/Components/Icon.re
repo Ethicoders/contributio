@@ -2,11 +2,14 @@ let str = React.string;
 
 type names =
   | ExternalLink
+  | Eye
   | Import
   | Github
   | Gitlab
+  | Lightbulb
   | Link
   | Pencil
+  | Timer
   | Trash
   | User;
 
@@ -33,11 +36,14 @@ let make = (~name: names, ~size: sizes=Small, ~color: colors=Default) => {
       (
         switch (name) {
         | ExternalLink => "cil-external-link"
+        | Eye => "cil-eye"
         | Import => "cil-arrow-thick-from-top"
         | Github => "cib-github"
         | Gitlab => "cib-gitlab"
+        | Lightbulb => "cil-lightbulb"
         | Link => "cil-link"
         | Pencil => "cil-pencil"
+        | Timer => "cil-av-timer"
         | Trash => "cil-trash"
         | User => "cil-user"
         }

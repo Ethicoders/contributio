@@ -1,7 +1,7 @@
 let str = React.string;
 
 [@react.component]
-let make = (~value, ~label, ~onClick) => {
+let make = (~value, ~label, ~onClick=ignore) => {
   <label className="cursor-pointer flex justify-start items-start">
     <div
       className="bg-white border-2 rounded border-gray-400 w-6 h-6 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-green-500">

@@ -5,7 +5,7 @@ type types =
   | Warning;
 
 [@react.component]
-let make = (~type_: types=Default, ~children=React.null, ~onClick) => {
+let make = (~type_: types=Default, ~children=React.null, ~onClick=ignore) => {
   let buttonClassNames =
     ClassName.create([|
       Value(

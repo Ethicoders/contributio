@@ -33,7 +33,7 @@ let make = () => {
            <thead className="bg-gray-50">
              <th
                className="w-full px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-               <Checkbox label="Name" value="" onClick=ignore />
+               <Checkbox label="Name" value="" />
              </th>
              <th
                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -66,7 +66,7 @@ let make = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <Anchor target={"/account/projects/" ++ castedProject.id}>
-                      <Button type_=Primary onClick=ignore>
+                      <Button type_=Primary>
                         <Icon name=Pencil />
                       </Button>
                     </Anchor>
@@ -76,7 +76,7 @@ let make = () => {
                         ++ castedProject.id
                         ++ "/tasks"
                       }>
-                      <Button onClick=ignore> <Icon name=Import /> </Button>
+                      <Button> <Icon name=Import /> </Button>
                     </Anchor>
                     <Button
                       type_=Danger
