@@ -25,10 +25,22 @@ main {
 }
 
 .text-current {
-  color: #D1D5DB;
+  color: #d1d5db;
+}
+
+.border-main {
+  border-color: #295c5c;
+}
+
+.divide-main > :not([hidden]) ~ :not([hidden]) {
+  border-color: #295c5c;
 }
 
 .card {
   background-color: rgba(55, 65, 81, 1);
   border-color: #295c5c;
+}
+
+.background-main {
+  background-color: rgba(55, 65, 81, 1);
 }

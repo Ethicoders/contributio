@@ -41,7 +41,7 @@ let make = (~children, ~label="", ~button=None) => {
     </div>
     <div
       style
-      className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+      className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
       <div className="py-1" role="menu" onClick={_ => setVisible(_ => false)}>
         children
       </div>

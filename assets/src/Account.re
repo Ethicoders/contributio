@@ -14,20 +14,32 @@ let make = () => {
     };
 
   <div>
-    <nav className="">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <div className="ml-10 flex items-baseline space-x-4">
-              <Anchor target="/account" activeClassNames="underline"> "Details"->str </Anchor>
-              <Anchor target="/account/projects" activeClassNames="underline"> "My Projects"->str </Anchor>
-              <Anchor target="/account/tasks" activeClassNames="underline"> "My Tasks"->str </Anchor>
-            </div>
-          </div>
-        </div>
+    <div className="md:flex flex-col md:flex-row md:min-h-screen w-full">
+      <div
+        className="flex flex-col w-full md:w-64 text-current bg-gray-800 flex-shrink-0">
+        <nav
+          className="flex-grow md:block px-4 pb-4 md:pb-0 md:overflow-y-auto">
+          <Anchor
+            target="/account"
+            className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium my-1"
+            activeClassNames="bg-gray-700 text-white">
+            "Settings"->str
+          </Anchor>
+          <Anchor
+            target="/account/projects"
+            className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium my-1"
+            activeClassNames="bg-gray-700 text-white">
+            "My Projects"->str
+          </Anchor>
+          <Anchor
+            target="/account/tasks"
+            className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium my-1"
+            activeClassNames="bg-gray-700 text-white">
+            "My Tasks"->str
+          </Anchor>
+        </nav>
       </div>
-    </nav>
-    <hr />
-    view
+      <div className="w-full p-2"> view </div>
+    </div>
   </div>;
 };

@@ -20,7 +20,9 @@ module GetUserTasks = [%graphql
 let make = () => {
   let (_, add, _) = Toaster.useToast();
   <div>
-    <h1> "My Tasks"->str </h1>
+    <div className="hidden">
+      <Heading size=Gigantic> "My Tasks"->str </Heading>
+    </div>
     {switch (GetUserTasks.use()) {
      | {loading: true} => "Loading..."->React.string
      | {data: Some({my}), loading: false} =>
@@ -30,55 +32,55 @@ let make = () => {
            | [||] => "No tasks yet!"->str
            | tasks =>
              <>
-               <table className="min-w-full divide-y divide-gray-200">
-                 <thead className="bg-gray-50">
+               <table
+                 className="min-w-full divide-y border-main border">
+                 <thead className="bg-gray-800">
                    <th
-                     className="w-full px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                     className="w-full px-6 py-3 text-left text-xs font-medium text-current uppercase tracking-wider">
                      <Checkbox label="Name" value="" onClick={_ => ()} />
                    </th>
                    <th
-                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                     className="px-6 py-3 text-left text-xs font-medium text-current uppercase tracking-wider">
                      "Status"->str
                    </th>
                    <th
-                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                     className="px-6 py-3 text-left text-xs font-medium text-current uppercase tracking-wider">
                      "Actions"->str
                    </th>
                  </thead>
-                 {tasks
-                  ->Belt.Array.map(task => {
-                      <tbody>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <Checkbox
-                            label={task.name}
-                            value={task.id}
-                          />
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span
-                            className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            "Visible"->str
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <Anchor target={"/account/tasks/" ++ task.id}>
-                            <Button type_=Primary>
-                              <Icon name=Pencil />
+                 <tbody className="background-main text-current divide-y divide-main border-main">
+                   {tasks
+                    ->Belt.Array.map(task => {
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <Checkbox label={task.name} value={task.id} />
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span
+                              className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                              "Visible"->str
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <Anchor target={"/account/tasks/" ++ task.id}>
+                              <Button type_=Primary>
+                                <Icon name=Pencil />
+                              </Button>
+                            </Anchor>
+                            <Button
+                              type_=Danger
+                              onClick={_ =>
+                                DeleteTask.trigger(task.id, _ =>
+                                  add({title: "Task deleted."})
+                                )
+                              }>
+                              <Icon name=Trash />
                             </Button>
-                          </Anchor>
-                          <Button
-                            type_=Danger
-                            onClick={_ =>
-                              DeleteTask.trigger(task.id, _ =>
-                                add({title: "Task deleted."})
-                              )
-                            }>
-                            <Icon name=Trash />
-                          </Button>
-                        </td>
-                      </tbody>
-                    })
-                  ->React.array}
+                          </td>
+                        </tr>
+                      })
+                    ->React.array}
+                 </tbody>
                </table>
              </>
            }

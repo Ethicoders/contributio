@@ -23,7 +23,7 @@ let make = (~id, ~name, ~level, ~currentExperience, ~nextLevelExperience) => {
       <Heading> name->str </Heading>
     </Anchor>
     <span className="text-current">{j|Level $level|j}->str</span>
-    <div className="relative leading-4 border-black border">
+    <div className="relative leading-4 text-current border">
       <span className="invisible"> experienceRatio->str </span>
       <div style className="absolute top-0 bg-green-500 h-full">
         experienceRatio->str

@@ -64,7 +64,11 @@ let make =
       </a>
     </div>
     <div className="text-current my-3">
-      {Js.String2.substring(content, ~from=0, ~to_=60)->str}
+      {(
+         Js.String2.substring(content, ~from=0, ~to_=60)
+         ++ (Js.String2.length(content) > 60 ? "..." : "")
+       )
+       ->str}
     </div>
     <div>
       <span
