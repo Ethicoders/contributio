@@ -42,7 +42,7 @@ let make = (~label, ~options, ~onChange, ~selected="") => {
         </span>
       </button>
       <div
-        className="absolute mt-1 w-full rounded-md bg-white shadow-lg" style>
+        className="absolute mt-1 w-full rounded-md bg-white shadow-lg z-10" style>
         <ul
           role="listbox"
           className="max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
