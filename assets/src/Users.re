@@ -4,6 +4,7 @@ module GetUsers = [%graphql
   {|
     query getUsers {
       users {
+        id
         name
         level
         currentExperience
@@ -16,7 +17,7 @@ module GetUsers = [%graphql
 [@react.component]
 let make = () => {
   <div>
-    <Heading size=Big> "Users"->str </Heading>
+    <div className="hidden"> <Heading size=Gigantic> "Users"->str </Heading> </div>
     {switch (GetUsers.use()) {
      | {loading: true} => "Loading..."->React.string
      | {data: Some({users}), loading: false} =>
@@ -28,6 +29,7 @@ let make = () => {
             ->Js.Array2.map(user =>
                 <User
                   key={user.name}
+                  id={user.id}
                   name={user.name}
                   level={user.level}
                   currentExperience={user.currentExperience}

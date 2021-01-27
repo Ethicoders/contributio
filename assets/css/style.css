@@ -19,3 +19,16 @@ input:checked + svg {
 iframe[hidden] {
   display: none;
 }
+
+main {
+  background-color: #1c4c4c;
+}
+
+.text-current {
+  color: #D1D5DB;
+}
+
+.card {
+  background-color: rgba(55, 65, 81, 1);
+  border-color: #295c5c;
+}

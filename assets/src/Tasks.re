@@ -22,12 +22,14 @@ module GetTasks = [%graphql
 [@react.component]
 let make = () => {
   <div>
-    <Heading size=Big> "Tasks"->str </Heading>
+    <div className="hidden">
+      <Heading size=Gigantic> "Tasks"->str </Heading>
+    </div>
     {switch (GetTasks.use()) {
      | {loading: true} => "Loading..."->React.string
      | {data: None} => React.null
      | {data: Some({tasks}), loading: false} =>
-       <div className="grid grid-cols-3 gap-4">
+       <div className="grid grid-cols-4 gap-4">
          {switch (tasks) {
           | [||] => "No tasks yet!"->str
           | values =>

@@ -26,12 +26,6 @@ let make = (~children) => {
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
                 <Anchor
-                  target="/operation"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  activeClassNames="bg-gray-700 text-white">
-                  "Operation"->str
-                </Anchor>
-                <Anchor
                   target="/projects"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   activeClassNames="bg-gray-700 text-white">
@@ -265,22 +259,11 @@ let make = (~children) => {
           className="max-w-6xl m-auto text-gray-800 flex flex-wrap justify-center">
           <div className="p-5 w-48 ">
             <Anchor
-              target="/operation"
-              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-              "Operation"->str
-            </Anchor>
-          </div>
-          /* <div class="text-xs uppercase text-gray-500 font-medium">Home</div>
-             <a class="my-3 block" href="/#">Services <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Products <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">About Us <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Pricing <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Partners <span class="text-teal-600 text-xs p-1">New</span></a>  */
-          <div className="p-5 w-48 ">
-            <Anchor
               target="/projects"
               className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
               "Projects"->str
             </Anchor>
           </div>
-          /* <div class="text-xs uppercase text-gray-500 font-medium">User</div>
-             <a class="my-3 block" href="/#">Sign in <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">New Account <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">Demo <span class="text-teal-600 text-xs p-1">New</span></a><a class="my-3 block" href="/#">Career <span class="text-teal-600 text-xs p-1">We're hiring</span></a><a class="my-3 block" href="/#">Surveys <span class="text-teal-600 text-xs p-1">New</span></a>  */
           <div className="p-5 w-48 ">
             <Anchor
               target="/tasks"

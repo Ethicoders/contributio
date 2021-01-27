@@ -36,7 +36,9 @@ let addLanguageOption = languages => {
 let make = () => {
   let (language, setLanguage) = React.useState(() => "Language");
   <div>
-    <Heading size=Big> "Projects"->str </Heading>
+    <div className="hidden">
+      <Heading size=Gigantic> "Projects"->str </Heading>
+    </div>
     <div className="grid grid-cols-3 gap-4">
       {switch (GetProjectsLanguages.use()) {
        | {loading: true} => <span> "Loading languages..."->str </span>

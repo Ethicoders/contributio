@@ -1,7 +1,7 @@
 let str = React.string;
 
 [@react.component]
-let make = (~name, ~level, ~currentExperience, ~nextLevelExperience) => {
+let make = (~id, ~name, ~level, ~currentExperience, ~nextLevelExperience) => {
   let experienceRatio =
     Js.Int.toString(currentExperience)
     ++ "/"
@@ -18,9 +18,11 @@ let make = (~name, ~level, ~currentExperience, ~nextLevelExperience) => {
         ++ "%",
       (),
     );
-  <div className="p-4 border-2 rounded-sm">
-    <Heading> name->str </Heading>
-    {j|Level $level|j}->str
+  <div className="card px-4 pb-4 pt-2 border-2 rounded-sm">
+    <Anchor target={"/users/" ++ id} className="text-primary">
+      <Heading> name->str </Heading>
+    </Anchor>
+    <span className="text-current">{j|Level $level|j}->str</span>
     <div className="relative leading-4 border-black border">
       <span className="invisible"> experienceRatio->str </span>
       <div style className="absolute top-0 bg-green-500 h-full">
