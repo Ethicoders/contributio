@@ -188,6 +188,7 @@ defmodule Resolvers.Users do
                         languages: languages,
                         user_id: current_user.id
                       })
+                      Accounts.reward_user(current_user, 10)
                   end
               end
           end
