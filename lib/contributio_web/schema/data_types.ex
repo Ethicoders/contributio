@@ -46,8 +46,10 @@ defmodule Contributio.Schema.DataTypes do
     field :name, f!(:string)
     field :url, f!(:string)
     field :origin, f!(:origin)
-    field :languages, :json
+    field :languages, f!(:json)
     field :description, f!(:string)
+    field :topics, list_of(non_null(:string))
+    field :license, :string
     field :tasks, list_of!(:task)
   end
 

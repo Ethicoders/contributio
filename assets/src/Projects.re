@@ -8,6 +8,9 @@ module GetProjects = [%graphql
         name
         url
         description
+        topics
+        license
+        languages
       }
     }
 |}
@@ -72,6 +75,9 @@ let make = () => {
                   name={project.name}
                   description={project.description}
                   url={project.url}
+                  maybeTopics={project.topics}
+                  maybeLicense={project.license}
+                  maybeLanguages={project.languages}
                 />
               )
             ->React.array

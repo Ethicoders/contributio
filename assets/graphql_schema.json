@@ -1652,8 +1652,24 @@
             "isDeprecated": false,
             "name": "languages",
             "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Json",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "license",
+            "type": {
               "kind": "SCALAR",
-              "name": "Json",
+              "name": "String",
               "ofType": null
             }
           },
@@ -1709,6 +1725,26 @@
                     "name": "Task",
                     "ofType": null
                   }
+                }
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "topics",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
                 }
               }
             }

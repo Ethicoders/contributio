@@ -24,7 +24,7 @@ defmodule Resolvers.Users do
 
   # Authorized context, can fetch sensitive data
   def get_current_user(_args, %{context: %{current_user: current_user}}) do
-    {:ok, current_user |> Repo.preload([projects: :tasks])}
+    {:ok, current_user |> Repo.preload(projects: :tasks)}
   end
 
   def get_current_user(_args, _info), do: {:error, "Not Authorized"}
@@ -165,7 +165,11 @@ defmodule Resolvers.Users do
     |> Enum.map(
       &case HTTPoison.get(
               "https://api.github.com/repos/#{&1}",
-              ["Content-Type": "application/json", Authorization: "token #{access_token}"],
+              [
+                "Content-Type": "application/json",
+                Authorization: "token #{access_token}",
+                Accept: "application/vnd.github.mercy-preview+json"
+              ],
               params: %{type: "public"},
               hackney: [pool: :default]
             ) do
@@ -186,8 +190,12 @@ defmodule Resolvers.Users do
                         description: repo.description,
                         url: repo.html_url,
                         languages: languages,
-                        user_id: current_user.id
+                        user_id: current_user.id,
+                        topics: repo.topics,
+                        license: if(repo.license != nil, do: repo.license.spdx_id, else: "")
+                        # readme:
                       })
+
                       Accounts.reward_user(current_user, 10)
                   end
               end

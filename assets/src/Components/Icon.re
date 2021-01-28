@@ -9,6 +9,7 @@ type names =
   | Lightbulb
   | Link
   | Pencil
+  | Tag
   | Timer
   | Trash
   | User;
@@ -43,6 +44,7 @@ let make = (~name: names, ~size: sizes=Small, ~color: colors=Default) => {
         | Lightbulb => "cil-lightbulb"
         | Link => "cil-link"
         | Pencil => "cil-pencil"
+        | Tag => "cil-tag"
         | Timer => "cil-av-timer"
         | Trash => "cil-trash"
         | User => "cil-user"
