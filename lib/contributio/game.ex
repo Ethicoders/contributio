@@ -18,6 +18,6 @@ defmodule Contributio.Game do
     added_experience = current_experience + experience_to_add
     new_level = if (added_experience >= experience_to_next), do: level + 1, else: level
     new_experience = if (added_experience >= experience_to_next), do: added_experience - experience_to_next, else: added_experience
-    %{level: new_level, experience: new_experience}
+    %{level: new_level, current_experience: new_experience}
   end
 end

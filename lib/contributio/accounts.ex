@@ -127,7 +127,7 @@ defmodule Contributio.Accounts do
 
   def reward_user(%User{} = user, experience) do
     calculated_level_experience =
-      Contributio.Game.add_experience_to_current_level(user.level, user.experience, experience)
+      Contributio.Game.add_experience_to_current_level(user.level, user.current_experience, experience)
 
     user |> update_user(calculated_level_experience)
   end
