@@ -3,14 +3,28 @@ let str = React.string;
 [@react.component]
 let make = () => {
   <>
-    <section>
-      <p>
-        "Contributio is a tool made to help Open Source projects to improve their visibility and increase their amount of contributions.
-      Devs willing to spare some time to contribute to Open Source projects will be able to find projects depending on some criteria, such as
-      the used programming languages, the kind of tasks, effort to put into them, and many more!"
-        ->str
-      </p>
+    <section className="relative">
+      <div className="home-argument argument-maintainer text-6xl p-10">
+        "Boost your projects visibility"->str
+      </div>
+      <div className="absolute inset-0 m-auto z-10 w-28 h-28">
+        <Button className="home-cta" type_=Primary>
+          "Start using Contributio"->str
+        </Button>
+      </div>
+      <div
+        className="home-argument argument-contributor text-6xl relative text-right">
+        <span className="absolute bottom-10 right-10 w-10/12">
+          "Get rewarded for your contributions"->str
+        </span>
+      </div>
     </section>
+    /* <p>
+         "Contributio is a tool made to help Open Source projects to improve their visibility and increase their amount of contributions.
+       Devs willing to spare some time to contribute to Open Source projects will be able to find projects depending on some criteria, such as
+       the used programming languages, the kind of tasks, effort to put into them, and many more!"
+         ->str
+       </p> */
     <section>
       <Heading> "What projects are eligible to Contributio?"->str </Heading>
       <p>

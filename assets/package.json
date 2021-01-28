@@ -7,6 +7,7 @@
     "clean:res": "bsb -clean-world",
     "start": "snowpack dev",
     "watch": "snowpack build --watch",
+    "watch:styles": "postcss -w css/style.css -o ../priv/static/css/output.css",
     "build:styles": "postcss css/style.css -o ../priv/static/css/output.css",
     "build:fonts": "cp -r node_modules/@coreui/icons/fonts ../priv/static/fonts",
     "build:images": "cp -r images ../priv/static/images",
@@ -30,7 +31,9 @@
     "reason-apollo-client": "^1.0.0",
     "rollup": "^2.36.2",
     "snowpack-plugin-rollup-bundle": "^0.3.3",
-    "tailwindcss": "^2.0.2"
+    "tailwind-filter-utilities": "^2.0.0",
+    "tailwindcss": "^2.0.2",
+    "tailwindcss-filters": "^3.0.0"
   },
   "devDependencies": {
     "@apollo/client": "^3.3.7",

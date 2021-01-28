@@ -34,7 +34,7 @@ let make = () => {
              <>
                <table
                  className="min-w-full divide-y border-main border">
-                 <thead className="bg-gray-800">
+                 <thead className="bg-dark">
                    <th
                      className="w-full px-6 py-3 text-left text-xs font-medium text-current uppercase tracking-wider">
                      <Checkbox label="Name" value="" onClick={_ => ()} />

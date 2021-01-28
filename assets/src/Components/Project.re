@@ -2,7 +2,7 @@ let str = React.string;
 
 [@react.component]
 let make = (~id, ~name, ~description, ~url) => {
-  <div className="card px-4 pb-4 pt-2 border-2 rounded-sm relative">
+  <div className="card px-4 pb-4 pt-2 border-2 rounded-md relative">
     <Anchor target={"/projects/" ++ id} className="text-primary">
       <Heading> name->str </Heading>
     </Anchor>

@@ -11,14 +11,14 @@ let make = (~children) => {
     setVisible(_ => false);
   };
   <>
-    <nav className="bg-gray-800">
+    <nav className="bg-dark">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <Anchor target="/">
                 <Logo />
-                <span className="text-green-500 text-shadow-lg font-bold">
+                <span className="text-primary text-shadow-lg font-bold">
                   "ontributio"->str
                 </span>
               </Anchor>
@@ -27,20 +27,20 @@ let make = (~children) => {
               <div className="ml-10 flex items-baseline space-x-4">
                 <Anchor
                   target="/projects"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  activeClassNames="bg-gray-700 text-white">
+                  className="text-current bg-dark hover:filter-lighten-50 px-3 py-2 rounded-md text-sm font-medium"
+                  activeClassNames="filter-lighten-75">
                   "Projects"->str
                 </Anchor>
                 <Anchor
                   target="/tasks"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  activeClassNames="bg-gray-700 text-white">
+                  className="text-current bg-dark hover:filter-lighten-50 px-3 py-2 rounded-md text-sm font-medium"
+                  activeClassNames="filter-lighten-75">
                   "Tasks"->str
                 </Anchor>
                 <Anchor
                   target="/users"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  activeClassNames="bg-gray-700 text-white">
+                  className="text-current bg-dark hover:filter-lighten-50 px-3 py-2 rounded-md text-sm font-medium"
+                  activeClassNames="filter-lighten-75">
                   "Users"->str
                 </Anchor>
               </div>
@@ -247,7 +247,7 @@ let make = (~children) => {
          </div>
        </header> */
     <Toaster>
-      <main className="min-h-screen">
+      <main className="bg-main min-h-screen">
         /* <div className="py-6 sm:px-6 lg:px-8"> */
           children
         /* </div> */
@@ -294,7 +294,7 @@ let make = (~children) => {
             <div class="text-xs uppercase text-gray-500 font-medium">Contact us</div>
             <a class="my-3 block" href="/#">XXX XXXX, Floor 4 San Francisco, CA <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">contact@company.com <span class="text-teal-600 text-xs p-1"></span></a>
          </div> */
-      <div className="bg-gray-800">
+      <div className="bg-dark">
         <div
           className="flex pb-5 px-3 m-auto pt-5 border-black	 border-t text-white text-sm flex-col
        md:flex-row max-w-6xl">

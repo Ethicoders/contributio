@@ -2,13 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .text-primary {
-    --tw-text-opacity: 1;
-    color: rgba(16, 185, 129, var(--tw-text-opacity));
-  }
-}
-
 @import "@coreui/icons/css/free.min.css";
 @import "@coreui/icons/css/brand.min.css";
 
@@ -23,10 +16,10 @@ iframe[hidden] {
 main {
   background-color: #1c4c4c;
 }
-
+/* 
 .text-current {
   color: #d1d5db;
-}
+} */
 
 .border-main {
   border-color: #295c5c;
@@ -36,14 +29,6 @@ main {
   border-color: #295c5c;
 }
 
-.card {
-  background-color: #1b263b;
-  border-color: #295c5c;
-}
-
-.background-main {
-  background-color: #1b263b;
-}
 
 .home-argument {
   height: calc(100vh - 60px);

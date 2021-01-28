@@ -5,22 +5,36 @@ type types =
   | Warning;
 
 [@react.component]
-let make = (~type_: types=Default, ~children=React.null, ~onClick=ignore) => {
+let make =
+    (
+      ~className="",
+      ~type_: types=Default,
+      ~children=React.null,
+      ~onClick=ignore,
+    ) => {
+  let classNameItems =
+    ClassName.create(
+      Js.String.split(" ", className)
+      |> Js.Array.map(item => ClassName.Value(item)),
+    );
+
   let buttonClassNames =
-    ClassName.create([|
-      Value(
+    ClassName.merge(
+      classNameItems,
+      (
         switch (type_) {
-        | Danger => "bg-red-400"
-        | Default => "bg-gray-400"
-        | Primary => "bg-green-400"
-        | Warning => "bg-yellow-400"
-        },
-      ),
-    |]);
+        | Danger => [|"hover:bg-danger", "border-danger", "text-danger"|]
+        | Default => [|"hover:bg-default", "border-default", "text-default"|]
+        | Primary => [|"hover:bg-primary", "border-primary", "text-primary"|]
+        | Warning => [|"hover:bg-warning", "border-warning", "text-warning"|]
+        }
+      )
+      |> Js.Array.map(item => ClassName.Value(item)),
+    );
   <button
     onClick
     className={
-      "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 "
+      "transition hover:text-current inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 "
       ++ ClassName.output(buttonClassNames)
     }>
     children

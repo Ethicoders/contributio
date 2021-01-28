@@ -53,7 +53,7 @@ let make =
       ~time,
       ~maybeProject=None,
     ) => {
-  <div className="card px-4 pb-4 pt-2 border-2 rounded-sm relative">
+  <div className="card px-4 pb-4 pt-2 border-2 rounded-md relative">
     <Anchor target={"/tasks/" ++ id} className="text-primary">
       <Heading> name->str </Heading>
     </Anchor>

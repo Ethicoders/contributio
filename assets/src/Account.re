@@ -16,25 +16,25 @@ let make = () => {
   <div>
     <div className="md:flex flex-col md:flex-row md:min-h-screen w-full">
       <div
-        className="flex flex-col w-full md:w-64 text-current bg-gray-800 flex-shrink-0">
+        className="flex flex-col w-full md:w-64 text-current bg-dark flex-shrink-0">
         <nav
           className="flex-grow md:block px-4 pb-4 md:pb-0 md:overflow-y-auto">
           <Anchor
             target="/account"
-            className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium my-1"
-            activeClassNames="bg-gray-700 text-white">
+            className="block my-1 text-current bg-dark hover:filter-lighten-50 px-3 py-2 rounded-md text-sm font-medium"
+            activeClassNames="filter-lighten-75">
             "Settings"->str
           </Anchor>
           <Anchor
             target="/account/projects"
-            className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium my-1"
-            activeClassNames="bg-gray-700 text-white">
+            className="block my-1 text-current bg-dark hover:filter-lighten-50 px-3 py-2 rounded-md text-sm font-medium"
+            activeClassNames="filter-lighten-75">
             "My Projects"->str
           </Anchor>
           <Anchor
             target="/account/tasks"
-            className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium my-1"
-            activeClassNames="bg-gray-700 text-white">
+            className="block my-1 text-current bg-dark hover:filter-lighten-50 px-3 py-2 rounded-md text-sm font-medium"
+            activeClassNames="filter-lighten-75">
             "My Tasks"->str
           </Anchor>
         </nav>

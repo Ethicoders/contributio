@@ -35,7 +35,7 @@ let addLanguageOption = languages => {
 [@react.component]
 let make = () => {
   let (language, setLanguage) = React.useState(() => "Language");
-  <div>
+  <div className="p-2">
     <div className="hidden">
       <Heading size=Gigantic> "Projects"->str </Heading>
     </div>
