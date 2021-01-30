@@ -18,7 +18,7 @@ let make = (~id, ~name, ~level, ~currentExperience, ~nextLevelExperience) => {
         ++ "%",
       (),
     );
-  <div className="card px-4 pb-4 pt-2 border-2 rounded-sm">
+  <div className="border-green-900 px-4 pb-4 pt-2 border-2 rounded-md">
     <Anchor target={"/users/" ++ id} className="text-primary">
       <Heading> name->str </Heading>
     </Anchor>

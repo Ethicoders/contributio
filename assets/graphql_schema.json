@@ -1954,7 +1954,17 @@
               {
                 "defaultValue": null,
                 "description": null,
-                "name": "name",
+                "name": "search",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "topic",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",

@@ -31,8 +31,12 @@ defmodule Contributio.Market do
       # {:name, name}, query when is_list(name) ->
       #   from q in query, where: q.name in ^name
 
-      {:name, name}, query ->
-        from q in query, where: like(q.name, ^"%#{name}%")
+      {:topic, topic}, query ->
+        from q in query, where: ^topic in q.topics
+
+      {:search, search}, query ->
+        from q in query,
+          where: like(q.name, ^"%#{search}%") or like(q.description, ^"%#{search}%")
 
       {:languages, language}, query ->
         from q in query, where: fragment("? \\? ?", q.languages, ^language)
@@ -126,7 +130,7 @@ defmodule Contributio.Market do
   end
 
   def delete_project_by_id(id) do
-    from(p in Project, where: p.id == ^id) |> Repo.delete_all
+    from(p in Project, where: p.id == ^id) |> Repo.delete_all()
   end
 
   @doc """
@@ -256,7 +260,7 @@ defmodule Contributio.Market do
   end
 
   def delete_task_by_id(id) do
-    from(p in Task, where: p.id == ^id) |> Repo.delete_all
+    from(p in Task, where: p.id == ^id) |> Repo.delete_all()
   end
 
   @doc """

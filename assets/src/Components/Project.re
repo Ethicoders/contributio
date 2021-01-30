@@ -11,7 +11,7 @@ let make =
       ~maybeTopics,
       ~maybeLicense,
     ) => {
-  <div className="card px-4 pb-4 pt-2 border-2 rounded-md relative">
+  <div className="px-4 pb-4 pt-2 border-2 border-green-900 rounded-md relative">
     <Anchor target={"/projects/" ++ id} className="text-primary">
       <Heading> name->str </Heading>
     </Anchor>

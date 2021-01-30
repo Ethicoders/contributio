@@ -24,8 +24,9 @@ defmodule Contributio.Schema do
 
     @desc "Get a list of projects"
     field :projects, list_of!(:project) do
-      arg(:name, :string)
+      arg(:search, :string)
       arg(:languages, :string)
+      arg(:topic, :string)
 
       resolve(&Resolvers.Projects.get_projects/2)
     end

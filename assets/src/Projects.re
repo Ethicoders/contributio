@@ -2,8 +2,8 @@ let str = React.string;
 
 module GetProjects = [%graphql
   {|
-    query getProjects {
-      projects {
+    query getProjects($search: String, $languages: String, $topic: String) {
+      projects(search: $search, languages: $languages, topic: $topic) {
         id
         name
         url
@@ -24,20 +24,15 @@ module GetProjectsLanguages = [%graphql
 |}
 ];
 
-// Absolutely disgusting but "Language" was
-// added twice to the list :|
-let addLanguageOption = languages => {
-  let _ =
-    if (!Js.Array.includes("Language", languages)) {
-      let _ = Js.Array.unshift("Language", languages);
-      ();
-    };
-  ();
-};
 
 [@react.component]
 let make = () => {
-  let (language, setLanguage) = React.useState(() => "Language");
+  let emptyLanguage: Select.item = {label: "Language", value: None};
+  let (languageIndex, setLanguage) = React.useState(() => 0);
+  let (languagesArray, setLanguages) =
+    React.useState(() => [|emptyLanguage|]);
+  // let topic = "";
+  let (searchString, setSearchString) = React.useState(() => "");
   <div className="p-2">
     <div className="hidden">
       <Heading size=Gigantic> "Projects"->str </Heading>
@@ -50,17 +45,39 @@ let make = () => {
        | {called: false, data: Some(_), error: None, loading: false} =>
          "Do"->str
        | {called: true, data: Some({languages}), loading: false} =>
-         addLanguageOption(languages);
+         let selectItems =
+           languages
+           |> Js.Array.map(item => {
+                let item: Select.item = {label: item, value: Some(item)};
+                item;
+              });
+         if (Js.Array.length(languagesArray) == 1) {
+           setLanguages(currentLanguages =>
+             Js.Array.concat(selectItems, currentLanguages)
+           );
+         };
          <Select
            label="Language"
-           options=languages
+           items=languagesArray
            onChange={value => setLanguage(_ => value)}
-           selected=language
+           selected=languageIndex
          />;
        }}
-      <div className=""> <InputGroup label="Search" /> </div>
+      <div className="">
+        <InputGroup
+          iconName=Icon.Search
+          onChange={value => setSearchString(_ => value)}
+          label="Search"
+        />
+      </div>
     </div>
-    {switch (GetProjects.use()) {
+    {switch (
+       GetProjects.use({
+         languages: languagesArray[languageIndex].value,
+         search: searchString == "" ? None : Some(searchString),
+         topic: None,
+       })
+     ) {
      | {loading: true} => "Loading..."->React.string
      | {data: Some({projects}), loading: false} =>
        <div className="grid grid-cols-3 gap-4">

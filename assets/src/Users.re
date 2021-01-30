@@ -16,7 +16,7 @@ module GetUsers = [%graphql
 
 [@react.component]
 let make = () => {
-  <div>
+  <div className="p-2">
     <div className="hidden"> <Heading size=Gigantic> "Users"->str </Heading> </div>
     {switch (GetUsers.use()) {
      | {loading: true} => "Loading..."->React.string
