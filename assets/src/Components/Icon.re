@@ -8,6 +8,7 @@ type names =
   | Gitlab
   | Lightbulb
   | Link
+  | LinkBroken
   | Pencil
   | Search
   | Tag
@@ -44,6 +45,7 @@ let make = (~name: names, ~size: sizes=Small, ~color: colors=Default) => {
         | Gitlab => "cib-gitlab"
         | Lightbulb => "cil-lightbulb"
         | Link => "cil-link"
+        | LinkBroken => "cil-link-broken"
         | Pencil => "cil-pencil"
         | Search => "cil-magnifying-glass"
         | Tag => "cil-tag"

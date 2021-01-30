@@ -65,20 +65,11 @@ let make = () => {
               })
            |> ignore;
          };
-         let removeFromArray = (item, values) => {
-           let _ =
-             Js.Array.removeCountInPlace(
-               ~pos=Js.Array.indexOf(item, values),
-               ~count=1,
-               values,
-             );
-           values;
-         };
 
          let handleCheckboxClick = id => {
            setIDs(previousIDs => {
              Js.Array.includes(id, previousIDs)
-               ? removeFromArray(id, previousIDs)
+               ? ArrayExt.removeFromArray(id, previousIDs)
                : Js.Array.concat([|id|], previousIDs)
            });
          };

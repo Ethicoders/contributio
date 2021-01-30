@@ -25,9 +25,13 @@ defmodule Contributio.Schema.DataTypes do
     field :projects, list_of!(:project)
   end
 
+  object :user_origin do
+    field :origin, f!(:origin)
+  end
+
   object :current_user do
     import_fields :user
-    field :linked_origins, f!(:origin_family)
+    field :users_origins, list_of!(:user_origin)
   end
 
   enum :origin_family do
@@ -37,8 +41,9 @@ defmodule Contributio.Schema.DataTypes do
   end
 
   object :origin do
-    field :uri, f!(:string)
-    field :family, f!(:origin_family)
+    field :id, f!(:integer)
+    field :url, f!(:string)
+    # field :family, f!(:origin_family)
   end
 
   object :project do

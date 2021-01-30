@@ -848,22 +848,6 @@
             "deprecationReason": null,
             "description": null,
             "isDeprecated": false,
-            "name": "linkedOrigins",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "OriginFamily",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [],
-            "deprecationReason": null,
-            "description": null,
-            "isDeprecated": false,
             "name": "name",
             "type": {
               "kind": "NON_NULL",
@@ -909,6 +893,30 @@
                   "ofType": {
                     "kind": "OBJECT",
                     "name": "Project",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "usersOrigins",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserOrigin",
                     "ofType": null
                   }
                 }
@@ -1510,6 +1518,33 @@
               {
                 "defaultValue": null,
                 "description": null,
+                "name": "originId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": "Revoke VCS access token",
+            "isDeprecated": false,
+            "name": "revokeLinkedAccount",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
                 "name": "accessTokens",
                 "type": {
                   "kind": "SCALAR",
@@ -1558,13 +1593,13 @@
             "deprecationReason": null,
             "description": null,
             "isDeprecated": false,
-            "name": "family",
+            "name": "id",
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "ENUM",
-                "name": "OriginFamily",
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               }
             }
@@ -1574,7 +1609,7 @@
             "deprecationReason": null,
             "description": null,
             "isDeprecated": false,
-            "name": "uri",
+            "name": "url",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -1590,23 +1625,6 @@
         "interfaces": [],
         "kind": "OBJECT",
         "name": "Origin",
-        "possibleTypes": null
-      },
-      {
-        "description": null,
-        "enumValues": [
-          {
-            "deprecationReason": null,
-            "description": null,
-            "isDeprecated": false,
-            "name": "GITHUB"
-          }
-        ],
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "kind": "ENUM",
-        "name": "OriginFamily",
         "possibleTypes": null
       },
       {
@@ -1905,6 +1923,30 @@
                 "kind": "OBJECT",
                 "name": "CurrentUser",
                 "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": "Get registered origins",
+            "isDeprecated": false,
+            "name": "origins",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Origin",
+                    "ofType": null
+                  }
+                }
               }
             }
           },
@@ -2493,6 +2535,33 @@
         "interfaces": [],
         "kind": "OBJECT",
         "name": "User",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": null,
+        "fields": [
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "origin",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Origin",
+                "ofType": null
+              }
+            }
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "kind": "OBJECT",
+        "name": "UserOrigin",
         "possibleTypes": null
       }
     ]

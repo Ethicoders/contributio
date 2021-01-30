@@ -33,7 +33,7 @@ let make = () => {
            | tasks =>
              <>
                <table
-                 className="min-w-full divide-y border-main border">
+                 className="min-w-full divide-y">
                  <thead className="bg-dark">
                    <th
                      className="w-full px-6 py-3 text-left text-xs font-medium text-current uppercase tracking-wider">

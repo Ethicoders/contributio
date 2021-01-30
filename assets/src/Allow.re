@@ -21,7 +21,13 @@ let make = (~code) => {
       );
 
     if (Session.isConnected()) {
-      <LinkAccount accessToken onDone={() => Window.close()} />;
+      <LinkAccount
+        accessToken
+        onDone={() => {
+          Window.postMessage("link:success");
+          Window.close();
+        }}
+      />;
     } else {
       {
         CreateAccount.trigger(

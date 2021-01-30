@@ -24,7 +24,8 @@ defmodule Resolvers.Users do
 
   # Authorized context, can fetch sensitive data
   def get_current_user(_args, %{context: %{current_user: current_user}}) do
-    {:ok, current_user |> Repo.preload(projects: :tasks)}
+    bla = current_user |> Repo.preload(projects: :tasks, users_origins: :origin)
+    {:ok, bla}
   end
 
   def get_current_user(_args, _info), do: {:error, "Not Authorized"}
@@ -132,6 +133,15 @@ defmodule Resolvers.Users do
         IO.inspect(inspect(reason))
     end
   end
+
+  def revoke_linked_account(%{origin_id: origin_id}, %{
+        context: %{current_user: current_user}
+      }) do
+    Accounts.delete_user_origin(origin_id, current_user.id)
+    {:ok, true}
+  end
+
+  def revoke_linked_account(_args, _info), do: {:error, "Not Authorized"}
 
   def fetch_repositories(%{origin_id: origin_id}, %{
         context: %{current_user: %Accounts.User{} = current_user}

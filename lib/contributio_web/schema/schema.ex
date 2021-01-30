@@ -80,6 +80,11 @@ defmodule Contributio.Schema do
 
       resolve(&Resolvers.Users.fetch_issues/2)
     end
+
+    @desc "Get registered origins"
+    field :origins, list_of!(:origin) do
+      resolve(fn _, _, _ -> {:ok, Contributio.Platforms.list_origins()} end)
+    end
   end
 
   mutation do
@@ -166,6 +171,13 @@ defmodule Contributio.Schema do
 
       resolve(&Resolvers.Users.create_linked_account/2)
       middleware(&add_token_to_context/2)
+    end
+
+    @desc "Revoke VCS access token"
+    field :revoke_linked_account, :boolean do
+      arg(:origin_id, f!(:integer))
+
+      resolve(&Resolvers.Users.revoke_linked_account/2)
     end
 
     @desc "Import VCS service repositories as projects"

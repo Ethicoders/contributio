@@ -89,6 +89,11 @@ defmodule Contributio.Accounts do
   def get_user_origin(origin_id, user_id),
     do: Repo.get_by(UserOrigin, origin_id: origin_id, user_id: user_id)
 
+  def delete_user_origin(origin_id, user_id),
+    do:
+      from(o in UserOrigin, where: o.origin_id == ^origin_id and o.user_id == ^user_id)
+      |> Repo.delete_all()
+
   @doc """
   Creates a user.
 
@@ -127,7 +132,11 @@ defmodule Contributio.Accounts do
 
   def reward_user(%User{} = user, experience) do
     calculated_level_experience =
-      Contributio.Game.add_experience_to_current_level(user.level, user.current_experience, experience)
+      Contributio.Game.add_experience_to_current_level(
+        user.level,
+        user.current_experience,
+        experience
+      )
 
     user |> update_user(calculated_level_experience)
   end
