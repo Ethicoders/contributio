@@ -14,6 +14,7 @@ end
 
 defmodule Contributio.Schema.DataTypes do
   use Absinthe.Schema.Notation
+  use Absinthe.Relay.Schema.Notation, :modern
   import Contributio.Absinthe.Macros
 
   object :user do
@@ -30,12 +31,12 @@ defmodule Contributio.Schema.DataTypes do
   end
 
   object :current_user do
-    import_fields :user
+    import_fields(:user)
     field :users_origins, list_of!(:user_origin)
   end
 
   enum :origin_family do
-    value :github
+    value(:github)
     # value :gitlab
     # value :bitbucket
   end
@@ -74,8 +75,8 @@ defmodule Contributio.Schema.DataTypes do
   end
 
   scalar :json do
-    serialize &(&1)
-    parse &Jason.decode!/1
+    serialize(& &1)
+    parse(&Jason.decode!/1)
   end
 
   @desc "Authentication payload"
@@ -112,5 +113,10 @@ defmodule Contributio.Schema.DataTypes do
 
   object :delete_task_payload do
     field :id, f!(:string)
+  end
+
+  connection :project, node_type: f!(:project) do
+    edge do
+    end
   end
 end

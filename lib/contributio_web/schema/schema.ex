@@ -1,6 +1,8 @@
 defmodule Contributio.Schema do
   use Absinthe.Schema
+  use Absinthe.Relay.Schema, :modern
   import Contributio.Absinthe.Macros
+  alias Contributio.Repo
 
   import_types(Contributio.Schema.DataTypes)
 
@@ -9,6 +11,8 @@ defmodule Contributio.Schema do
   query do
     @desc "Get a list of users"
     field :users, list_of!(:user) do
+      arg(:cursor, :id)
+
       resolve(fn _parent, _args, _resolution ->
         {:ok,
          Contributio.Accounts.list_users()
@@ -23,12 +27,18 @@ defmodule Contributio.Schema do
     end
 
     @desc "Get a list of projects"
-    field :projects, list_of!(:project) do
+    connection field :projects, node_type: :project do
+      arg(:cursor, :id)
       arg(:search, :string)
       arg(:languages, :string)
       arg(:topic, :string)
 
-      resolve(&Resolvers.Projects.get_projects/2)
+      resolve(fn args, resolution ->
+        Logger.debug(inspect(args))
+
+        Resolvers.Projects.get_projects(args, resolution)
+        |> Absinthe.Relay.Connection.from_query(&Repo.all/1, args, count: 6)
+      end)
     end
 
     @desc "Get a single project"
@@ -44,6 +54,7 @@ defmodule Contributio.Schema do
 
     @desc "Get a list of tasks"
     field :tasks, list_of!(:task) do
+      arg(:cursor, :id)
       resolve(&Resolvers.Projects.list_tasks/2)
     end
 

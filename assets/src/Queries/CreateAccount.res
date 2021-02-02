@@ -12,8 +12,8 @@ module CreateLinkedAccount = %graphql(`
 
 let trigger = (accessToken, onDone) =>
   Client.instance.mutate(~mutation=module(CreateLinkedAccount), {originId: 1, content: accessToken})
-  ->Promise.Promise.then_(result =>
-    Js.Promise.resolve(
+  ->Promise.then(result =>
+    Promise.resolve(
       switch result {
       | Ok(_) =>
         onDone()

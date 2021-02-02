@@ -1,7 +1,6 @@
 let str = React.string;
 
-module GetTasks = [%graphql
-  {|
+module GetTasks = %graphql(`
     query getTasks {
       tasks {
         id
@@ -16,22 +15,22 @@ module GetTasks = [%graphql
         }
       }
     }
-|}
-];
+`)
 
-[@react.component]
+@react.component
 let make = () => {
   <div>
     <div className="hidden">
-      <Heading size=Gigantic> "Tasks"->str </Heading>
+      <Heading size=Gigantic> {"Tasks"->str} </Heading>
     </div>
     {switch (GetTasks.use()) {
      | {loading: true} => "Loading..."->React.string
      | {data: None} => React.null
-     | {data: Some({tasks}), loading: false} =>
+     | {data: Some({tasks}), loading: false, fetchMore: _} =>
+      {Js.log("in")};
        <div className="grid grid-cols-4 gap-4 p-2">
          {switch (tasks) {
-          | [||] => "No tasks yet!"->str
+          | [] => "No tasks yet!"->str
           | values =>
             values
             ->Js.Array2.map(task => {

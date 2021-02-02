@@ -20,6 +20,7 @@
     "@coreui/icons": "^1.0.1",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.1.0",
+    "@ryyppy/rescript-promise": "0.0.2",
     "@snowpack/plugin-webpack": "^2.3.0",
     "autoprefixer": "^10.2.1",
     "bs-css-emotion": "^2.2.0",

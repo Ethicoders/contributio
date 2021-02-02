@@ -8,8 +8,8 @@ module DeleteProjectQuery = %graphql(`
 
 let trigger = (id: string, onDone) =>
   Client.instance.mutate(~mutation=module(DeleteProjectQuery), {id: id})
-  ->Promise.Promise.then_(result =>
-    Js.Promise.resolve(
+  ->Promise.then(result =>
+    Promise.resolve(
       switch result {
       | Ok(_) =>
         onDone()

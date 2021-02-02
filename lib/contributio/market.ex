@@ -24,13 +24,8 @@ defmodule Contributio.Market do
   end
 
   def list_filtered_projects(args) do
-    Logger.debug(args)
-
     args
     |> Enum.reduce(Project, fn
-      # {:name, name}, query when is_list(name) ->
-      #   from q in query, where: q.name in ^name
-
       {:topic, topic}, query ->
         from q in query, where: ^topic in q.topics
 
@@ -40,8 +35,8 @@ defmodule Contributio.Market do
 
       {:languages, language}, query ->
         from q in query, where: fragment("? \\? ?", q.languages, ^language)
+      _, query -> query
     end)
-    |> Repo.all()
   end
 
   def list_projects_languages do

@@ -8,8 +8,8 @@ module RevokeLinkedAccount = %graphql(`
 
 let trigger = (originId, onDone) =>
   Client.instance.mutate(~mutation=module(RevokeLinkedAccount), {originId: originId})
-  ->Promise.Promise.then_(result =>
-    Js.Promise.resolve(
+  ->Promise.then(result =>
+    Promise.resolve(
       switch result {
       | Ok(_) =>
         onDone()

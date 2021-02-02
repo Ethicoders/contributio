@@ -2,15 +2,26 @@ let str = React.string;
 
 module GetProjects = [%graphql
   {|
-    query getProjects($search: String, $languages: String, $topic: String) {
-      projects(search: $search, languages: $languages, topic: $topic) {
-        id
-        name
-        url
-        description
-        topics
-        license
-        languages
+    query getProjects($after: String, $search: String, $languages: String, $topic: String) {
+      projects(after: $after, first: 6, search: $search, languages: $languages, topic: $topic) {
+        edges {
+          node {
+            id
+            name
+            url
+            description
+            topics
+            license
+            languages
+          }
+          cursor
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
       }
     }
 |}
@@ -24,16 +35,106 @@ module GetProjectsLanguages = [%graphql
 |}
 ];
 
+// type ref('a) = {
+//   mutable contents: 'a,
+// };
 
 [@react.component]
 let make = () => {
   let emptyLanguage: Select.item = {label: "Language", value: None};
+
   let (languageIndex, setLanguage) = React.useState(() => 0);
   let (languagesArray, setLanguages) =
     React.useState(() => [|emptyLanguage|]);
-  // let topic = "";
   let (searchString, setSearchString) = React.useState(() => "");
-  <div className="p-2">
+  let canFetch = ref(false);
+  let maybeNextCursor = ref(None);
+
+  let queryResult =
+    GetProjects.use({
+      after: None,
+      languages: languagesArray[languageIndex].value,
+      search: searchString == "" ? None : Some(searchString),
+      topic: None,
+    });
+
+  let elementRef =
+    OnScroll.useScroll(
+      ~modifier=100,
+      ~watched=maybeNextCursor,
+      _ => {
+        Js.log2(canFetch^, Belt.Option.getWithDefault(maybeNextCursor^, ""));
+        if (canFetch^
+            && Belt.Option.getWithDefault(maybeNextCursor^, "") !== "") {
+          canFetch := false;
+          queryResult.fetchMore(
+            ~updateQuery=
+              (previousData, {fetchMoreResult}) => {
+                switch (fetchMoreResult) {
+                | Some({projects}) =>
+                  Js.log("fetchingmore");
+                  if (Belt.Option.getExn(projects).pageInfo.hasNextPage) {
+                    maybeNextCursor :=
+                      Belt.Option.getExn(projects).pageInfo.endCursor;
+                    Js.log2(
+                      Belt.Option.getExn(projects).pageInfo.endCursor,
+                      maybeNextCursor,
+                    );
+                  };
+                  canFetch := true;
+                  {
+                    projects:
+                      switch (previousData.projects) {
+                      | Some(data) =>
+                        Some({
+                          ...data,
+                          edges:
+                            Some(
+                              Belt.Array.concat(
+                                Belt.Option.getExn(data.edges),
+                                Belt.Option.getExn(
+                                  Belt.Option.getExn(projects).edges,
+                                ),
+                              ),
+                            ),
+                        })
+                      | None => None
+                      },
+                  };
+                | None => previousData
+                }
+              },
+            ~variables={
+              after: maybeNextCursor^,
+              languages: languagesArray[languageIndex].value,
+              search: searchString == "" ? None : Some(searchString),
+              topic: None,
+            },
+            (),
+          )
+          ->ignore;
+        };
+      },
+    );
+
+  {
+    switch (queryResult) {
+    | {data: None} => ()
+    | {loading: true} => ()
+    | {data: Some({projects}), loading: false} =>
+    switch (projects) {
+      | None => ()
+      | Some(payload) =>
+      Js.log2("recalled", payload.pageInfo.hasNextPage);
+        maybeNextCursor :=
+          payload.pageInfo.hasNextPage ? payload.pageInfo.endCursor : Some("");
+        canFetch := true;
+      };
+    };
+  };
+
+  // let topic = "";
+  <div className="p-2" ref={ReactDOM.Ref.domRef(elementRef)}>
     <div className="hidden">
       <Heading size=Gigantic> "Projects"->str </Heading>
     </div>
@@ -53,13 +154,17 @@ let make = () => {
               });
          if (Js.Array.length(languagesArray) == 1) {
            setLanguages(currentLanguages =>
-             Js.Array.concat(selectItems, currentLanguages)
+             Belt.Array.concat(currentLanguages, selectItems)
            );
          };
          <Select
            label="Language"
            items=languagesArray
-           onChange={value => setLanguage(_ => value)}
+           onChange={value => {
+             //  setNextCursor(_ => None);
+             maybeNextCursor := None;
+             setLanguage(_ => value);
+           }}
            selected=languageIndex
          />;
        }}
@@ -71,35 +176,48 @@ let make = () => {
         />
       </div>
     </div>
-    {switch (
-       GetProjects.use({
-         languages: languagesArray[languageIndex].value,
-         search: searchString == "" ? None : Some(searchString),
-         topic: None,
-       })
-     ) {
+    {switch (queryResult) {
      | {loading: true} => "Loading..."->React.string
      | {data: Some({projects}), loading: false} =>
-       <div className="grid grid-cols-3 gap-4">
-         {switch (projects) {
-          | [||] => "No projects yet!"->str
-          | values =>
-            values
+       let values =
+         switch (projects) {
+         | None => [||]
+         | Some(any) =>
+           switch (any.edges) {
+           | None => [||]
+           | Some(values) =>
+             values->Belt.Array.map(value =>
+               switch (value) {
+               | None => None
+               | Some(project) => Some(project.node)
+               }
+             )
+           }
+         };
+         Js.log("rerender");
+       <>
+         <Button onClick={_ => queryResult.fetchMore()->ignore;}>"Test"->str</Button>
+         <div className="grid grid-cols-3 gap-4">
+           {values
             ->Belt.Array.map(project =>
-                <Project
-                  key={project.id}
-                  id={project.id}
-                  name={project.name}
-                  description={project.description}
-                  url={project.url}
-                  maybeTopics={project.topics}
-                  maybeLicense={project.license}
-                  maybeLanguages={project.languages}
-                />
+                switch (project) {
+                | None => React.null
+                | Some(project) =>
+                  <Project
+                    key={project.id}
+                    id={project.id}
+                    name={project.name}
+                    description={project.description}
+                    url={project.url}
+                    maybeTopics={project.topics}
+                    maybeLicense={project.license}
+                    maybeLanguages={project.languages}
+                  />
+                }
               )
-            ->React.array
-          }}
-       </div>
+            ->React.array}
+         </div>
+       </>;
      | {data: None} => <div />
      }}
   </div>;

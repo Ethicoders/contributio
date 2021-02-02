@@ -9,7 +9,7 @@ defmodule Resolvers.Projects do
 
   def get_projects(params, _info) do
     filters = Enum.map(params, fn({key, value}) -> {key, value} end)
-    {:ok, Market.list_filtered_projects(filters)}
+    Market.list_filtered_projects(filters)
   end
 
   def get_projects_languages(_params, _info) do
