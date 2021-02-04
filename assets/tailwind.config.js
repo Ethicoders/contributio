@@ -147,6 +147,8 @@ module.exports = {
       gray: colors.trueGray,
       green: colors.emerald,
       blue: colors.blue,
+      orange: colors.orange,
+      red: colors.red
     },
     filter: {
       "darken-50": "brightness(50%)",

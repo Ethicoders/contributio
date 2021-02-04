@@ -53,9 +53,17 @@ defmodule Contributio.Schema do
     end
 
     @desc "Get a list of tasks"
-    field :tasks, list_of!(:task) do
+    connection field :tasks, node_type: :task do
       arg(:cursor, :id)
-      resolve(&Resolvers.Projects.list_tasks/2)
+      arg(:difficulty, list_of(non_null(:integer)))
+      arg(:time, list_of(non_null(:integer)))
+
+      resolve(fn args, resolution ->
+        Logger.debug(inspect(args))
+
+        Resolvers.Projects.list_tasks(args, resolution)
+        |> Absinthe.Relay.Connection.from_query(&Repo.all/1, args, count: 6)
+      end)
     end
 
     @desc "Get a single task"

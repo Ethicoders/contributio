@@ -119,4 +119,9 @@ defmodule Contributio.Schema.DataTypes do
     edge do
     end
   end
+
+  connection :task, node_type: f!(:task) do
+    edge do
+    end
+  end
 end

@@ -64,6 +64,9 @@ let make = () => {
       ~watched=maybeNextCursor,
       _ => {
         Js.log2(canFetch^, Belt.Option.getWithDefault(maybeNextCursor^, ""));
+        // two problems:
+        // - request is executed twice
+        // - cursor is not updated (depends on above, IMO)
         if (canFetch^
             && Belt.Option.getWithDefault(maybeNextCursor^, "") !== "") {
           canFetch := false;
@@ -122,14 +125,14 @@ let make = () => {
     | {data: None} => ()
     | {loading: true} => ()
     | {data: Some({projects}), loading: false} =>
-    switch (projects) {
+      switch (projects) {
       | None => ()
       | Some(payload) =>
-      Js.log2("recalled", payload.pageInfo.hasNextPage);
+        Js.log2("recalled", payload.pageInfo.hasNextPage);
         maybeNextCursor :=
           payload.pageInfo.hasNextPage ? payload.pageInfo.endCursor : Some("");
         canFetch := true;
-      };
+      }
     };
   };
 
@@ -194,28 +197,34 @@ let make = () => {
              )
            }
          };
-         Js.log("rerender");
+       Js.log("rerender");
        <>
-         <Button onClick={_ => queryResult.fetchMore()->ignore;}>"Test"->str</Button>
+         <Button onClick={_ => queryResult.fetchMore()->ignore}>
+           "Test"->str
+         </Button>
          <div className="grid grid-cols-3 gap-4">
-           {values
-            ->Belt.Array.map(project =>
-                switch (project) {
-                | None => React.null
-                | Some(project) =>
-                  <Project
-                    key={project.id}
-                    id={project.id}
-                    name={project.name}
-                    description={project.description}
-                    url={project.url}
-                    maybeTopics={project.topics}
-                    maybeLicense={project.license}
-                    maybeLanguages={project.languages}
-                  />
-                }
-              )
-            ->React.array}
+           {switch (values) {
+            | [||] => "No results!"->str
+            | values =>
+              values
+              ->Belt.Array.map(project =>
+                  switch (project) {
+                  | None => React.null
+                  | Some(project) =>
+                    <Project
+                      key={project.id}
+                      id={project.id}
+                      name={project.name}
+                      description={project.description}
+                      url={project.url}
+                      maybeTopics={project.topics}
+                      maybeLicense={project.license}
+                      maybeLanguages={project.languages}
+                    />
+                  }
+                )
+              ->React.array
+            }}
          </div>
        </>;
      | {data: None} => <div />

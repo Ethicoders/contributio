@@ -35,7 +35,9 @@ defmodule Contributio.Market do
 
       {:languages, language}, query ->
         from q in query, where: fragment("? \\? ?", q.languages, ^language)
-      _, query -> query
+
+      _, query ->
+        query
     end)
   end
 
@@ -152,12 +154,28 @@ defmodule Contributio.Market do
       [%Task{}, ...]
 
   """
-  def list_tasks do
-    Repo.all(
-      from t in Contributio.Market.Task,
+  def list_filtered_tasks(args) do
+    initial =
+      from t in Task,
         select_merge: %{experience: fragment("? * ? AS experience", t.time, t.difficulty)},
         preload: [:project]
-    )
+
+    args
+    |> Enum.reduce(initial, fn
+      {:time, time}, query ->
+        from q in query,
+          where: q.time in ^time
+
+      {:difficulty, difficulty}, query ->
+        from q in query, where: q.difficulty in ^difficulty
+
+      _, query ->
+        query
+    end)
+
+    # Repo.all(
+
+    # )
   end
 
   @doc """

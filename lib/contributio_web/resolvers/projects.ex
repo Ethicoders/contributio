@@ -23,8 +23,9 @@ defmodule Resolvers.Projects do
     }
   end
 
-  def list_tasks(_params, _info) do
-    {:ok, Market.list_tasks()}
+  def list_tasks(params, _info) do
+    filters = Enum.map(params, fn({key, value}) -> {key, value} end)
+    Market.list_filtered_tasks(filters)
   end
 
   def delete_project(%{id: id}, %{
