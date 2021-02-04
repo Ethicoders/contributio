@@ -10,14 +10,14 @@ defmodule ContributioWeb.Webhooks.Github do
     {sender["id"], :user, :revoke, nil}
   end
 
-  defp resolve("pull_request", %{
+  defp resolve("pull_requests", %{
          pull_request: pull_request,
          action: "opened"
        }) do
     {nil, :contribution, :create, %{pull_request_id: pull_request["id"]}}
   end
 
-  defp resolve("pull_request", %{
+  defp resolve("pull_requests", %{
          pull_request: pull_request,
          action: "closed",
          merged: false
@@ -25,7 +25,7 @@ defmodule ContributioWeb.Webhooks.Github do
     {:contribution, :close, pull_request["id"], %{}}
   end
 
-  defp resolve("pull_request", %{
+  defp resolve("pull_requests", %{
          pull_request: pull_request,
          action: "closed",
          merged: true
