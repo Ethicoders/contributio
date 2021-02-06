@@ -67,7 +67,7 @@ defmodule ContributioWeb.Webhooks.Github do
     {nil, :task, :create, data}
   end
 
-  defp resolve("issues", %{issue: issue, action: "edited"}) do
+  defp resolve("issues", %{issue: issue, action: "edited", repository: repository}) do
     data =
       Utils.extract_contributio_code_data(issue["body"])
       |> Map.merge(%{
@@ -75,7 +75,8 @@ defmodule ContributioWeb.Webhooks.Github do
         content: issue["body"]
       })
 
-    {issue["id"], :task, :update, data}
+      Logger.debug(inspect issue)
+    {%{repo_id: repository["full_name"], issue_id: Integer.to_string(issue["number"])}, :task, :update, data}
   end
 
   # defp resolve("issues", %{issue: issue, action: "assigned"}) do

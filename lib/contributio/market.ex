@@ -224,7 +224,10 @@ defmodule Contributio.Market do
   def get_task!(id), do: get_task_by!(id)
   def get_task(id), do: get_task_by(id)
 
-  def get_task_by_origin_issue_id(_origin_id, issue_id), do: Repo.get_by(Task, issue_id: issue_id)
+  def get_task_by_origin_issue_id(origin_id, %{issue_id: issue_id, repo_id: repo_id}) do
+    project = get_project_by_origin_repo_id(origin_id, repo_id)
+    Repo.get_by(Task, issue_id: issue_id, project_id: project.id)
+  end
 
   def get_task_by_origin_issue_id!(_origin_id, issue_id),
     do: Repo.get_by!(Task, issue_id: issue_id)
