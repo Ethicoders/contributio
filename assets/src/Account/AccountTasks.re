@@ -5,10 +5,13 @@ module GetUserTasks = [%graphql
     query getUserTasks {
       my {
         projects {
+          id
+          name
           tasks {
             id
             name
             content
+            status
           }
         }
       }
@@ -29,15 +32,18 @@ let make = () => {
        my.projects
        ->Belt.Array.map(project => {
            switch (project.tasks) {
-           | [||] => "No tasks yet!"->str
+           | [||] => React.null
            | tasks =>
              <>
-               <table
-                 className="min-w-full divide-y">
+               <table className="min-w-full divide-y">
                  <thead className="bg-dark">
                    <th
                      className="w-full px-6 py-3 text-left text-xs font-medium text-current uppercase tracking-wider">
                      <Checkbox label="Name" value="" onClick={_ => ()} />
+                   </th>
+                   <th
+                     className="px-6 py-3 text-left text-xs font-medium text-current uppercase tracking-wider">
+                     "Project"->str
                    </th>
                    <th
                      className="px-6 py-3 text-left text-xs font-medium text-current uppercase tracking-wider">
@@ -48,7 +54,8 @@ let make = () => {
                      "Actions"->str
                    </th>
                  </thead>
-                 <tbody className="background-main text-current divide-y divide-main border-main">
+                 <tbody
+                   className="background-main text-current divide-y divide-main border-main">
                    {tasks
                     ->Belt.Array.map(task => {
                         <tr>
@@ -56,10 +63,22 @@ let make = () => {
                             <Checkbox label={task.name} value={task.id} />
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span
-                              className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                              "Visible"->str
-                            </span>
+                            <Anchor
+                              className="text-primary"
+                              target={"/projects/" ++ project.id}>
+                              project.name->str
+                            </Anchor>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {task.status === 0
+                               ? <span
+                                   className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                   "Opened"->str
+                                 </span>
+                               : <span
+                                   className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-default text-current">
+                                   "Closed"->str
+                                 </span>}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <Anchor target={"/account/tasks/" ++ task.id}>

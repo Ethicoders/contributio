@@ -2687,6 +2687,22 @@
             "deprecationReason": null,
             "description": null,
             "isDeprecated": false,
+            "name": "status",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
             "name": "time",
             "type": {
               "kind": "NON_NULL",
