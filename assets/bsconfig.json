@@ -27,8 +27,7 @@
     "bs-css-emotion",
     "bs-webapi",
     "reason-react",
-    "reason-apollo-client",
-    "rescript-micromark"
+    "reason-apollo-client"
   ],
   "graphql": {
     "apolloMode": true,
