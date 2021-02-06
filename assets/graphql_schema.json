@@ -2372,6 +2372,16 @@
               {
                 "defaultValue": null,
                 "description": null,
+                "name": "status",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              {
+                "defaultValue": null,
+                "description": null,
                 "name": "time",
                 "type": {
                   "kind": "LIST",

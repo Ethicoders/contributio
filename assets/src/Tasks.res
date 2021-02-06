@@ -1,8 +1,8 @@
 let str = React.string
 
 module GetTasks = %graphql(`
-    query getTasks($after: String, $difficulty: [Int!], $time: [Int!]) {
-      tasks(after: $after, first: 6, difficulty: $difficulty, time: $time) {
+    query getTasks($after: String, $difficulty: [Int!], $time: [Int!], $status: Int) {
+      tasks(after: $after, first: 6, difficulty: $difficulty, time: $time, status: $status) {
         edges {
           node {
             id
@@ -32,6 +32,7 @@ module GetTasks = %graphql(`
 let make = () => {
   let (difficulty, setDifficulty) = React.useState(() => None)
   let (time, setTime) = React.useState(() => None)
+  let (status, setStatus) = React.useState(() => Some("0"))
   <div>
     <div className="hidden"> <Heading size=Gigantic> {"Tasks"->str} </Heading> </div>
     <div className="p-2">
@@ -57,8 +58,22 @@ let make = () => {
           ]
         />
       </span>
+      <span>
+        <ButtonGroup
+          value=status
+          onChange={newStatus => setStatus(_ => newStatus)}
+          buttonsData=[
+            {label: "Opened", value: "0", activeClassNames: Some("bg-green-500")},
+            {label: "Closed", value: "1", activeClassNames: Some("bg-green-500")},
+          ]
+        />
+      </span>
     </div>
     {switch GetTasks.use({
+      status: switch status {
+      | None => None
+      | Some(status) => Some(int_of_string(status))
+      },
       difficulty: switch difficulty {
       | None => None
       | Some(difficulty) => Some(Js.String.split("-", difficulty)->Belt.Array.map(int_of_string))

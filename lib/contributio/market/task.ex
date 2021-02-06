@@ -10,6 +10,7 @@ defmodule Contributio.Market.Task do
     field :experience, :integer, virtual: true
     field :issue_id, :string
     field :url, :string
+    field :status, :integer
     belongs_to :project, Contributio.Market.Project
     has_many :contributions, Contributio.Market.Contribution
 

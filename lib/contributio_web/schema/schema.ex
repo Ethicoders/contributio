@@ -57,10 +57,9 @@ defmodule Contributio.Schema do
       arg(:cursor, :id)
       arg(:difficulty, list_of(non_null(:integer)))
       arg(:time, list_of(non_null(:integer)))
+      arg(:status, :integer)
 
       resolve(fn args, resolution ->
-        Logger.debug(inspect(args))
-
         Resolvers.Projects.list_tasks(args, resolution)
         |> Absinthe.Relay.Connection.from_query(&Repo.all/1, args, count: 6)
       end)

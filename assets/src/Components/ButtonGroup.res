@@ -7,8 +7,8 @@ type buttonData = {
 }
 
 @react.component
-let make = (~icon=None, ~buttonsData: array<buttonData>, ~onChange=ignore) => {
-  let (active, setActive) = React.useState(() => None)
+let make = (~icon=None, ~buttonsData: array<buttonData>, ~value=None, ~onChange=ignore) => {
+  let (active, setActive) = React.useState(() => value)
   let classNameItems =
     ["border-none", "rounded-none"] |> Js.Array.map(item => ClassName.Value(item))
 
