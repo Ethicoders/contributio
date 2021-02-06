@@ -26,6 +26,7 @@
     "bs-css-emotion": "^2.2.0",
     "bs-webapi": "^0.19.1",
     "get-graphql-schema": "^2.1.2",
+    "micromark": "^2.11.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "reason-apollo": "^0.20.0",

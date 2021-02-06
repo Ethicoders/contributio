@@ -53,7 +53,9 @@ let make =
       ~time,
       ~maybeProject=None,
     ) => {
-  <div className="border-green-900 px-4 pb-4 pt-2 border-2 rounded-md relative">
+  let renderedContent = Micromark.render(content);
+  <div
+    className="border-green-900 px-4 pb-4 pt-2 border-2 rounded-md relative">
     <Anchor target={"/tasks/" ++ id} className="text-primary">
       <Heading> name->str </Heading>
     </Anchor>
@@ -63,13 +65,13 @@ let make =
         <Button> <Icon name=ExternalLink /> </Button>
       </a>
     </div>
-    <div className="text-current my-3">
-      {(
-         Js.String2.substring(content, ~from=0, ~to_=60)
-         ++ (Js.String2.length(content) > 60 ? "..." : "")
-       )
-       ->str}
-    </div>
+    <div
+      className="text-current my-3"
+      dangerouslySetInnerHTML={"__html": 
+        Js.String2.substring(renderedContent, ~from=0, ~to_=60)
+        ++ (Js.String2.length(renderedContent) > 60 ? "..." : "")
+      }
+    />
     <div>
       <span
         className="text-current rounded-sm border-green-500 border-2 p-0.5 m-0.5">
