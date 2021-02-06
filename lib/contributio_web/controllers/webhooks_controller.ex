@@ -99,9 +99,7 @@ defmodule ContributioWeb.WebhooksController do
       |> Enum.filter(&(&1.users not in user_ids))
       |> Enum.concat()
       |> Enum.uniq_by(fn user -> user.id end)
-      |> Enum.map(&Accounts.reward_user(&1, (experience / 10) |> Float.ceil()))
-
-    Logger.debug(inspect(low_reward_users))
+      |> Enum.map(&Accounts.reward_user(&1, (experience / 10) |> Float.floor()))
 
     Market.close_contribution(contribution)
 
