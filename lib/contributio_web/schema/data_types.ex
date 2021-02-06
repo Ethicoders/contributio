@@ -57,6 +57,7 @@ defmodule Contributio.Schema.DataTypes do
     field :topics, list_of(non_null(:string))
     field :license, :string
     field :tasks, list_of!(:task)
+    field :status, f!(:integer)
   end
 
   object :task do
@@ -108,8 +109,8 @@ defmodule Contributio.Schema.DataTypes do
     field :url, f!(:string)
   end
 
-  object :delete_project_payload do
-    field :id, f!(:string)
+  object :set_project_visibility_payload do
+    field :project, f!(:project)
   end
 
   object :delete_task_payload do

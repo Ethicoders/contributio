@@ -24,8 +24,12 @@ defmodule Contributio.Market do
   end
 
   def list_filtered_projects(args) do
+    initial =
+      from p in Project,
+        where: p.status == 0
+
     args
-    |> Enum.reduce(Project, fn
+    |> Enum.reduce(initial, fn
       {:topic, topic}, query ->
         from q in query, where: ^topic in q.topics
 
@@ -60,6 +64,8 @@ defmodule Contributio.Market do
       ** (Ecto.NoResultsError)
 
   """
+  def get_project(id), do: Repo.get(Project, id)
+
   def get_project!(id), do: Repo.get!(Project, id)
 
   def get_project_by_origin_repo_id!(_origin_id, repo_id),
@@ -100,6 +106,12 @@ defmodule Contributio.Market do
   """
   def update_project(%Project{} = project, attrs) do
     project
+    |> Project.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def update_project_by_id(id, attrs) do
+    %Project{id: id}
     |> Project.changeset(attrs)
     |> Repo.update()
   end
@@ -209,8 +221,8 @@ defmodule Contributio.Market do
       preload: [:project]
   end
 
-  def get_task!(id), do: get_task_by(id)
-  def get_task(id), do: get_task_by!(id)
+  def get_task!(id), do: get_task_by!(id)
+  def get_task(id), do: get_task_by(id)
 
   def get_task_by_origin_issue_id(_origin_id, issue_id), do: Repo.get_by(Task, issue_id: issue_id)
 

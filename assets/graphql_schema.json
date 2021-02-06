@@ -954,33 +954,6 @@
         "inputFields": null,
         "interfaces": [],
         "kind": "OBJECT",
-        "name": "DeleteProjectPayload",
-        "possibleTypes": null
-      },
-      {
-        "description": null,
-        "enumValues": null,
-        "fields": [
-          {
-            "args": [],
-            "deprecationReason": null,
-            "description": null,
-            "isDeprecated": false,
-            "name": "id",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            }
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "kind": "OBJECT",
         "name": "DeleteTaskPayload",
         "possibleTypes": null
       },
@@ -1314,37 +1287,6 @@
             "deprecationReason": null,
             "description": null,
             "isDeprecated": false,
-            "name": "deleteProject",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "DeleteProjectPayload",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [
-              {
-                "defaultValue": null,
-                "description": null,
-                "name": "id",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                }
-              }
-            ],
-            "deprecationReason": null,
-            "description": null,
-            "isDeprecated": false,
             "name": "deleteTask",
             "type": {
               "kind": "NON_NULL",
@@ -1538,6 +1480,51 @@
               "kind": "SCALAR",
               "name": "Boolean",
               "ofType": null
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "id",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              },
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "status",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "setProjectVisibility",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "SetProjectVisibilityPayload",
+                "ofType": null
+              }
             }
           },
           {
@@ -1786,6 +1773,22 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "Origin",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "status",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               }
             }
@@ -2570,6 +2573,33 @@
         "interfaces": [],
         "kind": "OBJECT",
         "name": "Repository",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": null,
+        "fields": [
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "project",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Project",
+                "ofType": null
+              }
+            }
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "kind": "OBJECT",
+        "name": "SetProjectVisibilityPayload",
         "possibleTypes": null
       },
       {

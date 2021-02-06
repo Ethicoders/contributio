@@ -1,8 +1,9 @@
 let str = React.string;
 
 type names =
+  | Ban
+  | Circle
   | ExternalLink
-  | Eye
   | Import
   | Github
   | Gitlab
@@ -38,8 +39,9 @@ let make = (~name: names, ~size: sizes=Small, ~color: colors=Default) => {
     className={
       (
         switch (name) {
+        | Ban => "cil-ban"
+        | Circle => "cil-circle"
         | ExternalLink => "cil-external-link"
-        | Eye => "cil-eye"
         | Import => "cil-arrow-thick-from-top"
         | Github => "cib-github"
         | Gitlab => "cib-gitlab"

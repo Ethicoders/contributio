@@ -1,11 +1,14 @@
 defmodule Resolvers.Users do
   require Logger
+  require Ecto.Query
   alias Contributio.{Accounts, Market, Repo}
   alias ContributioWeb.Utils
 
   def get_user(%{id: id}, _info) do
     {:ok,
-     Accounts.get_user(id) |> Repo.preload(:projects) |> Accounts.User.set_next_level_experience()}
+     Accounts.get_user(id)
+     |> Repo.preload(:projects)
+     |> Accounts.User.set_next_level_experience()}
   end
 
   def create(params, _info) do
@@ -24,8 +27,8 @@ defmodule Resolvers.Users do
 
   # Authorized context, can fetch sensitive data
   def get_current_user(_args, %{context: %{current_user: current_user}}) do
-    bla = current_user |> Repo.preload(projects: :tasks, users_origins: :origin)
-    {:ok, bla}
+    project_query = Ecto.Query.from(p in Market.Project, order_by: [desc: p.id], preload: :tasks)
+    {:ok, current_user |> Repo.preload(projects: project_query, users_origins: :origin)}
   end
 
   def get_current_user(_args, _info), do: {:error, "Not Authorized"}

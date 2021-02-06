@@ -11,16 +11,26 @@ defmodule Contributio.Market.Project do
     field :topics, {:array, :string}
     # field :readme, :string
     field :license, :string
+    field :status, :integer
     # belongs_to :origin, Contributio.Platforms.Origin
     belongs_to :user, Contributio.Accounts.User
     has_many :tasks, Contributio.Market.Task
-
   end
 
   @doc false
   def changeset(project, attrs) do
     project
-    |> cast(attrs, [:name, :repo_id, :description, :url, :languages, :user_id, :topics, :license])
-    |> validate_required([:name])
+    |> cast(attrs, [
+      :name,
+      :repo_id,
+      :description,
+      :url,
+      :languages,
+      :user_id,
+      :topics,
+      :license,
+      :status
+    ])
+    # |> validate_required([:name])
   end
 end

@@ -9,6 +9,7 @@ module GetUserProjects = [%graphql
           name
           url
           description
+          status
         }
       }
     }
@@ -27,7 +28,7 @@ let make = () => {
     </Anchor>
     {switch (GetUserProjects.use()) {
      | {loading: true} => "Loading..."->React.string
-     | {data: Some({my}), loading: false} =>
+     | {data: Some({my}), loading: false, refetch} =>
        switch (my.projects) {
        | [||] => "No projects yet!"->str
        | values =>
@@ -46,7 +47,8 @@ let make = () => {
                "Actions"->str
              </th>
            </thead>
-           <tbody className="background-main text-current divide-y divide-main border-main">
+           <tbody
+             className="background-main text-current divide-y divide-main border-main">
              {values
               ->Belt.Array.map(project => {
                   let castedProject: Types.projectData = {
@@ -62,10 +64,15 @@ let make = () => {
                       />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        "Visible"->str
-                      </span>
+                      {project.status === 0
+                         ? <span
+                             className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                             "Visible"->str
+                           </span>
+                         : <span
+                             className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-default text-current">
+                             "Hidden"->str
+                           </span>}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <Anchor
@@ -83,11 +90,17 @@ let make = () => {
                       <Button
                         type_=Danger
                         onClick={_ =>
-                          DeleteProject.trigger(castedProject.id, _ =>
-                            add({title: "Project deleted."})
+                          SetProjectStatus.trigger(
+                            castedProject.id,
+                            project.status === 0 ? 1 : 0,
+                            _ => {
+                              add({title: "Project visibility changed."});
+                              let _ = refetch();
+                              ();
+                            },
                           )
                         }>
-                        <Icon name=Trash />
+                        <Icon name={project.status === 0 ? Ban : Circle} />
                       </Button>
                     </td>
                   </tr>;

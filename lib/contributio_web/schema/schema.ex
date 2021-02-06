@@ -146,10 +146,11 @@ defmodule Contributio.Schema do
       middleware(&add_token_to_context/2)
     end
 
-    field :delete_project, f!(:delete_project_payload) do
+    field :set_project_visibility, f!(:set_project_visibility_payload) do
       arg(:id, f!(:string))
+      arg(:status, f!(:integer))
 
-      resolve(&Resolvers.Projects.delete_project/2)
+      resolve(&Resolvers.Projects.set_project_visibility/2)
     end
 
     field :delete_task, f!(:delete_task_payload) do
