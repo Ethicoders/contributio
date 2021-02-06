@@ -169,6 +169,9 @@ defmodule Contributio.Market do
       {:difficulty, difficulty}, query ->
         from q in query, where: q.difficulty in ^difficulty
 
+      {:status, status}, query ->
+        from q in query, where: q.status == ^status
+
       _, query ->
         query
     end)
