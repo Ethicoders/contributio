@@ -3,6 +3,7 @@ defmodule Contributio.Accounts do
   The Accounts context.
   """
 
+  require Logger
   import Ecto.Query, warn: false
   alias Contributio.Repo
 
@@ -60,9 +61,9 @@ defmodule Contributio.Accounts do
 
   def get_user_by_user_origin(origin_id, user_origin_id) do
     from(u in User,
-      join: :users_origins,
+      join: uo in "users_origins",
       select: u,
-      where: u.origin_id == ^origin_id and u.user_origin_id == ^user_origin_id
+      where: uo.origin_id == ^origin_id and uo.user_origin_id == ^user_origin_id
     )
     |> Repo.one()
   end

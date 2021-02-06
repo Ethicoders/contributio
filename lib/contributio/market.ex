@@ -252,7 +252,13 @@ defmodule Contributio.Market do
 
   def close_task(%Task{} = task) do
     task
-    |> Task.changeset(%{status: :closed})
+    |> Task.changeset(%{status: 1})
+    |> Repo.update()
+  end
+
+  def open_task(%Task{} = task) do
+    task
+    |> Task.changeset(%{status: 0})
     |> Repo.update()
   end
 
@@ -321,10 +327,10 @@ defmodule Contributio.Market do
   def get_contribution!(id), do: Repo.get!(Contribution, id)
 
   def get_contribution_by_origin_pull_request_id(_origin_id, pull_request_id),
-    do: Repo.get_by(Contribution, pull_request_id: pull_request_id)
+    do: Repo.get_by(Contribution, pull_request_id: pull_request_id) |> Repo.preload(:task)
 
   def get_contribution_by_origin_pull_request_id!(_origin_id, pull_request_id),
-    do: Repo.get_by!(Contribution, pull_request_id: pull_request_id)
+    do: Repo.get_by!(Contribution, pull_request_id: pull_request_id) |> Repo.preload(:task)
 
   def get_contributions_by_task_id(id), do: Contribution |> where(task_id: ^id) |> Repo.all()
 
@@ -365,7 +371,10 @@ defmodule Contributio.Market do
   end
 
   def close_contribution(%Contribution{} = contribution),
-    do: contribution |> update_contribution(%{status: :closed})
+    do: contribution |> update_contribution(%{status: 1})
+
+  def open_contribution(%Contribution{} = contribution),
+    do: contribution |> update_contribution(%{status: 0})
 
   @doc """
   Deletes a contribution.

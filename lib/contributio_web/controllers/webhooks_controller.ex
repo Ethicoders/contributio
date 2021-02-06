@@ -9,6 +9,7 @@ defmodule ContributioWeb.WebhooksController do
 
   def dispatch(%{req_headers: req_headers, body_params: body_params} = conn, _info) do
     headers_map = Enum.into(req_headers, %{})
+
     {subject_id, subject_type, action, data} =
       case resolve_vcs_family(headers_map) do
         :github -> Github.handle_webhook(headers_map, Utils.map_keys_to_atom(body_params))
@@ -24,8 +25,12 @@ defmodule ContributioWeb.WebhooksController do
 
       _ ->
         case get_tracked_subject(subject_type, subject_id) do
-          nil -> {:ok}
-          subject -> execute(subject, action, data)
+          nil ->
+            Logger.warn("No subject '#{subject_type}' matching ID '#{subject_id}'")
+            {:ok}
+
+          subject ->
+            execute(subject, action, data)
         end
     end
 
@@ -58,40 +63,57 @@ defmodule ContributioWeb.WebhooksController do
 
   defp execute(type, action, data) when type == :task and action == :create do
     origin_id = get_origin_id()
-    Market.create_task(%{data | project_id: Market.get_project_by_origin_repo_id(origin_id, data[:project_id]).id})
+
+    Market.create_task(%{
+      data
+      | project_id: Market.get_project_by_origin_repo_id(origin_id, data[:project_id]).id
+    })
   end
 
   defp execute(%Contributio.Market.Task{} = task, action, data) when action == :update do
     Market.update_task(task, data)
   end
 
-  defp execute(%Contributio.Market.Task{} = task, action, %{
-         user_ids: user_ids,
-         contribution: contribution
+  defp execute(%Contributio.Market.Contribution{} = contribution, action, %{
+         user_ids: user_ids
        })
        when action == :validate do
+    task = contribution.task
 
     experience = Game.get_experience_from_effort(task.time, task.difficulty)
 
-    task |> Repo.preload(:contributions)
+    task = task |> Repo.preload(:contributions)
 
     origin_id = get_origin_id()
-    # Send max XP to users who contributed to merged PR
-    task[:contributions]
-    |> Enum.filter(&(&1 in user_ids))
-    |> Enum.map(&(Accounts.get_user_by_user_origin(origin_id, &1) |> Accounts.reward_user(experience)))
+
+    Repo.preload(contribution, :users)
+    |> Map.get(:users)
+    |> Enum.map(&Accounts.reward_user(&1, experience))
 
     # Send little XP to users who created a PR
     # Waiting for a better way to share XP, more adapted to the result
-    task[:contributions]
-    |> Enum.filter(&(&1 not in user_ids))
-    |> Enum.map(&(Accounts.get_user_by_user_origin(origin_id, &1) |> Accounts.reward_user(experience / 10)))
+    low_reward_users =
+      task.contributions
+      |> Enum.filter(&(&1.id !== contribution.id))
+      |> Enum.map(&Repo.preload(&1, :users))
+      |> Enum.filter(&(&1.users not in user_ids))
+      |> Enum.concat()
+      |> Enum.uniq_by(fn user -> user.id end)
+      |> Enum.map(&Accounts.reward_user(&1, (experience / 10) |> Float.ceil()))
+
+    Logger.debug(inspect(low_reward_users))
+
+    Market.close_contribution(contribution)
 
     Market.close_task(task)
   end
 
   defp execute(%Contributio.Market.Task{} = task, action, _) when action == :close do
     Market.close_task(task)
+  end
+
+  defp execute(%Contributio.Market.Task{} = task, action, _) when action == :reopen do
+    Market.open_task(task)
   end
 
   defp execute(type, action, data) when type == :contribution and action == :create do
@@ -103,8 +125,14 @@ defmodule ContributioWeb.WebhooksController do
     Market.update_contribution(contribution, data)
   end
 
-  defp execute(%Contributio.Market.Contribution{} = contribution, action, _) when action == :close do
+  defp execute(%Contributio.Market.Contribution{} = contribution, action, _)
+       when action == :close do
     Market.close_contribution(contribution)
+  end
+
+  defp execute(%Contributio.Market.Contribution{} = contribution, action, _)
+       when action == :reopen do
+    Market.open_contribution(contribution)
   end
 
   defp get_tracked_subject(subject_type, subject_id) do

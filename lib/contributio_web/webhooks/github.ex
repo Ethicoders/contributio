@@ -10,43 +10,47 @@ defmodule ContributioWeb.Webhooks.Github do
     {sender["id"], :user, :revoke, nil}
   end
 
-  defp resolve("pull_requests", %{
+  defp resolve("pull_request", %{
          pull_request: pull_request,
          action: "opened"
        }) do
-    {nil, :contribution, :create, %{pull_request_id: pull_request["id"]}}
+    {nil, :contribution, :create, %{pull_request_id: to_string(pull_request["id"])}}
   end
 
-  defp resolve("pull_requests", %{
-         pull_request: pull_request,
-         action: "closed",
-         merged: false
+  defp resolve("pull_request", %{
+         pull_request: %{"merged" => false} = pull_request,
+         action: "closed"
        }) do
-    {:contribution, :close, pull_request["id"], %{}}
+    {to_string(pull_request["id"]), :contribution, :close, %{}}
   end
 
-  defp resolve("pull_requests", %{
+  defp resolve("pull_request", %{
          pull_request: pull_request,
-         action: "closed",
-         merged: true
+         action: "reopened"
        }) do
-    linked_issue = Utils.parse_contributio_code(pull_request["body"]) |> String.to_integer()
+    {to_string(pull_request["id"]), :contribution, :reopen, %{}}
+  end
 
+  defp resolve("pull_request", %{
+         pull_request: %{"merged" => true} = pull_request,
+         action: "closed"
+       }) do
     user_ids =
       case HTTPoison.get(
-             pull_request["_links"]["commits"],
+             pull_request["_links"]["commits"]["href"],
              "Content-Type": "application/json"
            ) do
         {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-          case Jason.decode!(body, keys: :atoms) do
-            commits -> commits |> Enum.map(& &1["committer"]["id"])
+          case Jason.decode!(body) do
+            commits ->
+              commits |> Enum.map(& &1["committer"]["id"])
           end
 
         {:error, %HTTPoison.Error{reason: reason}} ->
           IO.inspect(inspect(reason))
       end
 
-    {linked_issue, :task, :validate, %{contribution: pull_request["id"], user_ids: user_ids}}
+    {to_string(pull_request["id"]), :contribution, :validate, %{user_ids: user_ids}}
   end
 
   defp resolve("issues", %{issue: issue, action: "opened", repository: repository}) do
