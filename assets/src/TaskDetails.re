@@ -7,6 +7,10 @@ module GetTask = [%graphql
         name
         content
         experience
+        project {
+          id
+          name
+        }
       }
     }
 |}
@@ -14,7 +18,7 @@ module GetTask = [%graphql
 
 [@react.component]
 let make = (~id) => {
-  <div className="">
+  <div className="relative p-1 text-current">
     {switch (GetTask.use({id: id})) {
      | {loading: true} => <span> "Loading task..."->str </span>
      | {error: Some(_error)} => "Error"->str
@@ -24,13 +28,24 @@ let make = (~id) => {
        "Do"->str
      | {called: true, data: Some({task}), loading: false} =>
        <>
-         <Heading> {("Task " ++ task.name)->str} </Heading>
-         " - "->str
-
-         <Heading size=Small> "Experience: "->str </Heading>
-         {(Js.Int.toString(task.experience) ++ " xp")->str}
-         /* <a href={project.url} target="_blank"> "See on Origin"->str </a> */
-         <Icon name=Github />
+         <Heading size=Huge> {("Task " ++ task.name)->str} </Heading>
+         <div className="text-xs mt-1">
+           <Anchor
+             className="text-primary" target={"/projects/" ++ task.project.id}>
+             task.project.name->str
+           </Anchor>
+         </div>
+         <div className="absolute right-2 top-2">
+           <a href="" target="_blank">
+             <Button> <Icon name=ExternalLink /> </Button>
+           </a>
+         </div>
+         <div
+           className="markdown text-current my-3"
+           dangerouslySetInnerHTML={"__html": Micromark.render(task.content)}
+         />
+         <hr className="my-2" />
+         <div> <Experience amount={Js.Int.toString(task.experience)} /> </div>
        </>
      }}
   </div>;

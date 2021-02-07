@@ -27,7 +27,7 @@ exception Not_Found;
 [@react.component]
 let make = (~id) => {
   let (readme, setReadme) = React.useState(() => "");
-  <div className="">
+  <div className="p-1 relative text-current">
     {switch (GetProject.use({id: id})) {
      | {loading: true} => <span> "Loading project..."->str </span>
      | {error: Some(_error)} => "Error"->str
@@ -54,27 +54,32 @@ let make = (~id) => {
            |> catch(_ => resolve())
          );
        <>
-         <Heading> {("Project " ++ project.name)->str} </Heading>
-         " - "->str
-         <a href={project.url} target="_blank"> "See on Origin"->str </a>
-         <Icon name=Github />
+         <Heading size=Huge> {("Project " ++ project.name)->str} </Heading>
+
+         <div className="absolute right-2 top-2">
+           <a href=project.url target="_blank">
+             <Button> <Icon name=ExternalLink /> </Button>
+           </a>
+         </div>
          <div
            className="markdown text-current"
            dangerouslySetInnerHTML={"__html": Micromark.micromark(readme)}
          />
-         <div>
-           "Tasks"->str
+         <div className="">
+           <Heading> "Tasks"->str </Heading>
            {project.tasks
             ->Belt.Array.map(task =>
-                <Task
-                  key={task.id}
-                  name={task.name}
-                  id={task.id}
-                  content={task.content}
-                  experience={task.experience}
-                  difficulty={task.difficulty}
-                  time={task.time}
-                />
+                <div className="my-1">
+                  <Task
+                    key={task.id}
+                    name={task.name}
+                    id={task.id}
+                    content={task.content}
+                    experience={task.experience}
+                    difficulty={task.difficulty}
+                    time={task.time}
+                  />
+                </div>
               )
             ->React.array}
          </div>
