@@ -24,6 +24,7 @@
     "@snowpack/plugin-webpack": "^2.3.0",
     "autoprefixer": "^10.2.1",
     "bs-css-emotion": "^2.2.0",
+    "bs-fetch": "^0.6.2",
     "bs-webapi": "^0.19.1",
     "get-graphql-schema": "^2.1.2",
     "micromark": "^2.11.4",

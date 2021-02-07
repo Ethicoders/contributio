@@ -58,6 +58,7 @@ defmodule Contributio.Schema.DataTypes do
     field :license, :string
     field :tasks, list_of!(:task)
     field :status, f!(:integer)
+    field :repo_id, f!(:string)
   end
 
   object :task do

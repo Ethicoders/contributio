@@ -25,6 +25,7 @@
     "@ryyppy/rescript-promise",
     "bs-css",
     "bs-css-emotion",
+    "bs-fetch",
     "bs-webapi",
     "reason-react",
     "reason-apollo-client"
