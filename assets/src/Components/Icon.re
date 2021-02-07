@@ -12,6 +12,7 @@ type names =
   | LinkBroken
   | Pencil
   | Search
+  | Sync
   | Tag
   | Timer
   | Trash
@@ -50,6 +51,7 @@ let make = (~name: names, ~size: sizes=Small, ~color: colors=Default) => {
         | LinkBroken => "cil-link-broken"
         | Pencil => "cil-pencil"
         | Search => "cil-magnifying-glass"
+        | Sync => "cil-sync"
         | Tag => "cil-tag"
         | Timer => "cil-av-timer"
         | Trash => "cil-trash"

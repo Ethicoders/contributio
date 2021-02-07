@@ -14,15 +14,10 @@ module RequestAccessToken = [%graphql
 let make = (~code) => {
   switch (RequestAccessToken.use({originId: 1, code})) {
   | {data: Some(response)} =>
-    let accessToken =
-      Js.Dict.unsafeGet(
-        Url.parseQueryArgs(response.requestAccessToken.accessToken),
-        "access_token",
-      );
 
     if (Session.isConnected()) {
       <LinkAccount
-        accessToken
+        content=response.requestAccessToken.accessToken
         onDone={() => {
           Window.postMessage("link:success");
           Window.close();
@@ -31,7 +26,7 @@ let make = (~code) => {
     } else {
       {
         CreateAccount.trigger(
-          accessToken,
+          response.requestAccessToken.accessToken,
           () => {
             Window.postMessage("link:success");
             Window.close();

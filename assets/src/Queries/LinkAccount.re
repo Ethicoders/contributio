@@ -11,7 +11,7 @@ module LinkAccountGQL = [%graphql
 ];
 
 [@react.component]
-let make = (~accessToken, ~onDone) => {
+let make = (~content, ~onDone) => {
   let (mutate, result) = LinkAccountGQL.use();
 
   mutate(
@@ -21,7 +21,7 @@ let make = (~accessToken, ~onDone) => {
         | Some(_) => ()
         | None => ()
         },
-    {originId: 1, content: accessToken},
+    {originId: 1, content: content},
   )
   ->ignore;
 

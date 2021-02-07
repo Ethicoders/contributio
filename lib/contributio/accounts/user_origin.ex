@@ -8,10 +8,11 @@ defmodule Contributio.Accounts.UserOrigin do
     belongs_to :origin, Contributio.Platforms.Origin
     field :user_origin_id, :integer
     field :access_token, :string
+    field :expiration, :utc_datetime
   end
 
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:user_id, :origin_id, :user_origin_id, :access_token])
+    |> cast(attrs, [:user_id, :origin_id, :user_origin_id, :access_token, :expiration])
   end
 end

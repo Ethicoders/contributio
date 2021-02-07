@@ -67,6 +67,9 @@ let make = () => {
     <Alert>
       "You will need an account on a task's Origin to be able fulfil a contribution and get rewards. "
       ->str
+      <br />
+      "Note that tokens expire and, thus, you'll need to grab a new one whenever you need."
+      ->str
     </Alert>
     <div>
       {switch (GetOrigins.use()) {
@@ -103,20 +106,25 @@ let make = () => {
                          "GitHub"->str </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {if (Js.Array.includes(origin.url, linkedOrigins)) {
-                           <Button
-                             type_=Danger
-                             onClick={_ =>
-                               RevokeLinkedAccount.trigger(
-                                 origin.id,
-                                 _ => {
-                                   add({title: "Origin link removed."});
-                                   let _ = queryResult.refetch();
-                                   ();
-                                 },
-                               )
-                             }>
-                             <Icon name=LinkBroken />
-                           </Button>;
+                           <>
+                             <Button
+                               type_=Danger
+                               onClick={_ =>
+                                 RevokeLinkedAccount.trigger(
+                                   origin.id,
+                                   _ => {
+                                     add({title: "Origin link removed."});
+                                     let _ = queryResult.refetch();
+                                     ();
+                                   },
+                                 )
+                               }>
+                               <Icon name=LinkBroken />
+                             </Button>
+                             <Button onClick=handleClick>
+                               <Icon name=Sync />
+                             </Button>
+                           </>;
                          } else {
                            <Button type_=Primary onClick=handleClick>
                              <Icon name=Link />

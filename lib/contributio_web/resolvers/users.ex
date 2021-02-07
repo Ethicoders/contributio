@@ -76,7 +76,9 @@ defmodule Resolvers.Users do
   def link_account(%{origin_id: origin_id, content: content}, %{
         context: %{current_user: current_user}
       }) do
-    access_token = content
+    query = URI.decode_query(content)
+
+    access_token = query["access_token"]
 
     user_origin_id = fetch_user_origin_data(access_token).id
 
@@ -93,7 +95,13 @@ defmodule Resolvers.Users do
   def link_account(_args, _info), do: {:error, "Not Authorized"}
 
   def create_linked_account(%{origin_id: origin_id, content: content}, _info) do
-    access_token = content
+    query = URI.decode_query(content)
+
+    access_token = query["access_token"]
+    expiration =
+      Timex.now()
+      |> Timex.shift(seconds: query["expires_in"] |> String.to_integer())
+      |> Timex.to_datetime()
 
     user_origin = fetch_user_origin_data(access_token)
 
@@ -107,7 +115,8 @@ defmodule Resolvers.Users do
       origin_id: origin_id,
       user_id: current_user.id,
       access_token: access_token,
-      user_origin_id: user_origin.id
+      user_origin_id: user_origin.id,
+      expiration: expiration
     })
 
     {:ok, %{user: current_user |> set_user_token()}}
