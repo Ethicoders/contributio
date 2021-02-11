@@ -11,6 +11,7 @@ module GetTasks = %graphql(`
             experience
             difficulty
             time
+            status
             project {
               id
               name
@@ -122,6 +123,7 @@ let make = () => {
                   content={task.content}
                   experience={task.experience}
                   difficulty={task.difficulty}
+                  status={task.status}
                   time={task.time}
                   maybeProject={Some(project)}
                 />

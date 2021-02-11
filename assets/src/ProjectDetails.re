@@ -11,6 +11,7 @@ module GetProject = [%graphql
         languages
         tasks {
           id
+          status
           name
           content
           experience
@@ -74,6 +75,7 @@ let make = (~id) => {
                     key={task.id}
                     name={task.name}
                     id={task.id}
+                    status={task.status}
                     content={task.content}
                     experience={task.experience}
                     difficulty={task.difficulty}

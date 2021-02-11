@@ -47,6 +47,7 @@ let make =
       ~id,
       ~name,
       ~content,
+      ~status,
       // ~url,
       ~experience,
       ~difficulty,
@@ -54,8 +55,9 @@ let make =
       ~maybeProject=None,
     ) => {
   let renderedContent = Micromark.render(content);
+  let classNames = status === 0 ? "card-primary border-primary-500" : "card-default border-default-500";
   <div
-    className="border-green-900 px-4 pb-4 pt-2 border-2 rounded-md relative">
+    className={"px-4 pb-4 pt-2 border-2 rounded-md relative " ++ classNames}>
     <Anchor target={"/tasks/" ++ id} className="text-primary">
       <Heading> name->str </Heading>
     </Anchor>

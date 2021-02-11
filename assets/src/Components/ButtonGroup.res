@@ -10,7 +10,7 @@ type buttonData = {
 let make = (~icon=None, ~buttonsData: array<buttonData>, ~value=None, ~onChange=ignore) => {
   let (active, setActive) = React.useState(() => value)
   let classNameItems =
-    ["border-none", "rounded-none"] |> Js.Array.map(item => ClassName.Value(item))
+    ["border-none", "rounded-none", "glass-none"] |> Js.Array.map(item => ClassName.Value(item))
 
   let baseClassNames = ClassName.create(classNameItems)
 

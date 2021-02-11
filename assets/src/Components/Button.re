@@ -11,6 +11,7 @@ let make =
       ~type_: types=Default,
       ~children=React.null,
       ~onClick=ignore,
+      ~disabled=false,
     ) => {
   let classNameItems =
     ClassName.create(
@@ -22,19 +23,45 @@ let make =
     ClassName.merge(
       classNameItems,
       (
-        switch (type_) {
-        | Danger => [|"hover:bg-danger", "border-danger", "text-danger"|]
-        | Default => [|"hover:bg-default", "border-default", "text-default"|]
-        | Primary => [|"hover:bg-primary", "border-primary", "text-primary"|]
-        | Warning => [|"hover:bg-warning", "border-warning", "text-warning"|]
-        }
+        !disabled
+          ? switch (type_) {
+            | Danger => [|
+                "hover:glow-danger",
+                "hover:text-current",
+                "glass-danger",
+                "hover:bg-danger",
+                "text-current",
+              |]
+            | Default => [|
+                "hover:glow-default",
+                "hover:text-current",
+                "glass-default",
+                "hover:bg-default",
+                "text-current",
+              |]
+            | Primary => [|
+                "hover:glow-primary",
+                "hover:text-current",
+                "glass-primary",
+                "hover:bg-primary",
+                "text-current",
+              |]
+            | Warning => [|
+                "hover:glow-warning",
+                "hover:text-current",
+                "glass-warning",
+                "hover:bg-warning",
+                "text-current",
+              |]
+            }
+          : [|"border-gray-500", "text-gray-500", "cursor-default"|]
       )
       |> Js.Array.map(item => ClassName.Value(item)),
     );
   <button
-    onClick
+    onClick={disabled ? ignore : onClick}
     className={
-      "transition hover:text-current inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 "
+      "hover:bg-none transition inline-flex items-center px-4 py-2 border border-transparent rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 "
       ++ ClassName.output(buttonClassNames)
     }>
     children

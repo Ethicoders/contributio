@@ -3,20 +3,19 @@ let str = React.string;
 [@react.component]
 let make = () => {
   <>
-    <section className="relative">
-      <div className="home-argument argument-maintainer text-6xl p-10">
+    <section className="relative h-screen flex flex-col">
+      <div
+        className="home-argument argument-maintainer text-6xl p-10 text-center">
         "Boost your projects visibility"->str
       </div>
-      <div className="absolute inset-0 m-auto z-10 w-28 h-28">
-        <Button className="home-cta" type_=Primary>
+      <div className="inset-0 m-auto z-10 w-28 h-28">
+        <Button className="home-cta bg-primary" type_=Primary>
           "Start using Contributio"->str
         </Button>
       </div>
       <div
-        className="home-argument argument-contributor text-6xl relative text-right">
-        <span className="absolute bottom-10 right-10 w-10/12">
-          "Get rewarded for your contributions"->str
-        </span>
+        className="home-argument argument-contributor text-6xl p-10 text-center">
+        "Get rewarded for your contributions"->str
       </div>
     </section>
     /* <p>

@@ -55,6 +55,7 @@
     "reason-react": "^0.9.1",
     "rollup-plugin-commonjs": "^10.1.0",
     "snowpack": "^3.0.10",
-    "snowpack-graphql-ppx": "^1.0.0"
+    "snowpack-graphql-ppx": "^1.0.0",
+    "values.js": "^2.0.0"
   }
 }

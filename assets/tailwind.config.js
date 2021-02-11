@@ -43,6 +43,26 @@ View the full documentation at https://tailwindcss.com.
 */
 
 const colors = require("tailwindcss/colors");
+const plugin = require("tailwindcss/plugin");
+
+const Values = require("values.js");
+
+const generateShades = (name, color) => {
+  const getShadeIntensity = (index) => (index === 0 ? 50 : index * 100);
+  const variants = new Values(color)
+    .all()
+    .filter((_, index) => [6, 7, 8, 9, 11, 12, 13, 14, 15].includes(index));
+
+  return {
+    [name]: color,
+    ...Object.fromEntries(
+      variants.map((variant, index) => [
+        name + "-" + getShadeIntensity(index),
+        variant.rgbString(),
+      ])
+    ),
+  };
+};
 
 // let colors = {
 //   transparent: "transparent",
@@ -130,25 +150,29 @@ const colors = require("tailwindcss/colors");
 //   "pink-lightest": "#ffebef",
 // };
 
+const themeColors = {
+  ...generateShades("primary", "#10B981"),
+  ...generateShades("default", "#778da9"),
+  ...generateShades("danger", "#e5383b"),
+  ...generateShades("warning", "#ffd6ba"),
+};
+
 module.exports = {
   theme: {
     colors: {
+      ...themeColors,
       transparent: "transparent",
       dark: "#0d1b2a",
       main: "#1b263b",
       card: "#415a77",
-      primary: "#10B981",
-      default: "#778da9",
       current: "#e0e1dd",
-      danger: "#e5383b",
-      warning: "#ffd6ba",
       black: colors.black,
       white: colors.white,
       gray: colors.trueGray,
       green: colors.emerald,
       blue: colors.blue,
       orange: colors.orange,
-      red: colors.red
+      red: colors.red,
     },
     filter: {
       "darken-50": "brightness(50%)",
@@ -929,6 +953,59 @@ module.exports = {
   */
 
   plugins: [
+    plugin(function ({ addUtilities }) {
+      const themeColorNames = ["primary", "default", "danger", "warning"];
+
+      const removeRGBFunction = (string) =>
+        string.replace("rgb(", "").replace(")", "");
+
+      const glassUtilities = themeColorNames.map((themeColorName) => ({
+        [".glass-" + themeColorName]: {
+          backgroundImage: `linear-gradient(0deg, rgba(${removeRGBFunction(
+            themeColors[themeColorName + "-700"]
+          )},0.7) 0%, rgba(${removeRGBFunction(
+            themeColors[themeColorName + "-600"]
+          )},0) 32%, rgba(${removeRGBFunction(
+            themeColors[themeColorName + "-600"]
+          )},0) 73%, rgba(${removeRGBFunction(
+            themeColors[themeColorName + "-700"]
+          )},0.7) 100%)`,
+          boxShadow: `0px 0px 5px ${themeColors[themeColorName + "-50"]} inset`,
+          backdropFilter: 'blur(60px)',
+        },
+      }));
+      glassUtilities.push({
+        ".glass-none": {
+          backgroundImage: "none",
+          boxShadow: "none",
+          backdropFilter: "none",
+        }
+      })
+
+      const cardUtilities = themeColorNames.map((themeColorName) => ({
+        [".card-" + themeColorName]: {
+          backdropFilter: 'blur(60px)',
+          boxShadow: `0px 0px 5px ${themeColors[themeColorName + "-50"]} inset`
+        },
+      }));
+
+      const glowUtilities = themeColorNames.map((themeColorName) => ({
+        [".glow-" + themeColorName]: {
+          boxShadow: `0px 0px 10px ${themeColors[themeColorName + "-600"]}`
+        },
+      }));
+
+      addUtilities([
+        ...glassUtilities,
+        ...cardUtilities,
+        ...glowUtilities,
+        {
+          ".bg-none": {
+            backgroundImage: "none"
+          }
+        }
+      ], ["hover"]);
+    }),
     require("tailwindcss-filters"),
     // require("tailwindcss/plugins/container")({
     //   // center: true,
