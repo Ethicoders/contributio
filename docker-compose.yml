@@ -2,8 +2,9 @@ version: '3'
 
 services:
   web:
-    image: docker-phoenix
-    command: mix phx.server
+    build: 
+      context: .
+      dockerfile: Dockerfile
     env_file: .env
     environment:
       - MIX_ENV=dev
