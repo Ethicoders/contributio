@@ -30,7 +30,15 @@ main {
 }
 
 .bg-main {
-  background: radial-gradient(circle, rgba(13,27,42,1) 0%, rgba(38,49,61,1) 45%, rgba(57,37,54,1) 58%, rgba(13,27,42,1) 100%);;
+  background: 
+    radial-gradient(
+      circle,
+      rgba(13, 27, 42, 1) 0%,
+      rgba(38, 49, 61, 1) 45%,
+      rgba(57, 37, 54, 1) 58%,
+      rgba(13, 27, 42, 1) 100%
+    )
+    ;
 }
 
 .home-cta {
@@ -40,17 +48,14 @@ main {
 
 @keyframes glow {
   from {
-    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #10B981, 0 0 70px #10B981, 0 0 80px #10B981, 0 0 100px #10B981, 0 0 150px #10B981;
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #10b981,
+      0 0 70px #10b981, 0 0 80px #10b981, 0 0 100px #10b981, 0 0 150px #10b981;
   }
   to {
-    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #10B981, 0 0 35px #10B981, 0 0 40px #10B981, 0 0 50px #10B981, 0 0 75px #10B981;
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #10b981,
+      0 0 35px #10b981, 0 0 40px #10b981, 0 0 50px #10b981, 0 0 75px #10b981;
   }
 }
-
-
-
-
-
 
 @media print {
   .markdown *,
@@ -118,7 +123,7 @@ main {
 }
 
 .markdown pre {
-  padding: .5rem;
+  padding: 0.5rem;
   line-height: 1.25;
   overflow-x: scroll;
 }
@@ -172,7 +177,7 @@ main {
 .markdown .modest-h3,
 .markdown h4,
 .markdown .modest-h4 {
-  margin: 1.414rem 0 .5rem;
+  margin: 1.414rem 0 0.5rem;
   font-weight: inherit;
   line-height: 1.42;
 }
@@ -205,12 +210,12 @@ main {
 
 .markdown h6,
 .markdown .modest-h6 {
-  font-size: .88rem;
+  font-size: 0.88rem;
 }
 
 .markdown small,
 .markdown .modest-small {
-  font-size: .707em;
+  font-size: 0.707em;
 }
 
 /* https://github.com/mrmrs/fluidity */
@@ -225,7 +230,6 @@ main {
   max-width: 100%;
 }
 
-
 .markdown html {
   font-size: 18px;
   max-width: 100%;
@@ -233,12 +237,12 @@ main {
 
 .markdown body {
   color: #444;
-  font-family: 'Open Sans Condensed', sans-serif;
+  font-family: "Open Sans Condensed", sans-serif;
   font-weight: 300;
   margin: 0 auto;
   max-width: 48rem;
   line-height: 1.45;
-  padding: .25rem;
+  padding: 0.25rem;
 }
 
 .markdown h1,
@@ -255,7 +259,7 @@ main {
 .markdown h3 {
   border-bottom: 2px solid #fafafa;
   margin-bottom: 1.15rem;
-  padding-bottom: .5rem;
+  padding-bottom: 0.5rem;
   text-align: center;
 }
 

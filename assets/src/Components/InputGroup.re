@@ -2,7 +2,7 @@ let str = React.string;
 
 [@react.component]
 let make = (~label, ~iconName, ~onChange=ignore) => {
-  <div>
+  <div className="border-2 border-default bg-default bg-opacity-10 rounded-md hover:glow-default">
     <label className="block text-sm font-medium text-current hidden">
       label->str
     </label>
@@ -20,7 +20,7 @@ let make = (~label, ~iconName, ~onChange=ignore) => {
         }}
         placeholder=label
         type_="text"
-        className="text-current border bg-transparent block w-full pl-7 pr-12 sm:text-sm rounded-md py-2"
+        className="bg-transparent text-current block w-full pl-7 pr-12 sm:text-sm py-2"
       />
     </div>
   </div>;

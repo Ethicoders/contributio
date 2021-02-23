@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     env_file: .env
+    command: mix phx.server
     environment:
       - MIX_ENV=dev
       - PORT=4000

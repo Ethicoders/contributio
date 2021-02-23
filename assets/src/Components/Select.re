@@ -20,7 +20,7 @@ let make = (~label, ~items: array(item), ~onChange, ~selected) => {
     isVisible
       ? ReactDOM.Style.make(~display="block", ())
       : ReactDOM.Style.make(~display="none", ());
-  <div ref={ReactDOMRe.Ref.domRef(divRef)}>
+  <div ref={ReactDOMRe.Ref.domRef(divRef)} className="hover:glow-default">
     <label
       id="listbox-label" className="block text-sm font-medium text-current hidden">
       label->str
@@ -29,7 +29,7 @@ let make = (~label, ~items: array(item), ~onChange, ~selected) => {
       <button
         onClick=handleToggleList
         type_="button"
-        className="relative w-full bg-transparent border rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm cursor-pointer">
+        className="bg-opacity-10 bg-default relative w-full border-2 border-default rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default sm:text-sm cursor-pointer">
         <span className="flex items-center">
           <span className="ml-3 block truncate text-current">
             items[selected].label->str

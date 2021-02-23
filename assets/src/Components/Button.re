@@ -14,56 +14,54 @@ let make =
       ~disabled=false,
     ) => {
   let classNameItems =
-    ClassName.create(
       Js.String.split(" ", className)
-      |> Js.Array.map(item => ClassName.Value(item)),
-    );
+      |> Js.Array.map(item => ClassName.Value(item));
 
   let buttonClassNames =
-    ClassName.merge(
-      classNameItems,
-      (
-        !disabled
+    ClassName.overrideMatchingClasses(
+      ClassName.create(
+        (!disabled
           ? switch (type_) {
             | Danger => [|
                 "hover:glow-danger",
-                "hover:text-current",
-                "glass-danger",
-                "hover:bg-danger",
+                "border-danger",
+                "bg-danger",
                 "text-current",
+                "rounded-md",
               |]
             | Default => [|
                 "hover:glow-default",
-                "hover:text-current",
-                "glass-default",
-                "hover:bg-default",
+                "border-default",
+                "bg-default",
                 "text-current",
+                "rounded-md",
               |]
             | Primary => [|
                 "hover:glow-primary",
-                "hover:text-current",
-                "glass-primary",
-                "hover:bg-primary",
+                "border-primary",
+                "bg-primary",
                 "text-current",
+                "rounded-md",
               |]
             | Warning => [|
                 "hover:glow-warning",
-                "hover:text-current",
-                "glass-warning",
-                "hover:bg-warning",
+                "border-warning",
+                "bg-warning",
                 "text-current",
+                "rounded-md",
               |]
             }
-          : [|"border-gray-500", "text-gray-500", "cursor-default"|]
+          : [|"border-gray-500", "text-gray-500", "cursor-default", "rounded-md"|]
+      )|> Js.Array.map(item => ClassName.Value(item))
       )
-      |> Js.Array.map(item => ClassName.Value(item)),
-    );
+
+    , classNameItems);
   <button
     onClick={disabled ? ignore : onClick}
     className={
-      "hover:bg-none transition inline-flex items-center px-4 py-2 border border-transparent rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 "
+      "-skew-x-6 transform bg-opacity-10 hover:bg-none inline-flex items-center px-4 py-2 border-2 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 "
       ++ ClassName.output(buttonClassNames)
     }>
-    children
+    <span className="skew-x-6 transform">children</span>
   </button>;
 };

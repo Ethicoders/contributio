@@ -5,7 +5,7 @@ defmodule Contributio.Repo.Migrations.AddUserTable do
     create table("users") do
       add :name, :string
       add :email, :string
-      add :hash, :string
+      add :hash, :string, null: true
       add :token, :string, null: true
     end
 

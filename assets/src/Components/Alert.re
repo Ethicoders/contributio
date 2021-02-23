@@ -13,6 +13,7 @@ let make = (~children, ~className="", ~type_=Default) => {
       Js.String.split(" ", className)
       |> Js.Array.map(item => ClassName.Value(item)),
     );
+    Js.log(ClassName.output(classNameItems));
 
   let alertClassNames =
     ClassName.merge(
@@ -20,38 +21,30 @@ let make = (~children, ~className="", ~type_=Default) => {
       (
         switch (type_) {
         | Danger => [|
-            "glass-danger",
+            "border-danger",
             "text-current",
-            /* "bg-danger-200",
-               "border-danger-600",
-               "text-danger-600", */
+            "bg-danger",
           |]
         | Default => [|
-            "glass-default",
+            "border-default",
             "text-current",
-            /* "bg-default-200",
-               "border-default-600",
-               "text-default-600", */
+            "bg-default",
           |]
         | Primary => [|
-            "glass-primary",
+            "border-primary",
             "text-current",
-            /* "bg-primary-200",
-               "border-primary-600",
-               "text-primary-600", */
+            "bg-primary",
           |]
         | Warning => [|
-            "glass-warning",
+            "border-warning",
             "text-current",
-            /* "bg-warning-200",
-               "border-warning-600",
-               "text-warning-600", */
+            "bg-warning",
           |]
         }
       )
       |> Js.Array.map(item => ClassName.Value(item)),
     );
-  <div className={"p-4" ++ ClassName.output(alertClassNames)}>
+  <div className={"border-2 bg-opacity-10 p-4 rounded-md " ++ ClassName.output(alertClassNames)}>
     children
   </div>;
 };

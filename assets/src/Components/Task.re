@@ -55,9 +55,9 @@ let make =
       ~maybeProject=None,
     ) => {
   let renderedContent = Micromark.render(content);
-  let classNames = status === 0 ? "card-primary border-primary-500" : "card-default border-default-500";
+  let classNames = status === 0 ? "bg-primary border-primary-500" : "bg-default border-default-500";
   <div
-    className={"px-4 pb-4 pt-2 border-2 rounded-md relative " ++ classNames}>
+    className={"px-4 pb-4 pt-2 border-2 rounded-md relative bg-opacity-10 " ++ classNames}>
     <Anchor target={"/tasks/" ++ id} className="text-primary">
       <Heading> name->str </Heading>
     </Anchor>
@@ -76,12 +76,12 @@ let make =
     />
     <div>
       <span
-        className="text-current rounded-sm border-green-500 border-2 p-0.5 m-0.5">
+        className="text-current rounded-sm border-primary-500 border-2 p-0.5 m-0.5">
         <Icon name=Lightbulb />
         {difficultyToHumanReadable(difficulty)->str}
       </span>
       <span
-        className="text-current rounded-sm border-green-500 border-2 p-0.5 m-0.5">
+        className="text-current rounded-sm border-primary-500 border-2 p-0.5 m-0.5">
         <Icon name=Timer />
         {timeToHumanReadable(time)->str}
       </span>

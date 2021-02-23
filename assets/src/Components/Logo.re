@@ -8,7 +8,7 @@ let make = () => {
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 256 256">
     <path
-      fill="rgb(16,185,129)"
+      className="fill-primary"
       stroke="black"
       strokeWidth="8"
       d="M 145.00,0.21

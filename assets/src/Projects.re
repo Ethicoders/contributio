@@ -120,7 +120,7 @@ let make = () => {
       },
     );
 
-  {
+  /* {
     switch (queryResult) {
     | {data: None} => ()
     | {loading: true} => ()
@@ -134,7 +134,7 @@ let make = () => {
         canFetch := true;
       }
     };
-  };
+  }; */
 
   // let topic = "";
   <div className="p-2" ref={ReactDOM.Ref.domRef(elementRef)}>
@@ -148,9 +148,12 @@ let make = () => {
        | {error: Some(_error)} => "Error"->str
        | {called: false, data: Some(_), error: None, loading: false} =>
          "Do"->str
-       | {called: true, data: Some({languages}), loading: false} =>
+       | {called: true, data: Some({languages}), loading: false} => 
+         switch languages {
+         | [||] => "No languages yet!"->str
+         | values => 
          let selectItems =
-           languages
+           values
            |> Js.Array.map(item => {
                 let item: Select.item = {label: item, value: Some(item)};
                 item;
@@ -170,6 +173,7 @@ let make = () => {
            }}
            selected=languageIndex
          />;
+         }
        }}
       <div className="">
         <InputGroup
@@ -179,8 +183,9 @@ let make = () => {
         />
       </div>
     </div>
-    {switch (queryResult) {
+    /* {switch (queryResult) {
      | {loading: true} => "Loading..."->React.string
+     | {data: None} => React.null
      | {data: Some({projects}), loading: false} =>
        let values =
          switch (projects) {
@@ -197,11 +202,7 @@ let make = () => {
              )
            }
          };
-       Js.log("rerender");
        <>
-         <Button onClick={_ => queryResult.fetchMore()->ignore}>
-           "Test"->str
-         </Button>
          <div className="grid grid-cols-3 gap-4">
            {switch (values) {
             | [||] => "No results!"->str
@@ -227,7 +228,6 @@ let make = () => {
             }}
          </div>
        </>;
-     | {data: None} => <div />
-     }}
+     }} */
   </div>;
 };

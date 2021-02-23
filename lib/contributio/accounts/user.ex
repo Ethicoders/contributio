@@ -7,7 +7,7 @@ defmodule Contributio.Accounts.User do
     field :name, :string
     field :email, :string
     field :password, :string, virtual: true
-    field :hash, :string
+    field :hash, :string, allow_nil: true # Can be nil for users using GH login
     field :token, :string, allow_nil: true
     field :level, :integer
     field :current_experience, :integer

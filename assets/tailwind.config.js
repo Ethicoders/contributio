@@ -151,10 +151,14 @@ const generateShades = (name, color) => {
 // };
 
 const themeColors = {
-  ...generateShades("primary", "#10B981"),
-  ...generateShades("default", "#778da9"),
-  ...generateShades("danger", "#e5383b"),
-  ...generateShades("warning", "#ffd6ba"),
+  // ...generateShades("primary", "#10B981"),
+  // ...generateShades("default", "#778da9"),
+  // ...generateShades("danger", "#e5383b"),
+  // ...generateShades("warning", "#ffd6ba"),
+  ...generateShades("primary", "#8260F2"),
+  ...generateShades("default", "#F7EDD5"),
+  ...generateShades("danger", "#FF97B8"),
+  ...generateShades("warning", "#97D4FF"),
 };
 
 module.exports = {
@@ -962,13 +966,13 @@ module.exports = {
       const glassUtilities = themeColorNames.map((themeColorName) => ({
         [".glass-" + themeColorName]: {
           backgroundImage: `linear-gradient(0deg, rgba(${removeRGBFunction(
-            themeColors[themeColorName + "-700"]
+            themeColors[themeColorName + "-500"]
           )},0.7) 0%, rgba(${removeRGBFunction(
-            themeColors[themeColorName + "-600"]
+            themeColors[themeColorName + "-400"]
           )},0) 32%, rgba(${removeRGBFunction(
-            themeColors[themeColorName + "-600"]
+            themeColors[themeColorName + "-400"]
           )},0) 73%, rgba(${removeRGBFunction(
-            themeColors[themeColorName + "-700"]
+            themeColors[themeColorName + "-500"]
           )},0.7) 100%)`,
           boxShadow: `0px 0px 5px ${themeColors[themeColorName + "-50"]} inset`,
           backdropFilter: 'blur(60px)',
@@ -989,9 +993,19 @@ module.exports = {
         },
       }));
 
-      const glowUtilities = themeColorNames.map((themeColorName) => ({
+      const glowUtilities = [{
+        ".glow-none": {
+          boxShadow: "none"
+        }
+      }, ...themeColorNames.map((themeColorName) => ({
         [".glow-" + themeColorName]: {
-          boxShadow: `0px 0px 10px ${themeColors[themeColorName + "-600"]}`
+          boxShadow: `0px 0px 10px ${themeColors[themeColorName + "-500"]}`
+        },
+      }))];
+
+      const fillUtilities = themeColorNames.map((themeColorName) => ({
+        [".fill-" + themeColorName]: {
+          fill: `${themeColors[themeColorName]}`
         },
       }));
 
@@ -999,6 +1013,7 @@ module.exports = {
         ...glassUtilities,
         ...cardUtilities,
         ...glowUtilities,
+        ...fillUtilities,
         {
           ".bg-none": {
             backgroundImage: "none"

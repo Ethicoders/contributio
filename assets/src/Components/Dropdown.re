@@ -4,6 +4,12 @@ let str = React.string;
 let make = (~children, ~label="", ~button=None) => {
   let (isVisible, setVisible) = React.useState(() => false);
 
+  let handleResize = _e => {
+    Js.log("in");
+  };
+  let _ = Resize.useResize(handleResize);
+
+  
   let handleToggleOverlay = _ => setVisible(_ => !isVisible);
 
   let style =
@@ -16,7 +22,7 @@ let make = (~children, ~label="", ~button=None) => {
   };
   let divRef = ClickOutside.useClickOutside(handleClickOutside);
 
-  <div ref={ReactDOMRe.Ref.domRef(divRef)}>
+  <div className="relative inline-block" ref={ReactDOMRe.Ref.domRef(divRef)}>
     <div
       className="relative inline-block text-left"
       onClick={_ => handleToggleOverlay()}>
@@ -24,7 +30,7 @@ let make = (~children, ~label="", ~button=None) => {
        | None =>
          <button
            type_="button"
-           className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+           className="bg-default bg-opacity-10 hover:glow-default inline-flex justify-center w-full rounded-md border-2 border-default shadow-sm px-4 py-2 text-sm font-medium text-gray-700 focus:outline-none">
            label->str
            <svg
              className="-mr-1 ml-2 h-5 w-5"
@@ -41,7 +47,7 @@ let make = (~children, ~label="", ~button=None) => {
     </div>
     <div
       style
-      className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+      className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white z-10">
       <div className="py-1" role="menu" onClick={_ => setVisible(_ => false)}>
         children
       </div>

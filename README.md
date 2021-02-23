@@ -19,7 +19,7 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Source: https://github.com/phoenixframework/phoenix
 
 
-## Dev
 
-Clear Docker logs 
-`truncate -s 0 /var/log/docker.log`
+## Dev Setup
+Run `mix ecto.migrate` to prepare the DB
+Run `mix run seeds.exs` to populate DB with Origins
