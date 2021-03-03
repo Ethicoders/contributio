@@ -151,14 +151,10 @@ const generateShades = (name, color) => {
 // };
 
 const themeColors = {
-  // ...generateShades("primary", "#10B981"),
-  // ...generateShades("default", "#778da9"),
-  // ...generateShades("danger", "#e5383b"),
-  // ...generateShades("warning", "#ffd6ba"),
-  ...generateShades("primary", "#8260F2"),
-  ...generateShades("default", "#F7EDD5"),
-  ...generateShades("danger", "#FF97B8"),
-  ...generateShades("warning", "#97D4FF"),
+  ...generateShades("primary", "#9e00f1"),//8260F2
+  ...generateShades("default", "#f8f1d5"),//F7EDD5
+  ...generateShades("warning", "#87cfff"),//97D4FF
+  ...generateShades("danger", "#ff7bb6"),//FF97B8
 };
 
 module.exports = {

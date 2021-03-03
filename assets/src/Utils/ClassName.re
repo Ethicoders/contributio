@@ -21,9 +21,10 @@ module Helpers = {
     | Toggleable(className, _) => className
     };
 
-  let getClassNameFamily = item => switch item {
-    | Value(className) => Js.String.split("-", className)[0]
-    | Toggleable(className, _) => Js.String.split("-", className)[0]
+  let getClassNameFamily = item => {
+    let className = getClassName(item);
+    let items = Js.String.split("-", className)
+    Js.String.startsWith(className, "-") ? items[0] : items[0]
   };
 };
 
@@ -41,6 +42,7 @@ let merge = (set, classNames: array(classNameItem)) => {
   create(copy |> Belt.MutableSet.toArray);
 };
 
+/* This function is flawed, "bg-" and "bg-opacity-" are going to conflict whereas they shouldn't */
 let overrideMatchingClasses = (set, classNames: array(classNameItem)) => {
   let copy = set->Belt.MutableSet.copy;
   let classNamesFamilies = Js.Array.map((item) => Helpers.getClassNameFamily(item), classNames)
@@ -48,6 +50,10 @@ let overrideMatchingClasses = (set, classNames: array(classNameItem)) => {
     !Js.Array.includes(Helpers.getClassNameFamily(item), classNamesFamilies)
   }) |> create, classNames)
 };
+
+let has = (set, className: string) => {
+  set->Belt.MutableSet.has(Value(className))
+}
 
 let output = set =>
   set->Belt.MutableSet.toArray

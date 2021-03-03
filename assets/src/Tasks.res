@@ -42,9 +42,9 @@ let make = () => {
           icon=Some(Icon.Lightbulb)
           onChange={newDifficulty => setDifficulty(_ => newDifficulty)}
           buttonsData=[
-            {label: "Easy", value: "1-3", activeClassNames: Some("bg-green-500")},
-            {label: "Medium", value: "4-6", activeClassNames: Some("bg-orange-500")},
-            {label: "Hard", value: "7-10", activeClassNames: Some("bg-red-500")},
+            {label: "Easy", value: "1-3", activeClassNames: Some("bg-primary-500")},
+            {label: "Medium", value: "4-6", activeClassNames: Some("bg-warning-500")},
+            {label: "Hard", value: "7-10", activeClassNames: Some("bg-danger-500")},
           ]
         />
       </span>
@@ -53,9 +53,9 @@ let make = () => {
           icon=Some(Icon.Timer)
           onChange={newTime => setTime(_ => newTime)}
           buttonsData=[
-            {label: "Quick", value: "1-3", activeClassNames: Some("bg-green-500")},
-            {label: "Medium", value: "4-6", activeClassNames: Some("bg-orange-500")},
-            {label: "Long", value: "7-10", activeClassNames: Some("bg-red-500")},
+            {label: "Quick", value: "1-3", activeClassNames: Some("bg-primary-500")},
+            {label: "Medium", value: "4-6", activeClassNames: Some("bg-warning-500")},
+            {label: "Long", value: "7-10", activeClassNames: Some("bg-danger-500")},
           ]
         />
       </span>
@@ -64,8 +64,8 @@ let make = () => {
           value=status
           onChange={newStatus => setStatus(_ => newStatus)}
           buttonsData=[
-            {label: "Opened", value: "0", activeClassNames: Some("bg-green-500")},
-            {label: "Closed", value: "1", activeClassNames: Some("bg-green-500")},
+            {label: "Opened", value: "0", activeClassNames: Some("bg-primary-500")},
+            {label: "Closed", value: "1", activeClassNames: Some("bg-primary-500")},
           ]
         />
       </span>

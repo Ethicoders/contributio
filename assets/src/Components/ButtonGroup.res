@@ -17,13 +17,14 @@ let make = (~icon=None, ~buttonsData: array<buttonData>, ~value=None, ~onChange=
       "hover:glow-none",
       "hover:bg-opacity-10",
       "hover:bg-default",
+      "-skew-x-0",
     ] |> Js.Array.map(item => ClassName.Value(item))
 
   let baseClassNames = ClassName.create(classNameItems)
 
   <div
-    className="-skew-x-6 transform border-2 bg-default bg-opacity-10 border-default rounded-md inline-block hover:glow-default">
-    <div className="skew-x-6 transform">
+    className="border-2 bg-default bg-opacity-10 border-default rounded-md inline-block hover:glow-default">
+    <div className="">
       {switch icon {
       | None => React.null
       | Some(iconName) => <span className="mx-2 text-default"> <Icon name=iconName /> </span>

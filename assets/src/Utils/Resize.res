@@ -13,6 +13,7 @@ let useResize = (onResize) => {
 
   React.useEffect0(() => {
     Document.addEventListener("resize", onResize, document);
+    Document.addEventListener("scroll", (_) => Js.log("rsz"), document)
     Some(
       () => Document.removeEventListener("resize", onResize, document),
     );
