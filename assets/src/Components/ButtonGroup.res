@@ -15,8 +15,11 @@ let make = (~icon=None, ~buttonsData: array<buttonData>, ~value=None, ~onChange=
       "rounded-none",
       "bg-transparent",
       "hover:glow-none",
+      "focus:glow-none",
       "hover:bg-opacity-10",
       "hover:bg-default",
+      "focus:bg-opacity-10",
+      "focus:bg-default",
       "-skew-x-0",
     ] |> Js.Array.map(item => ClassName.Value(item))
 

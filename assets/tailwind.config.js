@@ -1015,7 +1015,7 @@ module.exports = {
             backgroundImage: "none"
           }
         }
-      ], ["hover"]);
+      ], ["hover", "focus"]);
     }),
     require("tailwindcss-filters"),
     // require("tailwindcss/plugins/container")({

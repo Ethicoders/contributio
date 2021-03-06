@@ -13,7 +13,6 @@ let make = (~children, ~className="", ~type_=Default) => {
       Js.String.split(" ", className)
       |> Js.Array.map(item => ClassName.Value(item)),
     );
-    Js.log(ClassName.output(classNameItems));
 
   let alertClassNames =
     ClassName.merge(

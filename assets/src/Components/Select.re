@@ -29,7 +29,7 @@ let make = (~label, ~items: array(item), ~onChange, ~selected) => {
       <button
         onClick=handleToggleList
         type_="button"
-        className="bg-opacity-10 bg-default relative w-full border-2 border-default rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default sm:text-sm cursor-pointer">
+        className="focus:outline-none focus:glow-default bg-opacity-10 bg-default relative w-full border-2 border-default rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default sm:text-sm cursor-pointer">
         <span className="flex items-center">
           <span className="ml-3 block truncate text-current">
             items[selected].label->str
@@ -53,7 +53,7 @@ let make = (~label, ~items: array(item), ~onChange, ~selected) => {
         style>
         <ul
           role="listbox"
-          className="max-h-56 rounded-md py-1 text-current ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+          className="max-h-56 rounded-md py-1 text-current overflow-auto focus:outline-none sm:text-sm">
           {Js.Array.mapi(
              (item, index) =>
                <li

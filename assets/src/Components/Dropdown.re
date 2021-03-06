@@ -1,16 +1,33 @@
 let str = React.string;
 
-[@react.component]
-let make = (~children, ~label="", ~button=None) => {
-  let (isVisible, setVisible) = React.useState(() => false);
+type directions =
+  | TopLeft
+  | TopRight
+  | BottomLeft
+  | BottomRight;
 
-  let handleResize = _e => {
+let resolvePosition = (position) => switch position {
+| TopLeft => "origin-top-right"
+| TopRight => "origin-top-right"
+| BottomLeft => "right-0"
+| BottomRight => "left-0"
+};
+
+[@react.component]
+let make = (~children, ~label="", ~button=None, ~position=BottomLeft) => {
+  let (isVisible, setVisible) = React.useState(() => false);
+  let (position, _setPosition) = React.useState(() => position);
+
+  /* let handleResize = _e => {
     Js.log("in");
   };
-  let _ = Resize.useResize(handleResize);
+  let _ = Resize.useResize(handleResize); */
 
   
-  let handleToggleOverlay = _ => setVisible(_ => !isVisible);
+  let handleToggleMenu = (_e: ReactEvent.Mouse.t) => {
+    /* setPosition(_ => e->ReactEvent.Mouse.target##offsetLeft === 0 ? BottomLeft : BottomRight); */
+    setVisible(_ => !isVisible);
+  };
 
   let style =
     isVisible
@@ -25,7 +42,7 @@ let make = (~children, ~label="", ~button=None) => {
   <div className="relative inline-block" ref={ReactDOMRe.Ref.domRef(divRef)}>
     <div
       className="relative inline-block text-left"
-      onClick={_ => handleToggleOverlay()}>
+      onClick={e => handleToggleMenu(e)}>
       {switch (button) {
        | None =>
          <button
@@ -47,7 +64,7 @@ let make = (~children, ~label="", ~button=None) => {
     </div>
     <div
       style
-      className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white z-10">
+      className={resolvePosition(position) ++ " absolute mt-2 w-56 rounded-md shadow-lg bg-white z-10"}>
       <div className="py-1" role="menu" onClick={_ => setVisible(_ => false)}>
         children
       </div>

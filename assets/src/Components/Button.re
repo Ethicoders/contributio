@@ -30,8 +30,6 @@ let make =
     "border-2", 
     "text-sm", 
     "focus:outline-none", 
-    "focus:ring-2", 
-    "focus:ring-offset-2", 
   |];
 
   let buttonClassNames =
@@ -44,24 +42,28 @@ let make =
                 "border-danger",
                 "text-current",
                 "rounded-md",
+                "focus:glow-danger",
               |]
             | Default => [|
                 "hover:glow-default",
                 "border-default",
                 "text-current",
                 "rounded-md",
+                "focus:glow-default",
               |]
             | Primary => [|
                 "hover:glow-primary",
                 "border-primary",
                 "text-current",
                 "rounded-md",
+                "focus:glow-primary",
               |]
             | Warning => [|
                 "hover:glow-warning",
                 "border-warning",
                 "text-current",
                 "rounded-md",
+                "focus:glow-warning",
               |]
             }
           : [|"border-gray-500", "text-gray-500", "cursor-default", "rounded-md"|]
