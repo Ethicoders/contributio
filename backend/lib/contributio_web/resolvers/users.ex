@@ -18,28 +18,28 @@ defmodule Resolvers.Users do
 
   # Authorized context, can fetch sensitive data
   def get_current_user(_args, %{context: %{current_user: current_user}}) do
-    Logger.debug(inspect current_user |> Repo.preload(:projects))
+    Logger.debug(inspect(current_user |> Repo.preload(:projects)))
     {:ok, current_user |> Repo.preload(:projects)}
   end
 
   def get_current_user(_args, _info), do: {:error, "Not Authorized"}
 
   def authenticate(%{email: email, password: password}, _info) do
-    case email
-         |> Accounts.get_user_by_email()
-         |> Bcrypt.check_pass(password, hash_key: :hash) do
-      {:ok, user} ->
-        token = Phoenix.Token.sign(ContributioWeb.Endpoint, "user auth", user.id)
+    user =
+      Accounts.get_user_by_email(email)
 
-        user
-        |> Accounts.User.changeset(%{token: token})
-        |> Repo.update!()
+    if user
+       |> Map.get(:hash)
+       |> Argon2.verify_pass(password) do
+      token = Phoenix.Token.sign(ContributioWeb.Endpoint, "user auth", user.id)
 
-        {:ok, %{user: user, token: token}}
+      user
+      |> Accounts.User.changeset(%{token: token})
+      |> Repo.update!()
 
-      payload
-      when payload in [{:error, "invalid user-identifier"}, {:error, "invalid password"}] ->
-        {:error, "Invalid email or password."}
+      {:ok, %{user: user, token: token}}
+    else
+      {:error, "Invalid email or password."}
     end
   end
 
@@ -50,7 +50,7 @@ defmodule Resolvers.Users do
            Jason.encode!(%{
              code: code,
              client_id: System.get_env("GITHUB_CLIENT_ID"),
-             client_secret: System.get_env("GITHUB_CLIENT_SECRET")
+             client_secret: System.get_env("GITHUB_SECRET")
            }),
            [{"Content-Type", "application/json"}]
          ) do

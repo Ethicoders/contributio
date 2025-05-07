@@ -58,6 +58,7 @@ defmodule Contributio.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
+  @spec create_user(attrs :: map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)

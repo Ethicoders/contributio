@@ -4,10 +4,11 @@ defmodule Contributio.Accounts.User do
   require Logger
 
   schema "users" do
+    field :name, :string
     field :email, :string
     field :password, :string, virtual: true
     field :hash, :string
-    field :token, :string, allow_nil: true
+    field :token, :string, default: nil
     field :access_tokens, :map
     field :origin_ids, :map
     has_many :projects, Contributio.Market.Project
@@ -18,9 +19,11 @@ defmodule Contributio.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password, :hash, :token, :access_tokens])
-    |> validate_required([:email]) #, :password
+    |> cast(attrs, [:name, :email, :password, :hash, :token, :access_tokens])
+    # , :password
+    |> validate_required([:email])
     |> unique_constraint(:email)
+
     # |> set_password_hash()
   end
 
@@ -30,7 +33,7 @@ defmodule Contributio.Accounts.User do
     put_change(
       changeset,
       :hash,
-      Bcrypt.hash_pwd_salt(
+      Argon2.hash_pwd_salt(
         password
         # Bcrypt.gen_salt(12, true)
       )

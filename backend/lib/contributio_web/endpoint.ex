@@ -1,8 +1,13 @@
 defmodule ContributioWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :contributio
 
-  plug Corsica, origins: "*", allow_credentials: true, allow_headers: :all
-
+  plug Corsica,
+    origins: "http://localhost:1234",
+    allow_credentials: true,
+    allow_headers: ["Content-Type", "Authorization", "X-Requested-With"],
+    allow_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    expose_headers: ["Content-Type", "Authorization"],
+    max_age: 86400
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
@@ -48,7 +53,6 @@ defmodule ContributioWeb.Endpoint do
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
-
 
   plug Plug.MethodOverride
   plug Plug.Head

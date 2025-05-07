@@ -26,18 +26,32 @@ defmodule Contributio.Market do
   def list_filtered_projects(args) do
     Logger.debug(args)
 
-    args
-    |> Enum.reduce(Project, fn
-      # {:name, name}, query when is_list(name) ->
-      #   from q in query, where: q.name in ^name
+    query =
+      args
+      |> Enum.reduce(Project, fn
+      {:belongs_to, user}, query when not is_nil(user) ->
+        from q in query, where: q.user_id == ^user
 
-      {:name, name}, query ->
+      {:name, name}, query when not is_nil(name) ->
         from q in query, where: like(q.name, ^"%#{name}%")
 
-      {:languages, language}, query ->
+      {:languages, language}, query when not is_nil(language) ->
         from q in query, where: fragment("? \\? ?", q.languages, ^language)
-    end)
-    |> Repo.all()
+
+      _, query ->
+        query
+      end)
+
+    query =
+      case args do
+        %{offset: offset, limit: limit} ->
+          from q in query, offset: ^offset, limit: ^limit
+
+        _ ->
+          query
+      end
+
+    Repo.all(query)
   end
 
   def list_projects_languages do

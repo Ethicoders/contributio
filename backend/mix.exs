@@ -47,11 +47,19 @@ defmodule Contributio.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:absinthe, "~> 1.5"},
       {:absinthe_plug, "~> 1.5"},
-      {:bcrypt_elixir, "~> 2.0.3"},
+      # {:bcrypt_elixir, "~> 2.0.3"},
+      {:argon2_elixir, "~> 4.0"},
       {:guardian, "~> 2.0"},
       {:httpoison, "~> 1.7"},
       {:corsica, "~> 1.0"},
       {:plug, "~> 1.0"},
+      {:faker, "~> 0.19.0-alpha.1", only: [:test, :dev]},
+      {:mox, "~> 1.0", only: :test},
+      {:ex_machina, "~> 2.7", only: :test},
+      # {:ex_unit_notifier, "~> 0.1", only: :test},
+      # {:ex_doc, "~> 0.21", only: :dev, runtime: false},
+      # {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      # {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 

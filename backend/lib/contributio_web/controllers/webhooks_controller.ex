@@ -48,7 +48,7 @@ defmodule ContributioWeb.WebhooksController do
     Market.update_task(task, data)
   end
 
-  defp execute(%Contributio.Market.Task{} = task, action, data) when action == :validate do
+  defp execute(%Contributio.Market.Task{} = task, action, _data) when action == :validate do
     # Give rewards here
     Market.close_task(task)
   end

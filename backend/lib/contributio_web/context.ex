@@ -13,7 +13,7 @@ defmodule ContributioWeb.Context do
   def call(conn, _) do
     case build_context(conn) do
       {:ok, context} ->
-        put_private(conn, :absinthe, %{context: context})
+        put_private(conn, :contributio, %{context: context})
       _ ->
         conn
     end

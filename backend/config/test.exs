@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # Configure your database
 #
@@ -9,7 +9,7 @@ config :contributio, Contributio.Repo,
   username: "postgres",
   password: "postgres",
   database: "contributio_test#{System.get_env("MIX_TEST_PARTITION")}",
-  hostname: "postgres",
+  hostname: "db",
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,

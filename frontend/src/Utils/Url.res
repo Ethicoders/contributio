@@ -1,9 +1,10 @@
-[@bs.val] external entries: Js.t({..}) => array((string, _)) = "Object.entries";
+@val @scope(("Object", "entries"))
+external entries: Js.t<{..}> => array<(string, _)> = "Object.entries";
 
 module Obj = Js.Obj;
 module Array = Js.Array;
 
-let buildFrom = (uri, parts: list(string), args: Js.t('a)) => {
+let buildFrom = (uri, parts: array<string>, args: Js.t<'a>) => {
     let fields = entries(args);
     let queryArgs = if (Array.length(fields) > 0) {
         "?" ++ Array.joinWith("&", Array.map(((key, value)) => key ++ "=" ++ Js.String.make(value), fields))
@@ -11,7 +12,7 @@ let buildFrom = (uri, parts: list(string), args: Js.t('a)) => {
         ""
     }
 
-    uri ++ List.join("/", parts) ++ queryArgs
+    uri ++ Array.joinWith("/", parts) ++ queryArgs
 }
 
 let parseQueryArgs = (queryArgs: string) => {

@@ -1,0 +1,68 @@
+schema {
+	query: Query
+	mutation: Mutation
+}
+
+type Query {
+	my: CurrentUser!
+	projects(languages: String, name: String): [Project!]
+	tasks: [Task]
+	users: [User]
+	languages: [String!]
+	fetchRepositories(vendor: String!): [Repository!]
+	requestAccessToken(code: String!): AccessTokenPayload!
+}
+
+type Mutation {
+	auth(email: String!, password: String!): AuthPayload!
+	createUser(email: String!, password: String!): User!
+	createProject(name: String!): Project
+	createTask(name: String!): Task
+	updateUser(email: String, accessTokens: String): User!
+	setUserAccessToken(content: String!, vendor: String!): User!
+	importRepositories(ids: [Int!]!, vendor: String!): Boolean
+}
+
+type CurrentUser {
+	id: ID!
+	email: String!
+	projects: [Project!]
+}
+
+type Project {
+	id: ID!
+	name: String!
+	description: String
+	url: String!
+	languages: Json
+}
+
+type Task {
+	id: ID!
+	name: String!
+}
+
+type User {
+	id: ID!
+	email: String!
+	projects: [Project!]
+}
+
+type Repository {
+	id: Int!
+	name: String!
+	fullName: String!
+	url: String!
+	statusesUrl: String!
+}
+
+type AuthPayload {
+	token: String!
+	user: User!
+}
+
+type AccessTokenPayload {
+	accessToken: String!
+}
+
+scalar Json

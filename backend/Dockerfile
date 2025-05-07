@@ -1,24 +1,31 @@
-FROM elixir:1.10.3
-ENV DEBIAN_FRONTEND=noninteractive
+FROM elixir:latest
 
-# Install hex
-RUN mix local.hex --force
+# Install required packages
+RUN apt-get update && \
+    apt-get install -y postgresql-client inotify-tools && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install rebar
-RUN mix local.rebar --force
+# Install Elixir dependencies
+RUN mix local.hex --force && \
+    mix archive.install hex phx_new 1.5.3 --force && \
+    mix local.rebar --force
 
-# Install the Phoenix framework itself
-RUN wget https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez
-RUN mix archive.install ./phoenix_new.ez
+# Set environment variables
+ENV APP_HOME /app
 
-# Install NodeJS and the NPM
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y -q nodejs
+# Create and set the working directory
+RUN mkdir -p $APP_HOME
+WORKDIR $APP_HOME
 
-# Suggested https://hexdocs.pm/phoenix/installation.html
-RUN apt-get update && apt-get install -y \
-    inotify-tools \
- && rm -rf /var/lib/apt/lists/*
+# Copy the application code
+COPY . $APP_HOME
 
-# When this image is run, make /app the current working directory
-WORKDIR /app
+# Install application dependencies
+RUN mix deps.get
+
+# Expose the Phoenix server port
+EXPOSE 4000
+
+# Start the Phoenix server
+CMD ["mix", "phx.server"]

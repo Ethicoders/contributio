@@ -5,7 +5,7 @@ config :contributio, Contributio.Repo,
   username: "postgres",
   password: "postgres",
   database: "contributio_dev",
-  hostname: "postgres",
+  hostname: "db",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 

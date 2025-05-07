@@ -16,6 +16,12 @@ defmodule ContributioWeb.Router do
     plug ContributioWeb.Context
   end
 
+  scope "/api", ContributioWeb do
+    pipe_through :api
+
+    post "/", ApiController, :index
+  end
+
   scope "/", ContributioWeb do
     # Use the default browser stack
     pipe_through :browser
@@ -26,22 +32,6 @@ defmodule ContributioWeb.Router do
   scope "/", ContributioWeb do
     post "/webhooks", WebhooksController, :dispatch
   end
-
-  scope "/" do
-    pipe_through :api
-
-    forward "/graph", Absinthe.Plug,
-      schema: Contributio.Schema,
-      before_send: {__MODULE__, :before_send}
-
-    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: Contributio.Schema
-  end
-
-  def before_send(conn, %{execution: %{context: %{token: token}}}) do
-    conn |> put_resp_cookie("ctiotoken", token, http_only: true)
-  end
-
-  def before_send(conn, _), do: conn
 
   # Enables LiveDashboard only for development
   #
